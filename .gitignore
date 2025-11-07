@@ -107,9 +107,7 @@ crashlytics-build.properties
 /Assets/Resources/Settings/DebugSettings.asset.meta
 /Assets/Resources/Settings/DebugSettings_1.asset
 /Assets/Resources/Settings/DebugSettings_1.asset.meta
-/Assets/Resources/Editor/SelectionHistory.asset
-/Assets/Resources/Editor/SelectionHistory.asset.meta
-/Assets/Resources/Editor/SelectionHistory_Template.asset
-/Assets/Resources/Editor/SelectionHistory_Template.asset.meta
+/Assets/Resources/Editor/EditorHistory.asset
+/Assets/Resources/Editor/EditorHistory.asset.meta
 
 EditorUserSettings.asset
