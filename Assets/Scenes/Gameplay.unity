@@ -483,7 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1177b7c612edbe447a50512be6b44b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Grid.HexGridDraw
-  enableDraw: 1
+  enableDraw: 0
   gridCenterIndex: {x: 0, y: 0}
   hexRadius: 0.5
   gridHeight: 10
@@ -589,6 +589,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RM.Grid.GridExpansionController
   gridTilePrefab: {fileID: 4606567027678384990, guid: 0f2fc7aa29765fa46878ea8f64a4c5cd, type: 3}
   initialCellCountRange: {x: 20, y: 30}
+  gridDimensions: {x: 10, y: 10}
 --- !u!4 &1870759709
 Transform:
   m_ObjectHideFlags: 0
@@ -612,8 +613,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2670772835180467245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.29226592, y: -0.047538806, z: 0.0145479925, w: 0.95504403}
-  m_LocalPosition: {x: 0.5, y: 3.4, z: -5}
+  m_LocalRotation: {x: 0.26640305, y: 0, z: 0, w: 0.96386176}
+  m_LocalPosition: {x: 0, y: 2.4, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -742,8 +743,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 943393091674951653}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.29226592, y: -0.047538806, z: 0.0145479925, w: 0.95504403}
-  m_LocalPosition: {x: 0.5, y: 3.4, z: -5}
+  m_LocalRotation: {x: 0.26640305, y: 0, z: 0, w: 0.96386176}
+  m_LocalPosition: {x: 0, y: 2.4, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -764,6 +765,7 @@ MonoBehaviour:
   planeMovementTransform: {fileID: 3482610674057804508}
   verticalMovementTransform: {fileID: 0}
   movementSpeed: 10
+  allowAngularMovement: 0
   angularSpeed: 100
   defaultZoom: 0.5
   minZoom: {x: 0, y: 3, z: -2.75}
@@ -845,10 +847,10 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 5000
+  far clip plane: 300
   field of view: 40
-  orthographic: 0
-  orthographic size: 10
+  orthographic: 1
+  orthographic size: 2
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -999,9 +1001,9 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 40
-    OrthographicSize: 10
+    OrthographicSize: 2
     NearClipPlane: 0.1
-    FarClipPlane: 5000
+    FarClipPlane: 300
     Dutch: 0
     ModeOverride: 0
     PhysicalProperties:
@@ -1060,7 +1062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
   Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 0.5, y: 3, z: -3}
+  ShoulderOffset: {x: 0, y: 2, z: -2}
   VerticalArmLength: 0.4
   CameraSide: 1
   CameraDistance: 2

@@ -1,13 +1,14 @@
 using Game.Grid;
+using GamePlugin.Utils;
 using GamePlugins.ObjectPool;
 using GamePlugins.Utils;
-using RM.Utils;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace RM.Grid
+namespace GamePlugin.Grid
 {
 	public class GridExpansionController : MonoBehaviour
 	{
@@ -15,8 +16,8 @@ namespace RM.Grid
 		private GridTileInstance gridTilePrefab;
 		[SerializeField]
 		private Vector2Int initialCellCountRange;
-
-		private bool expansionEnabled = true;
+		[SerializeField]
+		private Vector2Int gridDimensions;
 
 		private System.Random randomGenerator;
 
@@ -25,31 +26,41 @@ namespace RM.Grid
 			ObjectPool.Instance.CachePrefab(gridTilePrefab.gameObject, 20);
 		}
 
-		internal void Initialize(System.Random randomGenerator)
-		{
-			this.randomGenerator = randomGenerator;
-			expansionEnabled = true;
-			InitializeGrid();
-		}
 
 
 		[Button]
-		private void InitializeGrid()
+		private void InitializeGridWithCellCount()
 		{
 			if (randomGenerator == null)
 				randomGenerator = new System.Random();
 
 			int cellCount = randomGenerator.Next(initialCellCountRange.x, initialCellCountRange.y);
 			var cellList = ProceduralGridGenerator.GenerateRandomHexGrid(cellCount, randomGenerator);
-			expansionEnabled = true;
 
+			BuildGrid(cellList);
+		}
+
+		[Button]
+		private void InitializeGridWithDimensions()
+		{
+			if (randomGenerator == null)
+				randomGenerator = new System.Random();
+
+			int cellCount = randomGenerator.Next(initialCellCountRange.x, initialCellCountRange.y);
+			var cellList = ProceduralGridGenerator.GenerateRandomHexGrid(cellCount, randomGenerator);
+
+			BuildGrid(cellList);
+		}
+
+		private void BuildGrid(List<HexCell> cellList)
+		{
 			foreach (var cell in cellList)
 			{
 				ExpandAt(cell);
 			}
 		}
 
-		public void ExpandAt(HexCell cell)
+		private void ExpandAt(HexCell cell)
 		{
 			GridTileInstance foundation = ObjectPool.GetObject<GridTileInstance>(gridTilePrefab);
 			var worldPos = HexGridManager.Instance.IndexToWordPosition(cell.Position);

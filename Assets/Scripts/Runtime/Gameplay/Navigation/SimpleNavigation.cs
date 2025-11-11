@@ -1,4 +1,5 @@
 using Game.Grid;
+using Sirenix.OdinInspector;
 using System;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -15,6 +16,9 @@ namespace Game.Navigation
 		private Transform verticalMovementTransform;
 		[SerializeField]
 		private float movementSpeed;
+		[SerializeField]
+		private bool allowAngularMovement = false;
+		[ShowIf("@this.allowAngularMovement==true")]
 		[SerializeField]
 		private float angularSpeed;
 
@@ -61,9 +65,11 @@ namespace Game.Navigation
 			{
 				ReadMouseMovementInputValues();
 			}
-
-			ReadRotationInputValues(out float angularMovement);
-			UpdateRotation(angularMovement);
+			if (allowAngularMovement)
+			{
+				ReadRotationInputValues(out float angularMovement);
+				UpdateRotation(angularMovement);
+			}
 		}
 
 		private void ReadMouseMovementInputValues()

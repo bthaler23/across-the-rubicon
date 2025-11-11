@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RM.Utils
+namespace GamePlugin.Utils
 {
 	public static class ArrayExtension
 	{
