@@ -43,7 +43,7 @@ namespace Game.Grid
 			}
 			else
 			{
-				cell = new GridCell(cellIndex, HexGridManager.Instance.IndexToWordPosition(cellIndex));
+				cell = new GridCell(cellIndex);
 				gridMap.Add(cellIndex, cell);
 				return cell;
 			}
@@ -58,7 +58,7 @@ namespace Game.Grid
 			}
 			else
 			{
-				cell = new GridCell(cellIndex, HexGridManager.Instance.IndexToWordPosition(cellIndex));
+				cell = new GridCell(cellIndex);
 				cell.AddTile(newTile);
 				gridMap.Add(cellIndex, cell);
 			}
@@ -67,6 +67,11 @@ namespace Game.Grid
 				contentCells.Add(cellIndex);
 
 			return cell;
+		}
+
+		public Vector2Int GetRandomPosition()
+		{
+			return contentCells.ToList()[UnityEngine.Random.Range(0, contentCells.Count)];
 		}
 	}
 }

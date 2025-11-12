@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using System;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,8 @@ namespace Game.Navigation
 		private Transform planeMovementTransform;
 		[SerializeField]
 		private Transform verticalMovementTransform;
+		[SerializeField]
+		private Axis secondaryAxis = Axis.Y;
 		[SerializeField]
 		private float movementSpeed;
 		[SerializeField]
@@ -58,82 +61,13 @@ namespace Game.Navigation
 			float zMovement = 0;
 
 			ReadMovementInputValues(out xMovement, out yMovement, out zMovement);
-			UpdatePlaneMovement(xMovement, zMovement);
+			UpdatePlaneMovement(xMovement, yMovement, zMovement);
 			UpdateVerticalMovement(yMovement);
 
-			if (xMovement == 0 && zMovement == 0)
-			{
-				ReadMouseMovementInputValues();
-			}
 			if (allowAngularMovement)
 			{
 				ReadRotationInputValues(out float angularMovement);
 				UpdateRotation(angularMovement);
-			}
-		}
-
-		private void ReadMouseMovementInputValues()
-		{
-			if (EventSystem.current.IsPointerOverGameObject())
-			{
-				// The cursor is over UI — ignore input
-				return;
-			}
-
-			var mouse = Mouse.current;
-			if (mouse == null)
-			{
-				return;
-			}
-
-			bool dragPressed = (mouse.leftButton != null && mouse.leftButton.isPressed);
-			bool dragDown = (mouse.leftButton != null && mouse.leftButton.wasPressedThisFrame);
-			bool dragUp = (mouse.leftButton != null && mouse.leftButton.wasReleasedThisFrame);
-			Vector2 offset = new Vector2(10, 10);
-
-			isDragging = dragPressed;
-			if (dragDown)
-			{
-				isDragging = false;
-				dragStartBaseScreenPosition = Mouse.current.position.value;
-				dragStartBaseWorldPosition = HexGridManager.Instance.GetScreenSpacePlaneIntersection(dragStartBaseScreenPosition);
-				dragStartOffsetWorldPosition = HexGridManager.Instance.GetScreenSpacePlaneIntersection(dragStartBaseScreenPosition + offset);
-
-				dragBasePosition = planeMovementTransform.position;
-			}
-
-			if (!dragPressed || dragUp)
-			{
-				isDragging = false;
-				return;
-			}
-
-			if (isDragging)
-			{
-				Vector3 currentWorld = HexGridManager.Instance.MousePlanePosition;
-				Vector3 worldDelta = dragStartBaseWorldPosition - currentWorld; // move rig opposite to cursor movement
-
-				worldDelta = GetMovementDelta(Mouse.current.position.value, dragStartBaseScreenPosition, dragStartBaseScreenPosition + offset, dragStartBaseWorldPosition, dragStartOffsetWorldPosition);
-
-				planeMovementTransform.position = dragBasePosition + (dragStartBaseWorldPosition - worldDelta);
-
-				//// Only move along XZ
-				//worldDelta.y = 0f;
-
-				//// Convert world delta to local x/z movement units that, after speed*dt, produce the same delta
-				//float dt = Mathf.Max(Time.deltaTime, 1e-6f);
-				//float denom = Mathf.Max(movementSpeed * dt, 1e-6f);
-				//Vector3 required = worldDelta / denom;
-
-				//Vector3 right = planeMovementTransform.right;
-				//right.y = 0f;
-				//right.Normalize();
-				//Vector3 forward = planeMovementTransform.forward;
-				//forward.y = 0f;
-				//forward.Normalize();
-
-				//xMovement = Vector3.Dot(required, right);
-				//zMovement = Vector3.Dot(required, forward);
 			}
 		}
 
@@ -167,24 +101,24 @@ namespace Game.Navigation
 		private void ReadMovementInputValues(out float xMovement, out float yMovement, out float zMovement)
 		{
 			zMovement = 0;
-			if (Keyboard.current.wKey.value > 0)
-				zMovement += Keyboard.current.wKey.value;
-			if (Keyboard.current.sKey.value > 0)
-				zMovement -= Keyboard.current.sKey.value;
-
 			yMovement = 0;
-			if (Keyboard.current.rKey.value > 0)
-				yMovement += Keyboard.current.rKey.value;
-			if (Keyboard.current.fKey.value > 0)
-				yMovement -= Keyboard.current.fKey.value;
+			xMovement = 0;
 
-			if (yMovement == 0)
+			if (secondaryAxis == Axis.Z)
 			{
-				bool scrollValue = Mouse.current.scroll.value != Vector2.zero;
-				yMovement = Mouse.current.scroll.value.y * -1;
+				if (Keyboard.current.wKey.value > 0)
+					zMovement += Keyboard.current.wKey.value;
+				if (Keyboard.current.sKey.value > 0)
+					zMovement -= Keyboard.current.sKey.value;
+			}
+			else
+			{
+				if (Keyboard.current.wKey.value > 0)
+					yMovement += Keyboard.current.wKey.value;
+				if (Keyboard.current.sKey.value > 0)
+					yMovement -= Keyboard.current.sKey.value;
 			}
 
-			xMovement = 0;
 			if (Keyboard.current.aKey.value > 0)
 				xMovement -= Keyboard.current.aKey.value;
 			if (Keyboard.current.dKey.value > 0)
@@ -200,9 +134,9 @@ namespace Game.Navigation
 				angularMovement -= Keyboard.current.eKey.value;
 		}
 
-		private void UpdatePlaneMovement(float xMovement, float zMovement)
+		private void UpdatePlaneMovement(float xMovement, float yMovement, float zMovement)
 		{
-			Vector3 move = planeMovementTransform.right * xMovement + planeMovementTransform.forward * zMovement;
+			Vector3 move = planeMovementTransform.right * xMovement + planeMovementTransform.forward * zMovement + planeMovementTransform.up * yMovement;
 			Vector3 newPositionOffset = move * movementSpeed * Time.deltaTime;
 			planeMovementTransform.position += newPositionOffset;
 		}

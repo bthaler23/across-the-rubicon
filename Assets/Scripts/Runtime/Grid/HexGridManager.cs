@@ -1,5 +1,6 @@
 using GamePlugins.Attributes;
 using GamePlugins.Singleton;
+using GamePlugins.Utils;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -14,31 +15,50 @@ namespace Game.Grid
 	{
 		[SerializeField]
 		private GridMapData gridMap;
+
 		[SerializeField]
-		private float hexRadius;
-		[SerializeField]
-		private HexGridDraw gridDrawer;
+		private IHexGrid hexGrid;
+
 		[SerializeField]
 		private Camera mainCamera;
 
-		private Vector2Int screenCenterOnGridIndex;
-		private Vector2 screenCenterOnGridPosition;
 		private Vector2Int mouseOnGridIndex;
-		private Vector3 mouseOnGridPosition;
-		private Vector3 mousePlanePoistion;
-
-		public Vector2 MousePlanePosition => mousePlanePoistion;
-		public Vector2 MouseOnGridPosition => mouseOnGridPosition;
 		public Vector2Int MouseOnGridIndex => mouseOnGridIndex;
-		public Vector2 ScreenCenterOnGridPosition => screenCenterOnGridPosition;
-		public Vector2Int ScreenCenterOnGridIndex => screenCenterOnGridIndex;
-		public GridMapData GridMap { get => gridMap; }
-		public float HexRadius { get => hexRadius; set => hexRadius = value; }
 
+		public GridMapData GridMap { get => gridMap; }
+
+		public static Transform GetPreviewParent()
+		{
+			if (instance != null)
+				return instance.transform;
+			return null;
+		}
+
+		#region Monobehaviour
 		protected override void OnAwakeCalled()
 		{
 			base.OnAwakeCalled();
 			gridMap.Initialize();
+			hexGrid.Initialize();
+		}
+
+		public void Update()
+		{
+			mouseOnGridIndex = hexGrid.ScreenPositionToHexGridIndex(Mouse.current.position.value, mainCamera);
+		}
+
+		private void OnDrawGizmos()
+		{
+
+		}
+		#endregion
+
+		internal void AddTile(Vector2Int position, GridTileInstance foundation)
+		{
+			var worldPos = hexGrid.GridIndexToWordPosition(position);
+			foundation.transform.position = new Vector3(worldPos.x, worldPos.y);
+			foundation.SetGameObjectActive(true);
+			GridMap.AddTile(position, foundation);
 		}
 
 		public void Dispose()
@@ -46,120 +66,80 @@ namespace Game.Grid
 			gridMap.Dispose();
 		}
 
-		public void Update()
+		public Vector2 GridIndexToWordPosition(Vector2Int cellIndex)
 		{
-			var screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-			mousePlanePoistion = GetPlaneIntersection(Mouse.current.position.value, 0, mainCamera);
-			screenCenterOnGridPosition = ScreenPosToHexGridWorldPosition(screenCenter, mainCamera, hexRadius);
-			gridDrawer.UpdateGridCenter(WorldToHexGrid(screenCenterOnGridPosition, hexRadius));
-			screenCenterOnGridIndex = WorldToHexGrid(screenCenterOnGridPosition, hexRadius);
-
-			mouseOnGridPosition = GetMouseOnHexGridPosition();
-			mouseOnGridIndex = WorldToHexGrid(mouseOnGridPosition, hexRadius);
+			return hexGrid.GridIndexToWordPosition(cellIndex);
 		}
 
-		public Vector2Int WorldPositionToIndex(Vector2 worldPos)
+		public List<Vector2Int> GetMovementRangePositions(Vector2Int currentPosition, int movementRange)
 		{
-			return WorldToHexGrid(worldPos, hexRadius);
-		}
+			// BFS traversal limited by movementRange steps, constrained to existing grid cells.
+			var result = new List<Vector2Int>();
+			if (gridMap == null || movementRange <= 0) return result;
 
-		public Vector2 IndexToWordPosition(Vector2Int cellIndex)
-		{
-			return HexGridToWorld(cellIndex, hexRadius);
-		}
+			// Determine which positions are valid (present on the grid)
+			// Prefer ContentCells if available, else use GridMap keys.
+			HashSet<Vector2Int> validPositions = gridMap.ContentCells != null && gridMap.ContentCells.Count > 0
+				? gridMap.ContentCells
+				: new HashSet<Vector2Int>(gridMap.GridMap.Keys);
 
-		public Vector2 GetMouseOnHexGridPosition()
-		{
-			return ScreenPosToHexGridWorldPosition(Mouse.current.position.value, mainCamera, hexRadius);
-		}
+			if (!validPositions.Contains(currentPosition)) return result; // origin not on map
 
-		public Vector2 HexGridToWorld(Vector2Int cellIndex)
-		{
-			return HexGridToWorld(cellIndex, hexRadius);
-		}
+			// Neighbor offsets (axial directions) match HexGridHelper.NeighbourOffsetMap
+			var directions = HexGridHelper.NeighbourOffsetMap.Values;
 
-		public Vector3 GetScreenSpacePlaneIntersection(Vector2 screenSpace)
-		{
-			return GetPlaneIntersection(screenSpace, 0, mainCamera);
-		}
+			var visited = new HashSet<Vector2Int> { currentPosition };
+			var frontier = new Queue<(Vector2Int pos, int dist)>();
+			frontier.Enqueue((currentPosition, 0));
 
-		private void OnDrawGizmos()
-		{
-			Gizmos.color = Color.red;
-			var pos = GetMouseOnHexGridPosition();
-			Gizmos.DrawWireSphere(new Vector3(pos.x, 0, pos.y), .25f);
-			Gizmos.color = Color.green;
-			Gizmos.DrawWireSphere(new Vector3(screenCenterOnGridPosition.x, 0, screenCenterOnGridPosition.y), .1f);
-		}
-
-		#region Grid Data Handling
-		#endregion
-
-		#region Grid Position Conversion
-		public static Vector2 ScreenPosToHexGridWorldPosition(Vector3 screenPosition, Camera mainCamera, float gridSize)
-		{
-			var planeInterSection = GetPlaneIntersection(screenPosition, 0, mainCamera);
-			var gridPos = WorldToHexGrid(new Vector2(planeInterSection.x, planeInterSection.z), gridSize);
-			var worldPos = HexGridToWorld(gridPos, gridSize);
-			//Debug.Log($"PlaneIntersetion {planeInterSection} Grid {gridPos} Word {worldPos}");
-			return worldPos;
-		}
-
-		public static Vector2Int ScreenPosToHexGridPosition(Vector3 screenPosition, Camera mainCamera, float gridSize)
-		{
-			var planeInterSection = GetPlaneIntersection(screenPosition, 0, mainCamera);
-			var gridPos = WorldToHexGrid(new Vector2(planeInterSection.x, planeInterSection.z), gridSize);
-			return gridPos;
-		}
-
-		public static Vector3 GetPlaneIntersection(Vector3 screenPosition, float planYpos, Camera camera)
-		{
-			Ray ray = camera.ScreenPointToRay(screenPosition);
-			float delta = ray.origin.y - planYpos;
-			Vector3 dirNorm = ray.direction / ray.direction.y;
-			Vector3 intersectionPosition = ray.origin - dirNorm * delta;
-			return intersectionPosition;
-		}
-
-		public static Vector2Int WorldToHexGrid(Vector2 pos, float size)
-		{
-			float q = (Mathf.Sqrt(3f) / 3f * pos.x - 1f / 3f * pos.y) / size;
-			float r = (2f / 3f * pos.y) / size;
-
-			float x = q;
-			float z = r;
-			float y = -x - z;
-
-			int rx = Mathf.RoundToInt(x);
-			int ry = Mathf.RoundToInt(y);
-			int rz = Mathf.RoundToInt(z);
-
-			float dx = Mathf.Abs(rx - x);
-			float dy = Mathf.Abs(ry - y);
-			float dz = Mathf.Abs(rz - z);
-
-			if (dx > dy && dx > dz) rx = -ry - rz;
-			else if (dy > dz) ry = -rx - rz;
-			else rz = -rx - ry;
-
-			return new Vector2Int(rx, rz); // axial (q, r)
-		}
-
-		public static Vector2 HexGridToWorld(Vector2Int hex, float size)
-		{
-			float x = size * Mathf.Sqrt(3f) * (hex.x + hex.y / 2f);
-			float y = size * 1.5f * hex.y;
-			return new Vector2(x, y);
-		}
-
-		public static Transform GetPreviewParent()
-		{
-			if (instance)
+			while (frontier.Count > 0)
 			{
-				return instance.transform;
+				var (pos, dist) = frontier.Dequeue();
+				if (dist == movementRange) continue; // can't expand further
+
+				foreach (var offset in directions)
+				{
+					var next = pos + offset;
+					if (!validPositions.Contains(next)) continue; // skip missing cells
+					if (visited.Contains(next)) continue;
+					visited.Add(next);
+					int nextDist = dist + 1;
+					if (nextDist <= movementRange)
+					{
+						result.Add(next);
+						frontier.Enqueue((next, nextDist));
+					}
+				}
 			}
-			return null;
+
+			return result;
 		}
-		#endregion
+
+		internal void HighlightPositions(List<Vector2Int> possibleMovementPositions)
+		{
+			if (possibleMovementPositions == null || gridMap == null) return;
+			foreach (var pos in possibleMovementPositions)
+			{
+				if (!gridMap.ContentCells.Contains(pos)) continue;
+				var cell = gridMap.GetCell(pos);
+				if (cell?.TileInstance != null)
+				{
+					cell.TileInstance.SetHighlightColor();
+				}
+			}
+		}
+
+		internal void ResetPositions()
+		{
+			if (gridMap == null) return;
+			foreach (var pos in gridMap.ContentCells)
+			{
+				var cell = gridMap.GetCell(pos);
+				if (cell?.TileInstance != null)
+				{
+					cell.TileInstance.ResetColor();
+				}
+			}
+		}
 	}
 }

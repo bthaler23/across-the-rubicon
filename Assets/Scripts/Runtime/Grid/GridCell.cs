@@ -11,22 +11,20 @@ namespace Game.Grid
 		[ShowInInspector, ReadOnly]
 		private Vector2Int cellIndex;
 		[ShowInInspector, ReadOnly]
-		private Vector2 cellPosition;
-
-		[ShowInInspector, ReadOnly]
 		private GridTileInstance gridTileInstance;
 
 		public Vector2Int CellIndex { get => cellIndex; }
+		public GridTileInstance TileInstance { get => gridTileInstance; }
 
-		public GridCell(Vector2Int cellIndex, Vector2 cellPosition)
+		public GridCell(Vector2Int cellIndex)
 		{
-			this.cellPosition = cellPosition;
 			this.cellIndex = cellIndex;
 		}
 
 		public void AddTile(GridTileInstance tileInstance)
 		{
 			EnsureParentGameobject();
+			dataProxy.transform.position = tileInstance.transform.position;
 			gridTileInstance = tileInstance;
 		}
 
@@ -36,7 +34,6 @@ namespace Game.Grid
 			{
 				GameObject contentHolder = new GameObject($"Cell_[{cellIndex.x},{cellIndex.y}]");
 				contentHolder.transform.parent = HexGridManager.GetPreviewParent();
-				contentHolder.transform.position = cellPosition;
 				dataProxy = contentHolder.AddComponent<GridCellProxy>();
 				dataProxy.SetCellRef(this);
 			}
@@ -50,6 +47,5 @@ namespace Game.Grid
 			}
 			dataProxy = null;
 		}
-
 	}
 }

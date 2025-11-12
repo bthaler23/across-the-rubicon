@@ -29,7 +29,7 @@ namespace GamePlugin.Grid
 
 
 		[Button]
-		private void InitializeGridWithCellCount()
+		public void InitializeGridWithCellCount()
 		{
 			if (randomGenerator == null)
 				randomGenerator = new System.Random();
@@ -41,7 +41,7 @@ namespace GamePlugin.Grid
 		}
 
 		[Button]
-		private void InitializeGridWithDimensions()
+		public void InitializeGridWithDimensions()
 		{
 			if (randomGenerator == null)
 				randomGenerator = new System.Random();
@@ -63,10 +63,7 @@ namespace GamePlugin.Grid
 		private void ExpandAt(HexCell cell)
 		{
 			GridTileInstance foundation = ObjectPool.GetObject<GridTileInstance>(gridTilePrefab);
-			var worldPos = HexGridManager.Instance.IndexToWordPosition(cell.Position);
-			foundation.transform.position = new Vector3(worldPos.x, 0, worldPos.y);
-			foundation.SetGameObjectActive(true);
-			HexGridManager.Instance.GridMap.AddTile(cell.Position, foundation);
+			HexGridManager.Instance.AddTile(cell.Position, foundation);
 		}
 
 		[Button]

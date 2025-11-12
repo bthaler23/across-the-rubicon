@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c507b515da51a594a9ec42a00245290e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Grid.GridTileInstance
+  spriteRenderer: {fileID: 8214744740027366763}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightColor: {r: 0.6301887, g: 0.34351397, b: 0, a: 1}
 --- !u!1 &863881961597558858
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,13 +74,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 863881961597558858}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.666785, y: 1.2161492, z: 0.666785}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4823817971914656566}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8214744740027366763
 SpriteRenderer:
   m_ObjectHideFlags: 0
