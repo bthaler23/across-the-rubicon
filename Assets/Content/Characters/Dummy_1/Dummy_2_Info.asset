@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07c4acc7dddaeed459d56fbeff50b4ff, type: 3}
-  m_Name: Dummy_1_Info
+  m_Name: Dummy_2_Info
   m_EditorClassIdentifier: Assembly-CSharp::Game.Character.CharacterInfo
-  charaterName: Dummy_1
-  characterSprite: {fileID: 1261089785, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
-  characterPrefab: {fileID: 6816818919738355406, guid: e66826c77a4a0134a8f9980800ff14b9, type: 3}
-  health: 10
-  attack: 5
-  movementRange: 2
+  charaterName: Dummy_2
+  characterSprite: {fileID: -2007313318, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
+  characterPrefab: {fileID: 7117724579156912674, guid: 028eb8540da7ca84b8badc54c51ccea8, type: 3}
+  health: 20
+  attack: 10
+  movementRange: 1

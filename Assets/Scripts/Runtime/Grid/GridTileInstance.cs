@@ -1,11 +1,15 @@
+using GamePlugins.Utils;
+using System;
 using UnityEngine;
 
-namespace Game.Grid
+namespace Game
 {
 	public class GridTileInstance : MonoBehaviour
 	{
 		[SerializeField]
-		private SpriteRenderer spriteRenderer;
+		private SpriteRenderer gridDefaultSpriteRenderer;
+		[SerializeField]
+		private SpriteRenderer selectionSpriteRenderer;
 		[SerializeField]
 		private Color defaultColor;
 		[SerializeField]
@@ -13,12 +17,20 @@ namespace Game.Grid
 
 		public void SetHighlightColor()
 		{
-			spriteRenderer.color = highlightColor;
+			gridDefaultSpriteRenderer.color = highlightColor;
 		}
 
 		public void ResetColor()
 		{
-			spriteRenderer.color = defaultColor;
+			gridDefaultSpriteRenderer.color = defaultColor;
+			selectionSpriteRenderer.SetGameObjectActive(false);
+			gridDefaultSpriteRenderer.SetGameObjectActive(true);
+		}
+
+		public void SetSelected()
+		{
+			gridDefaultSpriteRenderer.SetGameObjectActive(false);
+			selectionSpriteRenderer.SetGameObjectActive(true);
 		}
 	}
 }

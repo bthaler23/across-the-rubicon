@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace GamePlugin.Grid
+namespace Game.Grid
 {
 	public class GridExpansionController : MonoBehaviour
 	{

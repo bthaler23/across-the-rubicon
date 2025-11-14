@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using static UnityEditor.PlayerSettings;
 
 namespace Game.Grid
 {
@@ -115,7 +116,7 @@ namespace Game.Grid
 			return result;
 		}
 
-		internal void HighlightPositions(List<Vector2Int> possibleMovementPositions)
+		internal void HighlightPositions(Vector2Int selectedTilePosition, List<Vector2Int> possibleMovementPositions)
 		{
 			if (possibleMovementPositions == null || gridMap == null) return;
 			foreach (var pos in possibleMovementPositions)
@@ -126,6 +127,12 @@ namespace Game.Grid
 				{
 					cell.TileInstance.SetHighlightColor();
 				}
+			}
+
+			var selectedCell = gridMap.GetCell(selectedTilePosition);
+			if (selectedCell?.TileInstance != null)
+			{
+				selectedCell.TileInstance.SetSelected();
 			}
 		}
 
