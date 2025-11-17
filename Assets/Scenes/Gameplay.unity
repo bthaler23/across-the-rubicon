@@ -1494,7 +1494,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1508669840
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1965,7 +1965,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RM.Grid.GridExpansionController
   gridTilePrefab: {fileID: 4606567027678384990, guid: 0f2fc7aa29765fa46878ea8f64a4c5cd, type: 3}
   initialCellCountRange: {x: 20, y: 30}
-  gridDimensions: {x: 20, y: 30}
+  gridDimensions: {x: 8, y: 8}
+  edgeRemovalChance: 0.3
+  innerRemovalChance: 0.1
 --- !u!4 &1870759709
 Transform:
   m_ObjectHideFlags: 0
@@ -2213,8 +2215,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1233300483}
-  - {fileID: 1508669840}
   - {fileID: 481187296}
+  - {fileID: 1508669840}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

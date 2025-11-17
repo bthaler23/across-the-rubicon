@@ -27,6 +27,7 @@ namespace Game.Grid
 		public Vector2Int MouseOnGridIndex => mouseOnGridIndex;
 
 		public GridMapData GridMap { get => gridMap; }
+		public IHexGrid Grid { get => hexGrid; }
 
 		public static Transform GetPreviewParent()
 		{
@@ -57,7 +58,7 @@ namespace Game.Grid
 		internal void AddTile(Vector2Int position, GridTileInstance foundation)
 		{
 			var worldPos = hexGrid.GridIndexToWordPosition(position);
-			foundation.transform.position = new Vector3(worldPos.x, worldPos.y);
+			foundation.transform.position = worldPos;
 			foundation.SetGameObjectActive(true);
 			GridMap.AddTile(position, foundation);
 		}
@@ -72,49 +73,31 @@ namespace Game.Grid
 			return hexGrid.GridIndexToWordPosition(cellIndex);
 		}
 
-		public List<Vector2Int> GetMovementRangePositions(Vector2Int currentPosition, int movementRange)
+		public List<Vector2Int> GetMovementRangePositions(Vector2Int currentPosition, int range)
 		{
-			// BFS traversal limited by movementRange steps, constrained to existing grid cells.
+			// Compute positions using axial hex distance metric (q,r) to avoid off-by-one leaks.
 			var result = new List<Vector2Int>();
-			if (gridMap == null || movementRange <= 0) return result;
+			if (gridMap == null || range <= 0)
+				return result;
 
-			// Determine which positions are valid (present on the grid)
-			// Prefer ContentCells if available, else use GridMap keys.
 			HashSet<Vector2Int> validPositions = gridMap.ContentCells != null && gridMap.ContentCells.Count > 0
 				? gridMap.ContentCells
 				: new HashSet<Vector2Int>(gridMap.GridMap.Keys);
 
-			if (!validPositions.Contains(currentPosition)) return result; // origin not on map
+			var neighbourMap = HexGridHelper.GetPositionsInRange(currentPosition, range);
 
-			// Neighbor offsets (axial directions) match HexGridHelper.NeighbourOffsetMap
-			var directions = HexGridHelper.NeighbourOffsetMap.Values;
-
-			var visited = new HashSet<Vector2Int> { currentPosition };
-			var frontier = new Queue<(Vector2Int pos, int dist)>();
-			frontier.Enqueue((currentPosition, 0));
-
-			while (frontier.Count > 0)
+			foreach (var pos in neighbourMap)
 			{
-				var (pos, dist) = frontier.Dequeue();
-				if (dist == movementRange) continue; // can't expand further
-
-				foreach (var offset in directions)
+				if (validPositions.Contains(pos))
 				{
-					var next = pos + offset;
-					if (!validPositions.Contains(next)) continue; // skip missing cells
-					if (visited.Contains(next)) continue;
-					visited.Add(next);
-					int nextDist = dist + 1;
-					if (nextDist <= movementRange)
-					{
-						result.Add(next);
-						frontier.Enqueue((next, nextDist));
-					}
+					result.Add(pos);
 				}
 			}
 
+			//Debug.Log($"GetMovementRangePositions from {currentPosition} with range {range}, found {result.Count} positions.");
 			return result;
 		}
+
 
 		internal void HighlightPositions(Vector2Int selectedTilePosition, List<Vector2Int> possibleMovementPositions)
 		{

@@ -14,7 +14,7 @@ namespace Game.Grid
 
 		public override Vector3 GridIndexToWordPosition(Vector2Int cellIndex)
 		{
-			return unityTilemap.CellToWorld(new Vector3Int(cellIndex.x,cellIndex.y));
+			return unityTilemap.CellToWorld(new Vector3Int(cellIndex.x, cellIndex.y));
 		}
 
 		public override Vector2Int WordPositionToGridIndex(Vector2 worldPos)

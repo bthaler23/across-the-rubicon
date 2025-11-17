@@ -17,4 +17,4 @@ MonoBehaviour:
   characterPrefab: {fileID: 1252590310104006151, guid: 29d4e2d9e3757c6418728f878a32d1e1, type: 3}
   health: 10
   attack: 10
-  movementRange: 2
+  movementRange: 1

@@ -14,5 +14,13 @@ namespace Game.Grid
 		{
 			this.cell = cell;
 		}
+
+		[Button]
+		void DebugTestGridPosition()
+		{
+			var gridIndex = HexGridManager.Instance.Grid.WordPositionToGridIndex(transform.position);
+			var worldPos = HexGridManager.Instance.Grid.GridIndexToWordPosition(cell.CellIndex);
+			Debug.Log($"Cell Index: {cell.CellIndex} World {transform.position} => Actual Grid Index: {gridIndex} World {worldPos}");
+		}
 	}
 }

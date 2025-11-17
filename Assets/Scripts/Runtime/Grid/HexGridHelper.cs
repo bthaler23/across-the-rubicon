@@ -50,9 +50,10 @@ namespace Game.Grid
 			{ HexSide.T4, new Vector2Int(1, 0) },
 			{ HexSide.T5, new Vector2Int(1, -1) },
 			{ HexSide.T6, new Vector2Int(0, -1) }
+
 		};
 
-			public static readonly Dictionary<HexSide, HexSide> NeighbourMap = new()
+		public static readonly Dictionary<HexSide, HexSide> NeighbourMap = new()
 		{
 			{ HexSide.T1, HexSide.T4 },
 			{ HexSide.T2, HexSide.T5 },
@@ -60,6 +61,26 @@ namespace Game.Grid
 			{ HexSide.T4, HexSide.T1 },
 			{ HexSide.T5, HexSide.T2 },
 			{ HexSide.T6, HexSide.T3 },
+		};
+
+		public static readonly List<Vector2Int> NeighbourOffsetXEVEN = new()
+		{
+			{ new Vector2Int(+1,  0) },
+			{ new Vector2Int(+1, -1) },
+			{ new Vector2Int( 0, -1) },
+			{ new Vector2Int(-1,  0) },
+			{ new Vector2Int( 0, +1) },
+			{ new Vector2Int(+1, +1) }
+		};
+
+		public static readonly List<Vector2Int> NeighbourOffsetXODD = new()
+		{
+			{ new Vector2Int(+1,  0) },
+			{ new Vector2Int( 0, -1) },
+			{ new Vector2Int(-1, -1) },
+			{ new Vector2Int(-1,  0) },
+			{ new Vector2Int(-1, +1) },
+			{ new Vector2Int( 0, +1) }
 		};
 
 		public static Vector2Int GetSideNeighbourIndex(Vector2Int cellIndex, HexSide hexSide)
@@ -134,6 +155,40 @@ namespace Game.Grid
 			//positive modulo
 			//rotation in list is different from rotation in transform, need to invert the offset
 			return (((int)tileSide + (rotationOffset * 1) % 6) + 6) % 6;
+		}
+
+		// New helper: all positions (including center) within range on an infinite hex grid using BFS levels.
+		public static List<Vector2Int> GetPositionsInRange(Vector2Int center, int range)
+		{
+			var result = new List<Vector2Int>();
+			if (range < 0) return result;
+			var visited = new HashSet<Vector2Int> { center };
+			var frontier = new List<Vector2Int> { center };
+
+			//Debug.Log($"Start BFS at : {center}");
+
+			for (int depth = 0; depth < range; depth++)
+			{
+				//Debug.Log($"--BFS Depth: {depth}");
+				var next = new List<Vector2Int>();
+				foreach (var pos in frontier)
+				{
+					var neighbourMap = pos.y % 2 == 0 ? NeighbourOffsetXEVEN : NeighbourOffsetXODD;
+					foreach (var off in NeighbourOffsetMap.Values)
+					{
+						var neigh = pos + off;
+						if (visited.Add(neigh))
+						{
+							result.Add(neigh);
+							next.Add(neigh);
+							//Debug.Log($"-- --BFS Pos: {neigh}");
+						}
+					}
+				}
+				frontier = next;
+				if (frontier.Count == 0) break;
+			}
+			return result;
 		}
 	}
 }

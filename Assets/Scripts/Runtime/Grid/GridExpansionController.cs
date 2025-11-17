@@ -16,8 +16,17 @@ namespace Game.Grid
 		private GridTileInstance gridTilePrefab;
 		[SerializeField]
 		private Vector2Int initialCellCountRange;
+		[BoxGroup("Grid Generation")]
 		[SerializeField]
 		private Vector2Int gridDimensions;
+		[BoxGroup("Grid Generation")]
+		[SerializeField]
+		[PropertyRange(0,1)]
+		private float edgeRemovalChance;
+		[BoxGroup("Grid Generation")]
+		[SerializeField]
+		[PropertyRange(0,1)]
+		private float innerRemovalChance;
 
 		private System.Random randomGenerator;
 
@@ -47,7 +56,7 @@ namespace Game.Grid
 				randomGenerator = new System.Random();
 
 			int cellCount = randomGenerator.Next(initialCellCountRange.x, initialCellCountRange.y);
-			var cellList = ProceduralGridGenerator.GenerateRandomHexGrid(cellCount, randomGenerator);
+			var cellList = ProceduralGridGenerator.GenerateVariableRectHexGrid(gridDimensions.x, gridDimensions.y, edgeRemovalChance, innerRemovalChance, randomGenerator);
 
 			BuildGrid(cellList);
 		}
