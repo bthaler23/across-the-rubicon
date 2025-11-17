@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Game.Gameplay
 	{
 		[SerializeField]
 		private TurnManager turnManager;
-		[SerializeField]
+		[ShowInInspector, ReadOnly]
 		private List<TeamActors> teams;
 
 		public void Inintialize(List<TeamActors> teams)

@@ -1,16 +1,16 @@
 using UnityEngine;
 
-namespace Game.Character
+namespace Game.Data
 {
 	[CreateAssetMenu(fileName = "CharacterInfo", menuName = "Rubicon/CharacterInfo")]
-	public class CharacterInfo : ScriptableObject
+	public class ActorInfo : ScriptableObject
 	{
 		[SerializeField]
 		private string charaterName;
 		[SerializeField]
 		private Sprite characterSprite;
 		[SerializeField]
-		private CharacterController characterPrefab;
+		private ActorController characterPrefab;
 
 		[SerializeField]
 		private int health;
@@ -19,8 +19,10 @@ namespace Game.Character
 		[SerializeField]
 		private int movementRange;
 
-		public CharacterController CharacterPrefab => characterPrefab;
+		public ActorController CharacterPrefab => characterPrefab;
 
 		public int MovementRange => movementRange;
+
+		public Sprite CharacterSprite { get => characterSprite; }
 	}
 }

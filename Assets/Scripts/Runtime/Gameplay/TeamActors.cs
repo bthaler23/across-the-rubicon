@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Game.Gameplay
 	{
 		public string TeamID { get; private set; }
 
+		[ShowInInspector, ReadOnly]
 		private List<ITurnActor> actors;
 
 		public TeamActors(string teamID, List<ITurnActor> actors)

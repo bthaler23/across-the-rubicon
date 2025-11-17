@@ -1,3 +1,5 @@
+using Game.Events;
+using GamePlugins.Events;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -62,6 +64,9 @@ namespace Game.Gameplay
 
 			// Start their turn
 			actor.TurnStart();
+
+			EventBus.Publish<TurnChangeEvent>(new TurnChangeEvent(actors, actor));
+			EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(actor));
 		}
 
 		// Called by an actor when they finish their turn

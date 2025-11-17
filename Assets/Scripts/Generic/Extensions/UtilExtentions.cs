@@ -189,5 +189,10 @@ namespace GamePlugins.Utils
 				target.RemoveAt(j);
 			}
 		}
+
+		public static bool IsNullOrEmpty<T>(this List<T> target)
+		{
+			return target == null || target.Count == 0;
+		}
 	}
 }

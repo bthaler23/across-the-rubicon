@@ -1,4 +1,3 @@
-using Game.Character;
 using Game.Data;
 using Game.Grid;
 using Game.Settings;
@@ -6,8 +5,6 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using CharacterController = Game.Character.CharacterController;
-using CharacterInfo = Game.Character.CharacterInfo;
 
 namespace Game.Gameplay
 {
@@ -32,7 +29,7 @@ namespace Game.Gameplay
 
 		[PropertySpace(SpaceBefore = 10)]
 		[SerializeField]
-		private CharacterInfo startingCharacter;
+		private ActorInfo startingCharacter;
 		[SerializeField]
 		private PlayerInputController playerInput;
 
@@ -52,10 +49,10 @@ namespace Game.Gameplay
 			return gridData.GetRandomPositions(count);
 		}
 
-		private CharacterController SpawnCharacter(Vector2Int gridPosition, CharacterInfo characterInfo)
+		private ActorController SpawnCharacter(Vector2Int gridPosition, ActorInfo characterInfo, TeamInfo team)
 		{
-			CharacterController character = Instantiate<CharacterController>(characterInfo.CharacterPrefab);
-			character.Initialize(characterInfo, playerInput);
+			ActorController character = Instantiate<ActorController>(characterInfo.CharacterPrefab);
+			character.Initialize(characterInfo, playerInput, team);
 			character.Move(gridPosition);
 			return character;
 		}
@@ -66,9 +63,9 @@ namespace Game.Gameplay
 			foreach (var team in teams)
 			{
 				List<ITurnActor> turnActor = new List<ITurnActor>();
-				foreach(var characterInfo in team.Characters)
+				foreach (var characterInfo in team.Characters)
 				{
-					ITurnActor actor = SpawnCharacter(GetRandomStartingPosition(), characterInfo);
+					ITurnActor actor = SpawnCharacter(GetRandomStartingPosition(), characterInfo, team);
 					turnActor.Add(actor);
 				}
 				TeamActors newTeam = new TeamActors(team.TeamID, turnActor);

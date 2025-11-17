@@ -10,5 +10,8 @@ namespace Game.Gameplay
 		public bool HasAnyActions();
 		public void TurnStart();
 		public void TurnEnd();
+		Sprite GetActorIcon();
+		Color GetTeamColor();
+		float GetHealthNormalized();
 	}
 }

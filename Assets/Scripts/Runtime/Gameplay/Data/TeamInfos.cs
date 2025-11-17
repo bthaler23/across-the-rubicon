@@ -12,10 +12,10 @@ namespace Game.Data
 		[SerializeField]
 		private Color teamColor;
 		[SerializeField]
-		private List<Character.CharacterInfo> characters;
+		private List<ActorInfo> characters;
 
 		public string TeamID { get => teamID; }
 		public Color TeamColor { get => teamColor; }
-		public IReadOnlyList<Character.CharacterInfo> Characters { get => characters; }
+		public IReadOnlyList<ActorInfo> Characters { get => characters; }
 	}
 }
