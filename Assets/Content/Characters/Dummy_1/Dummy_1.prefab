@@ -99,7 +99,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5055687317102348150}
-  - component: {fileID: 2602380055360148672}
+  - component: {fileID: 6875407787597225922}
+  - component: {fileID: 846990933152117484}
   m_Layer: 0
   m_Name: Actions
   m_TagString: Untagged
@@ -122,7 +123,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2675185670816194319}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2602380055360148672
+--- !u!114 &6875407787597225922
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,8 +134,21 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed0a2e3920b3ebb458f63caf87f70f81, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Character.MoveAction
-  actionInfo: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::Game.MoveAction
+  actionInfo: {fileID: 11400000, guid: 2dab7a407bb74624b99e6908a5573c53, type: 2}
+--- !u!114 &846990933152117484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7880669093349782696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3019a3eb139e244c88fef3883d835ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.AttackAction
+  actionInfo: {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
 --- !u!1 &8030485712948110867
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,4 +195,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8ca14aa14fcff42876bcb765ac3c31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Character.CharacterController
-  moveAction: {fileID: 2602380055360148672}
+  moveAction: {fileID: 6875407787597225922}
+  attackAction: {fileID: 846990933152117484}

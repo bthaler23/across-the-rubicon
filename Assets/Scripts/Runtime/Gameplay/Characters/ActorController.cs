@@ -1,6 +1,8 @@
 using Game.Data;
+using Game.Events;
 using Game.Gameplay;
 using Game.Grid;
+using GamePlugins.Events;
 using GamePlugins.Utils;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
@@ -15,6 +17,9 @@ namespace Game
 		[BoxGroup("Actions")]
 		[SerializeField]
 		private MoveAction moveAction;
+		[BoxGroup("Actions")]
+		[SerializeField]
+		private AttackAction attackAction;
 
 		[BoxGroup("Actions")]
 		[ShowInInspector, ReadOnly]
@@ -53,8 +58,9 @@ namespace Game
 		{
 			actorActions = new List<ITurnAction>();
 			actorActions.Add(moveAction);
+			actorActions.Add(attackAction);
 
-			foreach(var action in actorActions)
+			foreach (var action in actorActions)
 			{
 				action.Initialize(this);
 			}
@@ -86,7 +92,7 @@ namespace Game
 		{
 			isTurnActive = true;
 			//TEMP
-			SelectAction(moveAction);
+			SetActiveAction(moveAction);
 		}
 
 		public void TurnEnd()
@@ -101,17 +107,6 @@ namespace Game
 
 		}
 
-		private void SelectAction(ITurnAction selectedAction)
-		{
-			if (!selectedAction.IsAvailable()) return;
-
-			DisabelCurrentAction();
-
-			activeAction = selectedAction;
-			activeAction.ActivateAction();
-			activeAction.OnActionCompleted += OnActionCompleted;
-		}
-
 		private void DisabelCurrentAction()
 		{
 			if (activeAction != null)
@@ -120,17 +115,6 @@ namespace Game
 				activeAction.DisableAction();
 			}
 			activeAction = null;
-		}
-
-		#region Event Registration/Unregistration
-		public void RegisterHexCellClickEvent(Action<Vector2Int> onCellClicked)
-		{
-			inputController.CellClicked += onCellClicked;
-		}
-
-		public void UnRegisterHexCellClickEvent(Action<Vector2Int> onCellClicked)
-		{
-			inputController.CellClicked -= onCellClicked;
 		}
 
 		public Sprite GetActorIcon()
@@ -146,6 +130,39 @@ namespace Game
 		public Color GetTeamColor()
 		{
 			return teamInfo.TeamColor;
+		}
+
+		public IReadOnlyList<ITurnAction> GetActions()
+		{
+			return actorActions;
+		}
+
+		public ITurnAction GetActiveAction()
+		{
+			return activeAction;
+		}
+
+		public void SetActiveAction(ITurnAction action)
+		{
+			if (!action.IsAvailable()) return;
+
+			DisabelCurrentAction();
+
+			activeAction = action;
+			activeAction.ActivateAction();
+			activeAction.OnActionCompleted += OnActionCompleted;
+			EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(this));
+		}
+
+		#region Event Registration/Unregistration
+		public void RegisterHexCellClickEvent(Action<Vector2Int> onCellClicked)
+		{
+			inputController.CellClicked += onCellClicked;
+		}
+
+		public void UnRegisterHexCellClickEvent(Action<Vector2Int> onCellClicked)
+		{
+			inputController.CellClicked -= onCellClicked;
 		}
 		#endregion
 	}

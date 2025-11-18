@@ -20,7 +20,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2d0e5404018fa2946be4e45a4b4319b5, type: 2}
     - {fileID: 11400000, guid: 9935b3d328deee74f9db4514f52d2662, type: 2}
   - teamID: B
-    teamColor: {r: 0.4641509, g: 0.17077243, b: 0.17077243, a: 1}
+    teamColor: {r: 0.4627451, g: 0.17254905, b: 0.45616004, a: 1}
     characters:
     - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
     - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}

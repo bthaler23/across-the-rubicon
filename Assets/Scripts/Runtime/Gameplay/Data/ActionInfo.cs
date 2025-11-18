@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class ActionInfo : MonoBehaviour
+namespace Game
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	[CreateAssetMenu(fileName = "ActionInfo", menuName = "Rubicon/ActionInfo")]
+	public class ActionInfo : ScriptableObject
+	{
+		[SerializeField]
+		private string actionName;
+		[SerializeField]
+		private Color color;
+		[SerializeField]
+		private Sprite icon;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+		public string ActionName { get => actionName; }
+		public Color Color { get => color; }
+		public Sprite Icon { get => icon; }
+	}
 }

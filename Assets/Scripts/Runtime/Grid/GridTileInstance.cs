@@ -17,7 +17,12 @@ namespace Game
 
 		public void SetHighlightColor()
 		{
-			gridDefaultSpriteRenderer.color = highlightColor;
+			SetHighlightColor(highlightColor);
+		}
+
+		public void SetHighlightColor(Color color)
+		{
+			gridDefaultSpriteRenderer.color = color;
 		}
 
 		public void ResetColor()
@@ -27,10 +32,11 @@ namespace Game
 			gridDefaultSpriteRenderer.SetGameObjectActive(true);
 		}
 
-		public void SetSelected()
+		public void SetSelected(Color color)
 		{
 			gridDefaultSpriteRenderer.SetGameObjectActive(false);
 			selectionSpriteRenderer.SetGameObjectActive(true);
+			selectionSpriteRenderer.color = color;
 		}
 	}
 }

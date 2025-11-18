@@ -25,6 +25,7 @@ namespace Game.Grid
 		{
 			EnsureParentGameobject();
 			dataProxy.transform.position = tileInstance.transform.position;
+			tileInstance.transform.parent = dataProxy.transform;
 			gridTileInstance = tileInstance;
 		}
 

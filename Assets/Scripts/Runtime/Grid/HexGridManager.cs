@@ -99,7 +99,7 @@ namespace Game.Grid
 		}
 
 
-		internal void HighlightPositions(Vector2Int selectedTilePosition, List<Vector2Int> possibleMovementPositions)
+		internal void HighlightPositions(Vector2Int selectedTilePosition, Color selectionColor, List<Vector2Int> possibleMovementPositions, Color highlightColor)
 		{
 			if (possibleMovementPositions == null || gridMap == null) return;
 			foreach (var pos in possibleMovementPositions)
@@ -108,14 +108,14 @@ namespace Game.Grid
 				var cell = gridMap.GetCell(pos);
 				if (cell?.TileInstance != null)
 				{
-					cell.TileInstance.SetHighlightColor();
+					cell.TileInstance.SetHighlightColor(highlightColor);
 				}
 			}
 
 			var selectedCell = gridMap.GetCell(selectedTilePosition);
 			if (selectedCell?.TileInstance != null)
 			{
-				selectedCell.TileInstance.SetSelected();
+				selectedCell.TileInstance.SetSelected(selectionColor);
 			}
 		}
 

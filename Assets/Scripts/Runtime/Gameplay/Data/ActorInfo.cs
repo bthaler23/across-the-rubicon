@@ -15,14 +15,13 @@ namespace Game.Data
 		[SerializeField]
 		private int health;
 		[SerializeField]
-		private int attack;
+		private int attackRange;
 		[SerializeField]
 		private int movementRange;
 
 		public ActorController CharacterPrefab => characterPrefab;
-
 		public int MovementRange => movementRange;
-
 		public Sprite CharacterSprite { get => characterSprite; }
+		public int AttackRange { get => attackRange; }
 	}
 }

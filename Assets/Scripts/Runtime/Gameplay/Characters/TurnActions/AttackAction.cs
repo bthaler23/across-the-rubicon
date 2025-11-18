@@ -1,21 +1,16 @@
 using Game.Gameplay;
-using Game.Grid;
-using Sirenix.OdinInspector;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-
 namespace Game
 {
-	public class MoveAction : BaseActorAction
+	public class AttackAction : BaseActorAction
 	{
 		protected override void OnCellClicked(Vector2Int gridIndex)
 		{
 			base.OnCellClicked(gridIndex);
 			if (IsInRange(gridIndex))
 			{
-				Owner.Move(gridIndex);
-				FireOnCompletedEvent();
+
 			}
 		}
 
@@ -31,7 +26,7 @@ namespace Game
 
 		protected override int GetRange()
 		{
-			return Owner.Info.MovementRange;
+			return Owner.Info.AttackRange;
 		}
 	}
 }

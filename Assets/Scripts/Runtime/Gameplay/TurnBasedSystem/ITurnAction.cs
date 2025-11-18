@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.Gameplay
 {
@@ -10,5 +11,6 @@ namespace Game.Gameplay
 		bool IsAvailable();
 		void ActivateAction();
 		void DisableAction();
+		Sprite GetIcon();
 	}
 }

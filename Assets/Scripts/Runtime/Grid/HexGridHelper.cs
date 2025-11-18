@@ -63,24 +63,24 @@ namespace Game.Grid
 			{ HexSide.T6, HexSide.T3 },
 		};
 
-		public static readonly List<Vector2Int> NeighbourOffsetXEVEN = new()
+		public static readonly List<Vector2Int> NeighbourOffsetYEVEN = new()
 		{
-			{ new Vector2Int(+1,  0) },
-			{ new Vector2Int(+1, -1) },
-			{ new Vector2Int( 0, -1) },
-			{ new Vector2Int(-1,  0) },
-			{ new Vector2Int( 0, +1) },
-			{ new Vector2Int(+1, +1) }
+			{ new Vector2Int(0, -1) },
+			{ new Vector2Int(1, 0) },
+			{ new Vector2Int(0, 1) },
+			{ new Vector2Int(-1, 1) },
+			{ new Vector2Int(-1, 0) },
+			{ new Vector2Int(-1,-1) }
 		};
 
-		public static readonly List<Vector2Int> NeighbourOffsetXODD = new()
+		public static readonly List<Vector2Int> NeighbourOffsetYODD = new()
 		{
-			{ new Vector2Int(+1,  0) },
-			{ new Vector2Int( 0, -1) },
-			{ new Vector2Int(-1, -1) },
-			{ new Vector2Int(-1,  0) },
-			{ new Vector2Int(-1, +1) },
-			{ new Vector2Int( 0, +1) }
+			{ new Vector2Int(1, -1) },
+			{ new Vector2Int( 1, 0) },
+			{ new Vector2Int(1, 1) },
+			{ new Vector2Int(0, 1) },
+			{ new Vector2Int(-1, 0) },
+			{ new Vector2Int(0, -1) }
 		};
 
 		public static Vector2Int GetSideNeighbourIndex(Vector2Int cellIndex, HexSide hexSide)
@@ -173,8 +173,8 @@ namespace Game.Grid
 				var next = new List<Vector2Int>();
 				foreach (var pos in frontier)
 				{
-					var neighbourMap = pos.y % 2 == 0 ? NeighbourOffsetXEVEN : NeighbourOffsetXODD;
-					foreach (var off in NeighbourOffsetMap.Values)
+					var neighbourMap = pos.y % 2 == 0 ? NeighbourOffsetYEVEN : NeighbourOffsetYODD;
+					foreach (var off in neighbourMap)
 					{
 						var neigh = pos + off;
 						if (visited.Add(neigh))
