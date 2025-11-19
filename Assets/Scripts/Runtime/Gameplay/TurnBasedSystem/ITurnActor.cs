@@ -1,5 +1,7 @@
+using Game.Stats;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.Gameplay
@@ -16,6 +18,6 @@ namespace Game.Gameplay
 		public void TurnEnd();
 		Sprite GetActorIcon();
 		Color GetTeamColor();
-		float GetHealthNormalized();
+		IStatValue GetStatValue(StatType type);
 	}
 }

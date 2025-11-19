@@ -10,8 +10,6 @@ namespace Game.UI
 	public class StartGameUI : MonoBehaviour
 	{
 		[SerializeField]
-		private GameplayController gameplayController;
-		[SerializeField]
 		private Button startGameButton;
 
 		private void Awake()
@@ -21,7 +19,7 @@ namespace Game.UI
 
 		private void OnStartGameButtonClicked()
 		{
-			gameplayController.InitializeGameplay();
+			GameplayController.Instance.InitializeGameplay();
 			gameObject.SetGameObjectActive(false);
 		}
 	}

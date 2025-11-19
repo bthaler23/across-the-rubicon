@@ -1,6 +1,7 @@
 using Game.Data;
 using Game.Grid;
 using Game.Settings;
+using GamePlugins.Singleton;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace Game.Gameplay
 {
-	public class GameplayController : MonoBehaviour
+	public class GameplayController : Singleton<GameplayController>
 	{
 		[SerializeField]
 		private GameplaySettings gameplaySettings;
@@ -33,10 +34,26 @@ namespace Game.Gameplay
 		[SerializeField]
 		private PlayerInputController playerInput;
 
+		[ShowInInspector, ReadOnly]
+		private List<ActorController> actors;
+
 		public void InitializeGameplay()
 		{
+			actors = new List<ActorController>();
 			gridExpansionController.InitializeGridWithDimensions();
 			gameFlowManager.Inintialize(GetTeamActors(gameplaySettings.TeamInfos));
+		}
+
+		public ActorController GetActorAt(Vector2Int index)
+		{
+			foreach (var actor in actors)
+			{
+				if (actor.CurrentPosition == index)
+				{
+					return actor;
+				}
+			}
+			return null;
 		}
 
 		private Vector2Int GetRandomStartingPosition()
@@ -54,6 +71,7 @@ namespace Game.Gameplay
 			ActorController character = Instantiate<ActorController>(characterInfo.CharacterPrefab);
 			character.Initialize(characterInfo, playerInput, team);
 			character.Move(gridPosition);
+			actors.Add(character);
 			return character;
 		}
 

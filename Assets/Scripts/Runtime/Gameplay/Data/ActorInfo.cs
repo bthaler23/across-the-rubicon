@@ -15,6 +15,8 @@ namespace Game.Data
 		[SerializeField]
 		private int health;
 		[SerializeField]
+		private int damage;
+		[SerializeField]
 		private int attackRange;
 		[SerializeField]
 		private int movementRange;
@@ -23,5 +25,7 @@ namespace Game.Data
 		public int MovementRange => movementRange;
 		public Sprite CharacterSprite { get => characterSprite; }
 		public int AttackRange { get => attackRange; }
+		public int Health { get => health; }
+		public int Damage { get => damage; }
 	}
 }

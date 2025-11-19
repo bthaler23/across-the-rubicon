@@ -1,5 +1,6 @@
 using Game.Events;
 using Game.Gameplay;
+using Game.Stats;
 using GamePlugins.Events;
 using GamePlugins.Utils;
 using System;
@@ -47,13 +48,24 @@ namespace Game.UI
 				gameObject.SetGameObjectActive(true);
 				iconFrameImage.SetIconColorSafe(actor.GetTeamColor());
 				iconImage.SetIconSafe(actor.GetActorIcon());
-				healthProgressBarImage.fillAmount = actor.GetHealthNormalized();
+				ShowHealth(actor);
 				actorNameLabel.SetText(actor.ID);
 				PopulateActionItems(actor);
 			}
 			else
 			{
 				gameObject.SetGameObjectActive(false);
+			}
+		}
+
+		private void ShowHealth(ITurnActor actor)
+		{
+			var health = actor.GetStatValue(StatType.Health) as HealthStats;
+			if (health != null)
+			{
+				float healthPercent = (float)health.CurrentHealth / (float)health.MaxHealth;
+				healthProgressBarImage.fillAmount = healthPercent;
+				healthProgressLabel.SetText($"{health.CurrentHealth} / {health.MaxHealth}");
 			}
 		}
 

@@ -1,4 +1,5 @@
 using Game.Gameplay;
+using Game.Stats;
 using GamePlugins.Utils;
 using System;
 using UnityEngine;
@@ -19,9 +20,19 @@ public class TurnActorWidgetUI : MonoBehaviour
 	{
 		gameObject.SetGameObjectActive(true);
 		iconImage.SetIconSafe(actor.GetActorIcon());
-		healthProgressBarImage.fillAmount = actor.GetHealthNormalized();
 		activeTurnGO.SetActive(isActiveTurn);
 		iconFrameImage.SetIconColorSafe(actor.GetTeamColor());
+		ShowHealth(actor);
+	}
+
+	private void ShowHealth(ITurnActor actor)
+	{
+		var health = actor.GetStatValue(StatType.Health) as HealthStats;
+		if (health != null)
+		{
+			float healthPercent = (float)health.CurrentHealth / (float)health.MaxHealth;
+			healthProgressBarImage.fillAmount = healthPercent;
+		}
 	}
 
 	public void Hide()

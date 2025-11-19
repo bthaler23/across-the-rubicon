@@ -2,6 +2,7 @@ using Game.Data;
 using Game.Events;
 using Game.Gameplay;
 using Game.Grid;
+using Game.Stats;
 using GamePlugins.Events;
 using GamePlugins.Utils;
 using NUnit.Framework;
@@ -9,6 +10,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Game
 {
@@ -27,6 +29,12 @@ namespace Game
 		[BoxGroup("Actions")]
 		[ShowInInspector, ReadOnly]
 		private List<ITurnAction> actorActions;
+		[ShowInInspector, ReadOnly]
+		[BoxGroup("Stats")]
+		private SerializedDictionary<StatType, IStatValue> statValues;
+		[ShowInInspector, ReadOnly]
+		[BoxGroup("Stats")]
+		private HealthStats healthStatsCache;
 
 		private PlayerInputController inputController;
 		[ShowInInspector, ReadOnly]
@@ -39,7 +47,6 @@ namespace Game
 		private bool isTurnActive = false;
 
 		public string ID => gameObject.name;
-
 		public ActorInfo Info { get => info; }
 		public Vector2Int CurrentPosition { get => currentPosition; }
 
@@ -52,6 +59,14 @@ namespace Game
 			this.inputController = inputController;
 			isTurnActive = false;
 			InitializeActions();
+			InitializeStats();
+		}
+
+		private void InitializeStats()
+		{
+			statValues = new SerializedDictionary<StatType, IStatValue>();
+			healthStatsCache = new HealthStats(info.Health);
+			statValues.Add(StatType.Health, healthStatsCache);
 		}
 
 		private void InitializeActions()
@@ -73,9 +88,14 @@ namespace Game
 			transform.position = worldPosition;
 		}
 
+		public void ApplyDamage(int damage)
+		{
+			healthStatsCache.ApplyDamage(damage);
+		}
+
 		public bool HasAnyActions()
 		{
-			if (actorActions.IsNullOrEmpty()) return false;
+			if (actorActions.IsNullOrEmpty() || !healthStatsCache.IsAlive) return false;
 
 			foreach (var action in actorActions)
 			{
@@ -122,11 +142,6 @@ namespace Game
 			return info.CharacterSprite;
 		}
 
-		public float GetHealthNormalized()
-		{
-			return 1;//TEMP
-		}
-
 		public Color GetTeamColor()
 		{
 			return teamInfo.TeamColor;
@@ -152,6 +167,15 @@ namespace Game
 			activeAction.ActivateAction();
 			activeAction.OnActionCompleted += OnActionCompleted;
 			EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(this));
+		}
+
+		public IStatValue GetStatValue(StatType type)
+		{
+			if(statValues.TryGetValue(type, out var statValue))
+			{
+				return statValue;
+			}
+			return null;
 		}
 
 		#region Event Registration/Unregistration
