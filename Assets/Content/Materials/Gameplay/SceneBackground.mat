@@ -47,6 +47,6 @@ Material:
     - _BottomColor: {r: 0.23773581, g: 0.23773581, b: 0.23773581, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _TopColor: {r: 0.78867924, g: 0.58890647, b: 0.51636165, a: 1}
+    - _TopColor: {r: 0.381132, g: 0.381132, b: 0.381132, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

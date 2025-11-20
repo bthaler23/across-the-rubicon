@@ -131,5 +131,45 @@ namespace Game.Grid
 				}
 			}
 		}
+
+		public Vector2 GetGridCenter()
+		{
+			// Center of bounding rectangle that includes all content cells (in world coordinates)
+			if (gridMap == null || gridMap.ContentCells == null || gridMap.ContentCells.Count == 0)
+				return Vector2.zero;
+
+			GetGridBorders(out float minX, out float maxX, out float minY, out float maxY);
+
+			return new Vector2((minX + maxX) * 0.5f, (minY + maxY) * 0.5f);
+		}
+
+		public Vector2 GetGridSize()
+		{
+			// Size (width,height) of bounding rectangle that includes all content cells (in world coordinates)
+			if (gridMap == null || gridMap.ContentCells == null || gridMap.ContentCells.Count == 0)
+				return Vector2.zero;
+
+			GetGridBorders(out float minX, out float maxX, out float minY, out float maxY);
+
+			return new Vector2(maxX - minX, maxY - minY);
+		}
+
+		private void GetGridBorders(out float minX, out float maxX, out float minY, out float maxY)
+		{
+			minX = float.PositiveInfinity;
+			maxX = float.NegativeInfinity;
+			minY = float.PositiveInfinity;
+			maxY = float.NegativeInfinity;
+
+			foreach (var cellIndex in gridMap.ContentCells)
+			{
+				Vector3 wp3 = hexGrid.GridIndexToWordPosition(cellIndex);
+				float axisY = Mathf.Abs(wp3.y) > 0.0001f ? wp3.y : wp3.z;
+				minX = Mathf.Min(minX, wp3.x);
+				maxX = Mathf.Max(maxX, wp3.x);
+				minY = Mathf.Min(minY, axisY);
+				maxY = Mathf.Max(maxY, axisY);
+			}
+		}
 	}
 }

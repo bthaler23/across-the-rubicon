@@ -1210,7 +1210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8a8d32f9e9a60419a04ea31ec045d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartGameUI
-  gameplayController: {fileID: 1582737627}
   startGameButton: {fileID: 754026440}
 --- !u!1 &1541372782
 GameObject:
@@ -1315,7 +1314,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f4fa0bcf84f56448b8c50a9d7201f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Gameplay.GameplayController
+  initialized: 0
   gameplaySettings: {fileID: 11400000, guid: d11b26c23b3daa149b03a0a663d18e98, type: 2}
+  cameraController: {fileID: 8444935615456679833}
+  cameraBoarderPadding: 2
   gameFlowManager: {fileID: 858946885}
   gridData: {fileID: 1424383544}
   gridManager: {fileID: 1424383542}
@@ -2191,6 +2193,7 @@ GameObject:
   - component: {fileID: 6613043291505684787}
   - component: {fileID: 8459056775289396966}
   - component: {fileID: 8459056775289396965}
+  - component: {fileID: 8459056775289396967}
   m_Layer: 0
   m_Name: VCam_Gameplay
   m_TagString: Untagged
@@ -2408,6 +2411,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8444935615456679832}
   - component: {fileID: 1608202718774678899}
+  - component: {fileID: 8444935615456679833}
   m_Layer: 0
   m_Name: Camera_Setup
   m_TagString: Untagged
@@ -2761,6 +2765,109 @@ Transform:
   - {fileID: 366269881282089115}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8444935615456679833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403297175567429193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 817b9f2ed69ed7d4d9f5d7daa9eb5b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  gameplayCamera: {fileID: 4771982529069208218}
+  cameraTarget: {fileID: 3482610674057804508}
+  cmGameplayCamera: {fileID: 6613043291505684787}
+  cinemachineBrain: {fileID: 473410115209051173}
+  cinemachineImpulseListener: {fileID: 8459056775289396967}
+  smallShake:
+    source: {x: 0, y: 0}
+    magnitude: {x: 0, y: 0}
+    shakeDef:
+      ImpulseChannel: 1
+      ImpulseShape: 0
+      CustomImpulseShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      ImpulseDuration: 0.2
+      ImpulseType: 3
+      DissipationRate: 0
+      RawSignal: {fileID: 0}
+      AmplitudeGain: 1
+      FrequencyGain: 1
+      RepeatMode: 0
+      Randomize: 1
+      TimeEnvelope:
+        AttackShape:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        DecayShape:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        AttackTime: 0
+        SustainTime: 0.2
+        DecayTime: 0.7
+        ScaleWithImpact: 1
+        HoldForever: 0
+      ImpactRadius: 100
+      DirectionMode: 0
+      DissipationMode: 2
+      DissipationDistance: 100
+      PropagationSpeed: 343
+  bigShake:
+    source: {x: 0, y: 0}
+    magnitude: {x: 0, y: 0}
+    shakeDef:
+      ImpulseChannel: 1
+      ImpulseShape: 0
+      CustomImpulseShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      ImpulseDuration: 0.2
+      ImpulseType: 3
+      DissipationRate: 0
+      RawSignal: {fileID: 0}
+      AmplitudeGain: 1
+      FrequencyGain: 1
+      RepeatMode: 0
+      Randomize: 1
+      TimeEnvelope:
+        AttackShape:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        DecayShape:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        AttackTime: 0
+        SustainTime: 0.2
+        DecayTime: 0.7
+        ScaleWithImpact: 1
+        HoldForever: 0
+      ImpactRadius: 100
+      DirectionMode: 0
+      DissipationMode: 2
+      DissipationDistance: 100
+      PropagationSpeed: 343
 --- !u!114 &8459056775289396965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2800,6 +2907,30 @@ MonoBehaviour:
     CameraRadius: 0.2
     DampingIntoCollision: 0
     DampingFromCollision: 0.5
+--- !u!114 &8459056775289396967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2670772835180467245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseListener
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  SignalCombinationMode: 0
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!4 &8727064699673005042
 Transform:
   m_ObjectHideFlags: 0

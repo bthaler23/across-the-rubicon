@@ -13,6 +13,10 @@ namespace Game.Gameplay
 	{
 		[SerializeField]
 		private GameplaySettings gameplaySettings;
+		[SerializeField]
+		private CameraController cameraController;
+		[SerializeField]
+		private float cameraBoarderPadding = 2f;
 
 		[PropertySpace(SpaceBefore = 10)]
 		[Title("Game Flow")]
@@ -42,6 +46,7 @@ namespace Game.Gameplay
 			actors = new List<ActorController>();
 			gridExpansionController.InitializeGridWithDimensions();
 			gameFlowManager.Inintialize(GetTeamActors(gameplaySettings.TeamInfos));
+			CenterCameraOnDungeon(gridManager, cameraController, cameraBoarderPadding);
 		}
 
 		public ActorController GetActorAt(Vector2Int index)
@@ -90,6 +95,29 @@ namespace Game.Gameplay
 				resultTeams.Add(newTeam);
 			}
 			return resultTeams;
+		}
+
+		[Button]
+		private static void CenterCameraOnDungeon(HexGridManager gridManager, CameraController cameraController, float cameraBoarderPadding)
+		{
+			Vector2 stageCenter = gridManager.GetGridCenter();
+			Vector2 stageSize = gridManager.GetGridSize();
+
+			cameraController.MoveToPosition(new Vector3(stageCenter.x, stageCenter.y));
+			//change camera size to adjust to stage
+			Vector3 bottomLeft = cameraController.Camera.ScreenToWorldPoint(new Vector3(0, 0, 0));
+			Vector3 topRight = cameraController.Camera.ViewportToWorldPoint(new Vector3(1, 1, 0));
+
+			float verticalDistance = topRight.y - bottomLeft.y;
+			float horizontalDistance = topRight.x - bottomLeft.x;
+
+			float neededVerticalDistance = stageSize.y + cameraBoarderPadding;
+			float neededHorizontalDistance = stageSize.x + cameraBoarderPadding;
+
+			float orhographicsSize = cameraController.GetOrthographicSize();
+			float targetOrtographicSizeX = neededVerticalDistance * orhographicsSize / verticalDistance;
+			float targetOrtographicSizeY = neededHorizontalDistance * orhographicsSize / horizontalDistance;
+			cameraController.SetOrthographicSize(Math.Max(targetOrtographicSizeX, targetOrtographicSizeY));
 		}
 	}
 }
