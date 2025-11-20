@@ -17,6 +17,8 @@ namespace Game
 
 		[ShowInInspector, ReadOnly]
 		private List<Vector2Int> rangePositions;
+		[ShowInInspector, ReadOnly]
+		private bool isActionStarted = false;
 
 		public ActorController Owner { get => owner; }
 		public ActionInfo ActionInfo { get => actionInfo; }
@@ -30,6 +32,16 @@ namespace Game
 			rangePositions = new List<Vector2Int>();
 		}
 
+		public bool IsActionStarted()
+		{
+			return isActionStarted;
+		}
+
+		protected void StartAction()
+		{
+			isActionStarted = true;
+		}
+
 		public virtual void ActivateAction()
 		{
 			if (HasRange())
@@ -38,6 +50,7 @@ namespace Game
 				HexGridManager.Instance.HighlightPositions(Owner.CurrentPosition, Owner.GetTeamColor(), RangePositions, ActionInfo.Color);
 			}
 			Owner.RegisterHexCellClickEvent(OnCellClicked);
+			isActionStarted = false;
 		}
 
 		public virtual void DisableAction()
@@ -47,6 +60,7 @@ namespace Game
 				HexGridManager.Instance.ResetPositions();
 			}
 			Owner.UnRegisterHexCellClickEvent(OnCellClicked);
+			isActionStarted = false;
 		}
 
 		public abstract bool IsAvailable();

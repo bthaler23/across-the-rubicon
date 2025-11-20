@@ -1,6 +1,7 @@
 using Game.Grid;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Game.Gameplay
@@ -11,9 +12,14 @@ namespace Game.Gameplay
 
 		void Update()
 		{
-			bool mouseClick = Mouse.current.leftButton.wasReleasedThisFrame && InsideGameView();
+			bool mouseClick = Mouse.current.leftButton.wasReleasedThisFrame && InsideGameView() && !IsCursorUnderUI();
 			if (mouseClick)
 				CellClicked?.Invoke(HexGridManager.Instance.MouseOnGridIndex);
+		}
+
+		private bool IsCursorUnderUI()
+		{
+			return EventSystem.current.IsPointerOverGameObject();
 		}
 
 		private bool InsideGameView()

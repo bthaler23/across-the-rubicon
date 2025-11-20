@@ -117,7 +117,7 @@ namespace Game
 
 		public void TurnEnd()
 		{
-			DisabelCurrentAction();
+			DisabelCurrentAction(true);
 			isTurnActive = false;
 		}
 
@@ -127,14 +127,24 @@ namespace Game
 
 		}
 
-		private void DisabelCurrentAction()
+		private bool DisabelCurrentAction(bool forced = false)
 		{
 			if (activeAction != null)
 			{
-				activeAction.OnActionCompleted -= OnActionCompleted;
-				activeAction.DisableAction();
+				bool canDisable = forced || !activeAction.IsActionStarted();
+				if (canDisable)
+				{
+					activeAction.OnActionCompleted -= OnActionCompleted;
+					activeAction.DisableAction();
+				}
+				else
+				{
+					return false;
+				}
 			}
+
 			activeAction = null;
+			return true;
 		}
 
 		public Sprite GetActorIcon()
@@ -161,17 +171,18 @@ namespace Game
 		{
 			if (!action.IsAvailable()) return;
 
-			DisabelCurrentAction();
-
-			activeAction = action;
-			activeAction.ActivateAction();
-			activeAction.OnActionCompleted += OnActionCompleted;
-			EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(this));
+			if(DisabelCurrentAction())
+			{
+				activeAction = action;
+				activeAction.ActivateAction();
+				activeAction.OnActionCompleted += OnActionCompleted;
+				EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(this));
+			}
 		}
 
 		public IStatValue GetStatValue(StatType type)
 		{
-			if(statValues.TryGetValue(type, out var statValue))
+			if (statValues.TryGetValue(type, out var statValue))
 			{
 				return statValue;
 			}

@@ -8,6 +8,7 @@ namespace Game.Gameplay
 	{
 		event Action OnActionCompleted;
 		void Initialize(ITurnActor owner);
+		bool IsActionStarted();
 		bool IsAvailable();
 		void ActivateAction();
 		void DisableAction();
