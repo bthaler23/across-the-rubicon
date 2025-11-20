@@ -2,6 +2,7 @@ using Game.Gameplay;
 using Game.Grid;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,8 @@ namespace Game
 		[ShowInInspector, ReadOnly]
 		private List<Vector2Int> rangePositions;
 		[ShowInInspector, ReadOnly]
+		private bool isActionActive = false;
+		[ShowInInspector, ReadOnly]
 		private bool isActionStarted = false;
 
 		public ActorController Owner { get => owner; }
@@ -30,6 +33,8 @@ namespace Game
 		{
 			this.owner = owner as ActorController;
 			rangePositions = new List<Vector2Int>();
+			isActionActive = false;
+			isActionStarted = false;
 		}
 
 		public bool IsActionStarted()
@@ -50,6 +55,7 @@ namespace Game
 				HexGridManager.Instance.HighlightPositions(Owner.CurrentPosition, Owner.GetTeamColor(), RangePositions, ActionInfo.Color);
 			}
 			Owner.RegisterHexCellClickEvent(OnCellClicked);
+			isActionActive = true;
 			isActionStarted = false;
 		}
 
@@ -60,6 +66,7 @@ namespace Game
 				HexGridManager.Instance.ResetPositions();
 			}
 			Owner.UnRegisterHexCellClickEvent(OnCellClicked);
+			isActionActive = false;
 			isActionStarted = false;
 		}
 
@@ -92,6 +99,12 @@ namespace Game
 		public Sprite GetIcon()
 		{
 			return actionInfo.Icon;
+		}
+
+		protected IEnumerator DelayedExecuteAction(float delay, Action action)
+		{
+			yield return new WaitForSeconds(delay);
+			action?.Invoke();
 		}
 	}
 }

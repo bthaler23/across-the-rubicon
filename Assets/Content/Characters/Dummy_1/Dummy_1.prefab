@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.MoveAction
   actionInfo: {fileID: 11400000, guid: 2dab7a407bb74624b99e6908a5573c53, type: 2}
+  movementSpeed: 5
 --- !u!114 &846990933152117484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,6 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.AttackAction
   actionInfo: {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
+  attackEffectPrefab: {fileID: 7139991803096122737, guid: a21a668410221f3488ef29584f6487a3, type: 3}
+  attackEffectDuration: 0.5
 --- !u!1 &8030485712948110867
 GameObject:
   m_ObjectHideFlags: 0
