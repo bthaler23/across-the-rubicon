@@ -7,13 +7,14 @@ using UnityEngine.UI;
 
 namespace Game.UI
 {
-	public class StartGameUI : MonoBehaviour
+	public class StartGameUI : BaseViewUI
 	{
 		[SerializeField]
 		private Button startGameButton;
 
-		private void Awake()
+		protected override void Awake()
 		{
+			base.Awake();
 			startGameButton.onClick.AddListener(OnStartGameButtonClicked);
 		}
 
