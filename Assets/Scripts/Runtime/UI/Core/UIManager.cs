@@ -17,9 +17,6 @@ namespace Game.UI
 	public partial class UIManager : Singleton<UIManager>
 	{
 		[SerializeField]
-		private Canvas uiCanvas;
-
-		[SerializeField]
 		private bool loggingEnabled = false;
 
 		private List<BaseViewUI> uiPages;

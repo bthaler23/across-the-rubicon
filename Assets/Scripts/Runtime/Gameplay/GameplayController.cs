@@ -21,7 +21,7 @@ namespace Game.Gameplay
 		[PropertySpace(SpaceBefore = 10)]
 		[Title("Game Flow")]
 		[SerializeField]
-		private GameFlowManager gameFlowManager;
+		private GameplayFlowManager gameFlowManager;
 
 		[PropertySpace(SpaceBefore = 10)]
 		[Title("Grid Setup")]

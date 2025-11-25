@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Game.Gameplay
 {
-	public class GameFlowManager : MonoBehaviour
+	public class GameplayFlowManager : MonoBehaviour
 	{
 		[SerializeField]
 		private TurnManager turnManager;

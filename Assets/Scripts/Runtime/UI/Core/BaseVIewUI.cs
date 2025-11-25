@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 namespace Game.UI
 {
@@ -23,14 +23,20 @@ namespace Game.UI
 		}
 
 		[SerializeField]
+		private Button backButton;
+		[SerializeField]
 		private float timeoutBeforeManualClose = 0;
 		[SerializeField]
 		private ViewType type = ViewType.Page;
+		[BoxGroup("Animator")]
 		[SerializeField, ShowIf("@this.animator!=null")]
+		[BoxGroup("Animator")]
 		private float hideDelay = 0;
 		[SerializeField, ShowIf("@this.animator!=null")]
+		[BoxGroup("Animator")]
 		private string showAnimationName = "Show";
 		[SerializeField, ShowIf("@this.animator!=null")]
+		[BoxGroup("Animator")]
 		private string hideAnimationName = "Hide";
 
 		private float closeTimeut = 0;
@@ -42,6 +48,16 @@ namespace Game.UI
 		public ViewType Type => type;
 
 		public virtual bool CanClose => closeTimeut <= 0;
+
+		protected override void Awake()
+		{
+			base.Awake();
+			if (backButton)
+				backButton.onClick.AddListener(Close);
+			//Views are opend using UIManager so they should start closed
+			if (!internalShowState)
+				gameObject.SetActive(false);
+		}
 
 		protected virtual void Update()
 		{

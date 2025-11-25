@@ -25,6 +25,12 @@ namespace GamePlugins.Utils
 			gameObject.SetActive(active);
 		}
 
+		public static void PlayAnimationSafe(this Animator animator, string state)
+		{
+			if (!animator || string.IsNullOrEmpty(state)) return;
+			animator.Play(state);
+		}
+
 		public static void SetGameObjectPosition(this GameObject gameObject, Vector3 position)
 		{
 			if (!gameObject) return;
@@ -191,6 +197,11 @@ namespace GamePlugins.Utils
 		}
 
 		public static bool IsNullOrEmpty<T>(this List<T> target)
+		{
+			return target == null || target.Count == 0;
+		}
+
+		public static bool IsNullOrEmpty<T>(this IReadOnlyList<T> target)
 		{
 			return target == null || target.Count == 0;
 		}

@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Game.UI
 		protected bool isDisposed = false;
 
 		[SerializeField]
+		[BoxGroup("Animator")]
 		protected Animator animator;
 		[SerializeField]
 		protected UILayoutGroupUpdate layoutUpdater;

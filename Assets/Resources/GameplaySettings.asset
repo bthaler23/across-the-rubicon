@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7659d33fb9d9a104ea7068cb3cfad908, type: 3}
   m_Name: GameplaySettings
   m_EditorClassIdentifier: Assembly-CSharp::Game.Settings.GamepalySettings
+  dungeonInfos:
+  - {fileID: 11400000, guid: 53345c118851bf34facf53468e412ed5, type: 2}
+  - {fileID: 11400000, guid: a43678ca820f93940a535309e3fa7ede, type: 2}
+  - {fileID: 11400000, guid: eb83e2f7eac7ab747bbfe52b8e4e3519, type: 2}
   gridTilePrefab: {fileID: 0}
   teamInfos:
   - teamID: A
