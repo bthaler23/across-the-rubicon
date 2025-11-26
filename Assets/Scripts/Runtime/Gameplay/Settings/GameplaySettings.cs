@@ -23,6 +23,6 @@ namespace Game.Settings
 
 		public IReadOnlyList<TeamInfo> TeamInfos { get => teamInfos; }
 		public IReadOnlyList<DungeonInfo> DungeonInfos { get => dungeonInfos; }
-		public List<ActorInfo> Heros { get => heros; }
+		public IReadOnlyList<ActorInfo> Heros { get => heros; }
 	}
 }

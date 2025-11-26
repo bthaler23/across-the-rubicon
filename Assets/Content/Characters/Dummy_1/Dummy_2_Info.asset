@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Dummy_2_Info
   m_EditorClassIdentifier: Assembly-CSharp::Game.Character.CharacterInfo
   charaterName: Dummy_2
-  characterSprite: {fileID: -2007313318, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
+  charaterDescription: 
+  charaterAbilityDescription: 
+  characerAvatar: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
+  characterFullAvatarSprite: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
   characterPrefab: {fileID: 7117724579156912674, guid: 028eb8540da7ca84b8badc54c51ccea8, type: 3}
   health: 20
   damage: 2

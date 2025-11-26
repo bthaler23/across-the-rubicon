@@ -149,7 +149,7 @@ namespace Game
 
 		public Sprite GetActorIcon()
 		{
-			return info.CharacterSprite;
+			return info.CharacterAvatar;
 		}
 
 		public Color GetTeamColor()

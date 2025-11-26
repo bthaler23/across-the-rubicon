@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
 
@@ -12,9 +13,13 @@ namespace Game.Data
 		private int DifficultyLevel;
 		[SerializeField]
 		private Sprite DungeonIcon;
-
+		[SerializeField]
+		[PropertyRange(1, 10)]
+		private int heroCount = 1;
 		[SerializeField]
 		private DungeonRoomInfo[] Rooms;
+
+		public int HeroCount { get => heroCount; }
 
 		public string GetDungeonName() => DungeonName;
 		public int GetDifficultyLevel() => DifficultyLevel;

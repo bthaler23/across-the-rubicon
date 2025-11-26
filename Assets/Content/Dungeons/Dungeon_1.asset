@@ -15,8 +15,37 @@ MonoBehaviour:
   DungeonName: NEBUCHADNEZZAR
   DifficultyLevel: 0
   DungeonIcon: {fileID: 1125967592, guid: 9db97d92d472bef4f8d190fd966f638a, type: 3}
+  heroCount: 3
   Rooms:
-  - gridDimensions: {x: 0, y: 0}
+  - roomName: Swamp
+    roomDescription: +2 SPD to all
+    gridDimensions: {x: 8, y: 8}
     edgeRemovalChance: 0
     innerRemovalChance: 0
-    enemyActors: []
+    enemyActors:
+    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  - roomName: Void Swamp
+    roomDescription: Shifting Floors
+    gridDimensions: {x: 12, y: 12}
+    edgeRemovalChance: 0
+    innerRemovalChance: 0
+    enemyActors:
+    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  - roomName: Void Forest
+    roomDescription: More Trees
+    gridDimensions: {x: 12, y: 20}
+    edgeRemovalChance: 0
+    innerRemovalChance: 0
+    enemyActors:
+    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  - roomName: Ice Swamp
+    roomDescription: -1 ATK to all
+    gridDimensions: {x: 24, y: 6}
+    edgeRemovalChance: 0
+    innerRemovalChance: 0
+    enemyActors:
+    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}

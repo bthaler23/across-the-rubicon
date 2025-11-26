@@ -8,7 +8,13 @@ namespace Game.Data
 		[SerializeField]
 		private string charaterName;
 		[SerializeField]
-		private Sprite characterSprite;
+		private string charaterDescription;
+		[SerializeField]
+		private string charaterAbilityDescription;
+		[SerializeField]
+		private Sprite characerAvatar;
+		[SerializeField]
+		private Sprite characterFullAvatarSprite;
 		[SerializeField]
 		private ActorController characterPrefab;
 
@@ -23,9 +29,13 @@ namespace Game.Data
 
 		public ActorController CharacterPrefab => characterPrefab;
 		public int MovementRange => movementRange;
-		public Sprite CharacterSprite { get => characterSprite; }
+		public Sprite CharacterAvatar { get => characerAvatar; }
+		public Sprite CharacterIconSprite { get => characterFullAvatarSprite; }
 		public int AttackRange { get => attackRange; }
 		public int Health { get => health; }
 		public int Damage { get => damage; }
+		public string CharaterName { get => charaterName; }
+		public string CharaterDescription { get => charaterDescription; }
+		public string CharaterAbilityDescription { get => charaterAbilityDescription; }
 	}
 }

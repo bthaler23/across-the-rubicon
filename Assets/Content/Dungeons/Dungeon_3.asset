@@ -15,4 +15,37 @@ MonoBehaviour:
   DungeonName: CUTIE PIE BABY
   DifficultyLevel: 0
   DungeonIcon: {fileID: -424379062, guid: 8c002085390cf294a98e6ca3a762dfcb, type: 3}
-  Rooms: []
+  heroCount: 3
+  Rooms:
+  - roomName: Swamp
+    roomDescription: +2 SPD to all
+    gridDimensions: {x: 8, y: 8}
+    edgeRemovalChance: 0
+    innerRemovalChance: 0
+    enemyActors:
+    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  - roomName: Void Swamp
+    roomDescription: Shifting Floors
+    gridDimensions: {x: 12, y: 12}
+    edgeRemovalChance: 0
+    innerRemovalChance: 0
+    enemyActors:
+    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  - roomName: Void Forest
+    roomDescription: More Trees
+    gridDimensions: {x: 12, y: 20}
+    edgeRemovalChance: 0
+    innerRemovalChance: 0
+    enemyActors:
+    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  - roomName: Ice Swamp
+    roomDescription: -1 ATK to all
+    gridDimensions: {x: 24, y: 6}
+    edgeRemovalChance: 0
+    innerRemovalChance: 0
+    enemyActors:
+    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}

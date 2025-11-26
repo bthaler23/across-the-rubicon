@@ -1,4 +1,5 @@
 using Game.Data;
+using Game.Progress;
 using Game.UI;
 using GamePlugins.Utils;
 using NUnit.Framework;
@@ -30,7 +31,7 @@ namespace Game.UI
 		{
 			if (selectedDungeon != null)
 			{
-				UIController.Instance.ShowCharacterSelectUI();
+				UIController.Instance.SelectDungeon(selectedDungeon.Dungeon);
 			}
 		}
 

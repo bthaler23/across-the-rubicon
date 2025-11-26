@@ -7,6 +7,12 @@ namespace Game.Data
 	[Serializable]
 	public class DungeonRoomInfo
 	{
+		[BoxGroup("Room")]
+		[SerializeField]
+		private string roomName;
+		[SerializeField]
+		[BoxGroup("Room")]
+		private string roomDescription;
 		[BoxGroup("Grid")]
 		[SerializeField]
 		private Vector2Int gridDimensions;
@@ -23,6 +29,13 @@ namespace Game.Data
 		[SerializeField]
 		private ActorInfo[] enemyActors;
 
+		public string RoomName { get => roomName; }
+		public string RoomDescription { get => roomDescription; }
+
+		public string GetSizeDescription()
+		{
+			return $"{gridDimensions.x} x {gridDimensions.y}";
+		}
 		public Vector2Int GetGridDimensions() => gridDimensions;
 		public float GetEdgeRemovalChance() => edgeRemovalChance;
 		public float GetInnerRemovalChance() => innerRemovalChance;

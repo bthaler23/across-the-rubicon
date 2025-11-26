@@ -1,8 +1,12 @@
+using Game.Data;
+using Game.Progress;
 using Game.UI;
 using GamePlugins.Attributes;
 using GamePlugins.Singleton;
+using GamePlugins.Utils;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.UI
@@ -40,9 +44,26 @@ namespace Game.UI
 			UIManager.Instance.Open(dungeonSelectUI);
 		}
 
-		public void ShowCharacterSelectUI()
+		public void SelectDungeon(DungeonInfo dungeon)
 		{
+			if (dungeon == null) return;
+
+			ProgressManager.Instance.SelectDungeon(dungeon);
 			UIManager.Instance.Open(characterSelectUI);
+		}
+
+		public void SelectCharacter(List<ActorInfo> characters)
+		{
+			if (characters.IsNullOrEmpty()) return;
+
+			ProgressManager.Instance.SelectCharacters(characters);
+			UIManager.Instance.Open(dungeonRoomSelectUI);
+		}
+
+		public void SelectDungeonRoom(DungeonRoomInfo data)
+		{
+			ProgressManager.Instance.SelectDungeonRoom(data);
+			GameManager.Instance.LoadGameplay();
 		}
 	}
 }
