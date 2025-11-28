@@ -28,7 +28,7 @@ namespace Game.UI
 
 		private void OnStartGameButtonClicked()
 		{
-			UIController.Instance.ShowDungeonSelectUI();
+			UINavigator.Instance.ShowDungeonSelectUI();
 			//GameplayController.Instance.InitializeGameplay();
 		}
 

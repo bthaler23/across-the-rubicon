@@ -16,6 +16,7 @@ namespace Game.Progress
 
 		public DungeonInfo CurrentDungeon => progressData.currentDungeon;
 		public DungeonRoomInfo CurrentDungeonRoom => progressData.currentRoom;
+		public List<ActorInfo> CurrentHeroes => progressData.currentHeroes;
 
 		protected override void OnAwakeCalled()
 		{
@@ -55,6 +56,11 @@ namespace Game.Progress
 		public void SelectDungeonRoom(DungeonRoomInfo data)
 		{
 			progressData.currentRoom = data;
+		}
+
+		public void ResetProgress()
+		{
+			progressData = new ProgressData();
 		}
 	}
 }

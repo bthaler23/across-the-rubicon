@@ -2,6 +2,7 @@ using Game.Data;
 using Game.Grid;
 using Game.Progress;
 using Game.Settings;
+using Game.UI;
 using GamePlugins.Singleton;
 using Sirenix.OdinInspector;
 using System;
@@ -35,8 +36,6 @@ namespace Game.Gameplay
 		[SerializeField]
 		private GridExpansionController gridExpansionController;
 
-
-
 		[ShowInInspector, ReadOnly]
 		private List<ActorController> actors;
 
@@ -44,7 +43,7 @@ namespace Game.Gameplay
 		{
 			actors = new List<ActorController>();
 			gridExpansionController.InitializeGrid(ProgressManager.Instance.CurrentDungeonRoom.GridSetup);
-			gameFlowManager.Inintialize(GetTeamActors(GameManager.Instance.GameplaySettings.TeamInfos));
+			gameFlowManager.Inintialize(GetTeams());
 			CenterCameraOnDungeon(gridManager, cameraController, cameraBoarderPadding);
 		}
 
@@ -79,6 +78,27 @@ namespace Game.Gameplay
 			return character;
 		}
 
+		private List<TeamActors> GetTeams()
+		{
+			List<TeamInfo> teams = new List<TeamInfo>();
+
+			TeamInfo playerTeam = new TeamInfo();
+			foreach(var character in ProgressManager.Instance.CurrentHeroes)
+			{
+				playerTeam.AddCharacter(character);
+			}
+			TeamInfo enemyTeam = new TeamInfo();
+			foreach(var character in ProgressManager.Instance.CurrentDungeonRoom.EnemyActors)
+			{
+				enemyTeam.AddCharacter(character);
+			}
+
+			teams.Add(playerTeam);
+			teams.Add(enemyTeam);
+
+			return GetTeamActors(teams);
+		}
+
 		private List<TeamActors> GetTeamActors(IReadOnlyList<TeamInfo> teams)
 		{
 			List<TeamActors> resultTeams = new List<TeamActors>();
@@ -96,6 +116,7 @@ namespace Game.Gameplay
 			return resultTeams;
 		}
 
+		[BoxGroup("DEBUG")]
 		[Button]
 		private static void CenterCameraOnDungeon(HexGridManager gridManager, CameraController cameraController, float cameraBoarderPadding)
 		{
@@ -117,6 +138,36 @@ namespace Game.Gameplay
 			float targetOrtographicSizeX = neededVerticalDistance * orhographicsSize / verticalDistance;
 			float targetOrtographicSizeY = neededHorizontalDistance * orhographicsSize / horizontalDistance;
 			cameraController.SetOrthographicSize(Math.Max(targetOrtographicSizeX, targetOrtographicSizeY));
+		}
+
+		[GUIColor("@Color.forestGreen")]
+		[HorizontalGroup("DEBUG/ENDGAME")]
+		[Button]
+		public void EndDungeonVictouris()
+		{
+			UIManager.Instance.ShowPopupMessage(
+				"VICTORIOUS!",
+				"You have successfully cleared the dungeon.",
+				"Continue",
+				() =>
+				{
+					UINavigator.Instance.ShowDungeonRoomSelectUI();
+				});
+		}
+
+		[GUIColor("@Color.orangeRed")]
+		[HorizontalGroup("DEBUG/ENDGAME")]
+		[Button]
+		public void EndDungeonFaliure()
+		{
+			UIManager.Instance.ShowPopupMessage(
+				"DEFEAT!",
+				"You have failed to clear the dungeon.",
+				"Retry",
+				() =>
+				{
+					UINavigator.Instance.ShowMainMenuUI();
+				});
 		}
 	}
 }

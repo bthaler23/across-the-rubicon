@@ -29,7 +29,7 @@ namespace Game.UI
 			{
 				if (selectedRoomItem != null)
 				{
-					UIController.Instance.SelectDungeonRoom(selectedRoomItem.Data);
+					UINavigator.Instance.SelectDungeonRoom(selectedRoomItem.Data);
 				}
 			});
 		}

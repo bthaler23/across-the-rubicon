@@ -34,7 +34,7 @@ namespace Game.UI
 				var selectedCharacters = choosenCharacter.Where(c => c != null).ToList();
 				if (selectedCharacters.Count == choosenCharacter.Length)
 				{
-					UIController.Instance.SelectCharacter(selectedCharacters);
+					UINavigator.Instance.SelectCharacter(selectedCharacters);
 				}
 			});
 		}

@@ -808,7 +808,7 @@ GameObject:
   - component: {fileID: 1523790644}
   - component: {fileID: 1523790645}
   m_Layer: 0
-  m_Name: UI_Controller
+  m_Name: UI_Navigation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

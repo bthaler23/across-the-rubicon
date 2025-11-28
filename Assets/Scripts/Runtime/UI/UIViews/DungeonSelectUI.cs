@@ -31,7 +31,7 @@ namespace Game.UI
 		{
 			if (selectedDungeon != null)
 			{
-				UIController.Instance.SelectDungeon(selectedDungeon.Dungeon);
+				UINavigator.Instance.SelectDungeon(selectedDungeon.Dungeon);
 			}
 		}
 

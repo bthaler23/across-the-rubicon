@@ -27,6 +27,7 @@ namespace Game.Data
 		public string RoomName { get => roomName; }
 		public string RoomDescription { get => roomDescription; }
 		public GridSetup GridSetup { get => gridSetup; set => gridSetup = value; }
+		public ActorInfo[] EnemyActors { get => enemyActors; }
 
 		public string GetSizeDescription()
 		{

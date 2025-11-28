@@ -13,7 +13,7 @@ namespace Game.UI
 {
 
 	[AutoCreateSingleton(false, false)]
-	public class UIController : Singleton<UIController>
+	public class UINavigator : Singleton<UINavigator>
 	{
 		[TitleGroup("UI Pages")]
 		[SerializeField]
@@ -35,13 +35,19 @@ namespace Game.UI
 
 		public void ShowMainMenuUI()
 		{
+			ProgressManager.Instance.ResetProgress();
 			UIManager.Instance.Open(mainMenuUI);
+		}
+
+		public void ShowDungeonRoomSelectUI()
+		{
+			UIManager.Instance.Open(dungeonRoomSelectUI);
 		}
 
 		public void ShowDungeonSelectUI()
 		{
 			dungeonSelectUI.PopulateDungeons(GameManager.Instance.GameplaySettings.DungeonInfos);
-			UIManager.Instance.Open(dungeonSelectUI);
+			UIManager.Instance.Open(dungeonSelectUI); 
 		}
 
 		public void SelectDungeon(DungeonInfo dungeon)
@@ -57,7 +63,7 @@ namespace Game.UI
 			if (characters.IsNullOrEmpty()) return;
 
 			ProgressManager.Instance.SelectCharacters(characters);
-			UIManager.Instance.Open(dungeonRoomSelectUI);
+			ShowDungeonRoomSelectUI();
 		}
 
 		public void SelectDungeonRoom(DungeonRoomInfo data)

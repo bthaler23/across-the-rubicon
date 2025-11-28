@@ -256,8 +256,8 @@ namespace Game
 			yield return StartCoroutine(LoadSceneAsync(uiScene, LoadSceneMode.Additive, true));
 			yield return null;
 
-			UIController.Instance.Initialize();
-			UIController.Instance.ShowMainMenuUI();
+			UINavigator.Instance.Initialize();
+			UINavigator.Instance.ShowMainMenuUI();
 			yield return null;
 
 

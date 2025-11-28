@@ -17,6 +17,9 @@ namespace Game.UI
 	public partial class UIManager : Singleton<UIManager>
 	{
 		[SerializeField]
+		private PopupMessageUI popupMessageUI;
+
+		[SerializeField]
 		private bool loggingEnabled = false;
 
 		private List<BaseViewUI> uiPages;
@@ -228,6 +231,12 @@ namespace Game.UI
 			if (loggingEnabled)
 				Debug.Log($"[UIManager] {msg}");
 #endif
+		}
+
+		public void ShowPopupMessage(string title, string message, string buttonA, Action actionA, string buttonB = null, Action actionB = null)
+		{
+			popupMessageUI.ShowPopup(title, message, buttonA, actionA, buttonB, actionB);
+			Open(popupMessageUI);
 		}
 	}
 }
