@@ -1,3 +1,4 @@
+using Game.Gameplay;
 using Game.Settings;
 using Game.UI;
 using GamePlugins.Attributes;
@@ -80,7 +81,6 @@ namespace Game
 		#endregion
 
 		#region Events
-		public static event Action OnGameplayLoaded;
 		#endregion
 
 		#region MonoBehaviour
@@ -228,23 +228,15 @@ namespace Game
 #endif
 				yield return StartCoroutine(UnloadScenes());
 			UIManager.Instance.ClearUI();
-			yield return StartCoroutine(LoadSceneAsync(gameplayScene, LoadSceneMode.Additive));
-			string stageScene = GetGameplayScene();
-			if (!IsSceneLoaded(stageScene))
-				yield return StartCoroutine(LoadSceneAsync(stageScene, LoadSceneMode.Additive, true));
-			OnGameplayLoaded?.Invoke();
+			yield return StartCoroutine(LoadSceneAsync(gameplayScene, LoadSceneMode.Additive, true));
+
+			GameplayController.Instance.InitializeGameplay();
+
+			ToggleLoadingScreen(false);
+
 			gameplaySceneLoaded = true;
 			yield return null;
 			gameplayLoading = false;
-		}
-
-		private string GetGameplayScene()
-		{
-#if UNITY_EDITOR
-			if (!string.IsNullOrEmpty(editorStartLevel))
-				return editorStartLevel;
-#endif
-			return gameplayScene;
 		}
 
 		private IEnumerator LoadUICO(bool toggleLoadingScreen = true)

@@ -1,3 +1,4 @@
+using Game.Grid;
 using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
@@ -13,17 +14,11 @@ namespace Game.Data
 		[SerializeField]
 		[BoxGroup("Room")]
 		private string roomDescription;
-		[BoxGroup("Grid")]
 		[SerializeField]
-		private Vector2Int gridDimensions;
+		[InlineProperty]
+		[HideLabel]
 		[BoxGroup("Grid")]
-		[SerializeField]
-		[PropertyRange(0, 1)]
-		private float edgeRemovalChance;
-		[BoxGroup("Grid")]
-		[SerializeField]
-		[PropertyRange(0, 1)]
-		private float innerRemovalChance;
+		private GridSetup gridSetup;
 
 		[BoxGroup("Enemies")]
 		[SerializeField]
@@ -31,13 +26,11 @@ namespace Game.Data
 
 		public string RoomName { get => roomName; }
 		public string RoomDescription { get => roomDescription; }
+		public GridSetup GridSetup { get => gridSetup; set => gridSetup = value; }
 
 		public string GetSizeDescription()
 		{
-			return $"{gridDimensions.x} x {gridDimensions.y}";
+			return $"{gridSetup.Size.x} x {gridSetup.Size.y}";
 		}
-		public Vector2Int GetGridDimensions() => gridDimensions;
-		public float GetEdgeRemovalChance() => edgeRemovalChance;
-		public float GetInnerRemovalChance() => innerRemovalChance;
 	}
 }

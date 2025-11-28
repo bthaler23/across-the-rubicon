@@ -1,5 +1,6 @@
 using Game.Data;
 using Game.Grid;
+using Game.Progress;
 using Game.Settings;
 using GamePlugins.Singleton;
 using Sirenix.OdinInspector;
@@ -12,11 +13,13 @@ namespace Game.Gameplay
 	public class GameplayController : Singleton<GameplayController>
 	{
 		[SerializeField]
-		private GameplaySettings gameplaySettings;
-		[SerializeField]
 		private CameraController cameraController;
 		[SerializeField]
 		private float cameraBoarderPadding = 2f;
+
+		[PropertySpace(SpaceBefore = 10)]
+		[SerializeField]
+		private PlayerInputController playerInput;
 
 		[PropertySpace(SpaceBefore = 10)]
 		[Title("Game Flow")]
@@ -32,11 +35,7 @@ namespace Game.Gameplay
 		[SerializeField]
 		private GridExpansionController gridExpansionController;
 
-		[PropertySpace(SpaceBefore = 10)]
-		[SerializeField]
-		private ActorInfo startingCharacter;
-		[SerializeField]
-		private PlayerInputController playerInput;
+
 
 		[ShowInInspector, ReadOnly]
 		private List<ActorController> actors;
@@ -44,8 +43,8 @@ namespace Game.Gameplay
 		public void InitializeGameplay()
 		{
 			actors = new List<ActorController>();
-			gridExpansionController.InitializeGridWithDimensions();
-			gameFlowManager.Inintialize(GetTeamActors(gameplaySettings.TeamInfos));
+			gridExpansionController.InitializeGrid(ProgressManager.Instance.CurrentDungeonRoom.GridSetup);
+			gameFlowManager.Inintialize(GetTeamActors(GameManager.Instance.GameplaySettings.TeamInfos));
 			CenterCameraOnDungeon(gridManager, cameraController, cameraBoarderPadding);
 		}
 

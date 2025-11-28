@@ -1,3 +1,4 @@
+using Game.Data;
 using Game.Grid;
 using GamePlugin.Utils;
 using GamePlugins.ObjectPool;
@@ -10,23 +11,31 @@ using UnityEngine.Rendering;
 
 namespace Game.Grid
 {
+	[Serializable]
+	public class GridSetup
+	{
+		[SerializeField]
+		private Vector2Int size;
+		[SerializeField]
+		[PropertyRange(0, 1)]
+		private float edgeRemovalChance;
+		[SerializeField]
+		[PropertyRange(0, 1)]
+		private float innerRemovalChance;
+
+		public Vector2Int Size { get => size; }
+		public float EdgeRemovalChance { get => edgeRemovalChance; }
+		public float InnerRemovalChance { get => innerRemovalChance; }
+	}
+
 	public class GridExpansionController : MonoBehaviour
 	{
 		[SerializeField]
 		private GridTileInstance gridTilePrefab;
 		[SerializeField]
 		private Vector2Int initialCellCountRange;
-		[BoxGroup("Grid Generation")]
 		[SerializeField]
-		private Vector2Int gridDimensions;
-		[BoxGroup("Grid Generation")]
-		[SerializeField]
-		[PropertyRange(0,1)]
-		private float edgeRemovalChance;
-		[BoxGroup("Grid Generation")]
-		[SerializeField]
-		[PropertyRange(0,1)]
-		private float innerRemovalChance;
+		private GridSetup debugGridSetup;
 
 		private System.Random randomGenerator;
 
@@ -35,10 +44,20 @@ namespace Game.Grid
 			ObjectPool.Instance.CachePrefab(gridTilePrefab.gameObject, 20);
 		}
 
+		public void InitializeGrid(GridSetup gridSetup)
+		{
+			if (randomGenerator == null)
+				randomGenerator = new System.Random();
 
+			int cellCount = gridSetup.Size.x * gridSetup.Size.y;
+			var cellList = ProceduralGridGenerator.GenerateVariableRectHexGrid
+				(gridSetup.Size.x, gridSetup.Size.y, gridSetup.EdgeRemovalChance, gridSetup.InnerRemovalChance, randomGenerator);
+
+			BuildGrid(cellList);
+		}
 
 		[Button]
-		public void InitializeGridWithCellCount()
+		private void InitializeGridWithCellCount()
 		{
 			if (randomGenerator == null)
 				randomGenerator = new System.Random();
@@ -50,15 +69,9 @@ namespace Game.Grid
 		}
 
 		[Button]
-		public void InitializeGridWithDimensions()
+		private void InitializeGridWithDimensions()
 		{
-			if (randomGenerator == null)
-				randomGenerator = new System.Random();
-
-			int cellCount = randomGenerator.Next(initialCellCountRange.x, initialCellCountRange.y);
-			var cellList = ProceduralGridGenerator.GenerateVariableRectHexGrid(gridDimensions.x, gridDimensions.y, edgeRemovalChance, innerRemovalChance, randomGenerator);
-
-			BuildGrid(cellList);
+			InitializeGrid(debugGridSetup);
 		}
 
 		private void BuildGrid(List<HexCell> cellList)

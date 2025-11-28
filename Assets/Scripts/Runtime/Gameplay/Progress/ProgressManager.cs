@@ -15,6 +15,7 @@ namespace Game.Progress
 		private ProgressData progressData;
 
 		public DungeonInfo CurrentDungeon => progressData.currentDungeon;
+		public DungeonRoomInfo CurrentDungeonRoom => progressData.currentRoom;
 
 		protected override void OnAwakeCalled()
 		{
