@@ -187,6 +187,196 @@ namespace Game.Grid
 			return result;
 		}
 
+		/// <summary>
+		/// Generates a circular cluster of hex cells centered at (0,0) using axial coordinates.
+		/// The circle is approximated using Euclidean distance in pointy-top axial-to-world space.
+		/// Supports optional edge jitter and interior holes while preserving connectivity.
+		/// </summary>
+		/// <param name="radius">Radius in hex-world units (roughly tile size = 1).</param>
+		/// <param name="edgeRemovalChance">Chance (0..1) to remove each perimeter cell (keeps connectivity).</param>
+		/// <param name="interiorHoleChance">Chance (0..1) to remove interior cells (keeps connectivity).</param>
+		/// <param name="rng">Random source.</param>
+		public static List<HexCell> GenerateCircularHexGrid(int radius, float edgeRemovalChance, float interiorHoleChance, System.Random rng)
+		{
+			if (radius <= 0) return new List<HexCell>();
+
+			// Directions for neighbor lookup
+			var directions = new Vector2Int[]
+			{
+				new Vector2Int(1, 0), new Vector2Int(1, -1), new Vector2Int(0, -1),
+				new Vector2Int(-1, 0), new Vector2Int(-1, 1), new Vector2Int(0, 1)
+			};
+
+			bool IsConnected(HashSet<Vector2Int> positions)
+			{
+				if (positions.Count == 0) return true;
+				var start = positions.First();
+				var visited = new HashSet<Vector2Int>();
+				var queue = new Queue<Vector2Int>();
+				queue.Enqueue(start);
+				visited.Add(start);
+				while (queue.Count > 0)
+				{
+					var cur = queue.Dequeue();
+					foreach (var d in directions)
+					{
+						var n = cur + d;
+						if (!positions.Contains(n) || visited.Contains(n)) continue;
+						visited.Add(n);
+						queue.Enqueue(n);
+					}
+				}
+				return visited.Count == positions.Count;
+			}
+
+			List<Vector2Int> GetEdgePositions(HashSet<Vector2Int> positions)
+			{
+				var edges = new List<Vector2Int>();
+				foreach (var p in positions)
+				{
+					foreach (var d in directions)
+					{
+						if (!positions.Contains(p + d)) { edges.Add(p); break; }
+					}
+				}
+				return edges;
+			}
+
+			// Build base set inside a circle (using axial -> world euclidean distance)
+			var allPositions = new HashSet<Vector2Int>();
+			float rWorld = radius; // assume hex size = 1
+			for (int q = -radius; q <= radius; q++)
+			{
+				for (int r = -radius; r <= radius; r++)
+				{
+					var p = new Vector2Int(q, r);
+					var w = AxialToWorld(p, 1f);
+					if (w.sqrMagnitude <= rWorld * rWorld + 1e-3f)
+					{
+						allPositions.Add(p);
+					}
+				}
+			}
+
+			// Edge jitter
+			var edgesList = GetEdgePositions(allPositions);
+			Shuffle(edgesList, rng);
+			foreach (var edge in edgesList)
+			{
+				if (!allPositions.Contains(edge)) continue;
+				if (rng.NextDouble() > edgeRemovalChance) continue;
+				allPositions.Remove(edge);
+				if (!IsConnected(allPositions))
+					allPositions.Add(edge);
+			}
+
+			// Interior holes (exclude current edges)
+			var currentEdges = new HashSet<Vector2Int>(GetEdgePositions(allPositions));
+			var interior = allPositions.Where(p => !currentEdges.Contains(p)).ToList();
+			Shuffle(interior, rng);
+			foreach (var pos in interior)
+			{
+				if (rng.NextDouble() > interiorHoleChance) continue;
+				allPositions.Remove(pos);
+				if (!IsConnected(allPositions))
+					allPositions.Add(pos);
+			}
+
+			return allPositions.Select(p => new HexCell { Position = p, Height = 0 }).ToList();
+		}
+
+		/// <summary>
+		/// Generates an equilateral triangular hex grid region of given size using axial coordinates.
+		/// Region is defined by q >= 0, r >= 0, and q + r < size, producing a 60-degree triangle.
+		/// Supports optional edge jitter and interior holes while preserving connectivity.
+		/// </summary>
+		/// <param name="size">Triangle side length in cells.</param>
+		/// <param name="edgeRemovalChance">Chance (0..1) to remove each perimeter cell (keeps connectivity).</param>
+		/// <param name="interiorHoleChance">Chance (0..1) to remove interior cells (keeps connectivity).</param>
+		/// <param name="rng">Random source.</param>
+		public static List<HexCell> GenerateTriangularHexGrid(int size, float edgeRemovalChance, float interiorHoleChance, System.Random rng)
+		{
+			if (size <= 0) return new List<HexCell>();
+
+			var directions = new Vector2Int[]
+			{
+				new Vector2Int(1, 0), new Vector2Int(1, -1), new Vector2Int(0, -1),
+				new Vector2Int(-1, 0), new Vector2Int(-1, 1), new Vector2Int(0, 1)
+			};
+
+			bool IsConnected(HashSet<Vector2Int> positions)
+			{
+				if (positions.Count == 0) return true;
+				var start = positions.First();
+				var visited = new HashSet<Vector2Int>();
+				var queue = new Queue<Vector2Int>();
+				queue.Enqueue(start);
+				visited.Add(start);
+				while (queue.Count > 0)
+				{
+					var cur = queue.Dequeue();
+					foreach (var d in directions)
+					{
+						var n = cur + d;
+						if (!positions.Contains(n) || visited.Contains(n)) continue;
+						visited.Add(n);
+						queue.Enqueue(n);
+					}
+				}
+				return visited.Count == positions.Count;
+			}
+
+			List<Vector2Int> GetEdgePositions(HashSet<Vector2Int> positions)
+			{
+				var edges = new List<Vector2Int>();
+				foreach (var p in positions)
+				{
+					foreach (var d in directions)
+					{
+						if (!positions.Contains(p + d)) { edges.Add(p); break; }
+					}
+				}
+				return edges;
+			}
+
+			// Base triangle region
+			var allPositions = new HashSet<Vector2Int>();
+			for (int q = 0; q < size; q++)
+			{
+				for (int r = 0; r < size; r++)
+				{
+					if (q + r < size)
+						allPositions.Add(new Vector2Int(q, r));
+				}
+			}
+
+			// Edge jitter
+			var edgesList = GetEdgePositions(allPositions);
+			Shuffle(edgesList, rng);
+			foreach (var edge in edgesList)
+			{
+				if (!allPositions.Contains(edge)) continue;
+				if (rng.NextDouble() > edgeRemovalChance) continue;
+				allPositions.Remove(edge);
+				if (!IsConnected(allPositions))
+					allPositions.Add(edge);
+			}
+
+			// Interior holes
+			var currentEdges = new HashSet<Vector2Int>(GetEdgePositions(allPositions));
+			var interior = allPositions.Where(p => !currentEdges.Contains(p)).ToList();
+			Shuffle(interior, rng);
+			foreach (var pos in interior)
+			{
+				if (rng.NextDouble() > interiorHoleChance) continue;
+				allPositions.Remove(pos);
+				if (!IsConnected(allPositions))
+					allPositions.Add(pos);
+			}
+
+			return allPositions.Select(p => new HexCell { Position = p, Height = 0 }).ToList();
+		}
+
 		private static void Shuffle<T>(IList<T> list, System.Random rng)
 		{
 			for (int i = list.Count - 1; i > 0; i--)
@@ -196,6 +386,14 @@ namespace Game.Grid
 				list[i] = listJ;
 				list[j] = listI;
 			}
+		}
+
+		private static Vector2 AxialToWorld(Vector2Int axial, float size)
+		{
+			// Pointy-top axial to world (x,z) mapping
+			float x = size * (Mathf.Sqrt(3f) * (axial.x + axial.y * 0.5f));
+			float z = size * (1.5f * axial.y);
+			return new Vector2(x, z);
 		}
 	}
 

@@ -15,7 +15,11 @@ MonoBehaviour:
   roomName: Void Swamp
   roomDescription: Shifting Floors
   gridSetup:
+    shape: 0
+    flatSize: 0
     size: {x: 12, y: 12}
     edgeRemovalChance: 0
     innerRemovalChance: 0
-  enemyActors: []
+  enemyActors:
+  - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+  - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}

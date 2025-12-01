@@ -11,9 +11,22 @@ using UnityEngine.Rendering;
 
 namespace Game.Grid
 {
+	public enum ShapeType
+	{
+		Rectangle,
+		Round,
+		Triangle
+	}
+
 	[Serializable]
 	public class GridSetup
 	{
+		[SerializeField]
+		private ShapeType shape;
+		[ShowIf("@this.shape!=ShapeType.Rectangle")]
+		[SerializeField]
+		private int flatSize;
+		[ShowIf("@this.shape==ShapeType.Rectangle")]
 		[SerializeField]
 		private Vector2Int size;
 		[SerializeField]
@@ -23,9 +36,11 @@ namespace Game.Grid
 		[PropertyRange(0, 1)]
 		private float innerRemovalChance;
 
+		public int FlatSize { get => flatSize; }
 		public Vector2Int Size { get => size; }
 		public float EdgeRemovalChance { get => edgeRemovalChance; }
 		public float InnerRemovalChance { get => innerRemovalChance; }
+		public ShapeType Shape { get => shape; }
 	}
 
 	public class GridExpansionController : MonoBehaviour
@@ -54,10 +69,23 @@ namespace Game.Grid
 			if (randomGenerator == null)
 				randomGenerator = new System.Random();
 
-			int cellCount = gridSetup.Size.x * gridSetup.Size.y;
-			var cellList = ProceduralGridGenerator.GenerateVariableRectHexGrid
-				(gridSetup.Size.x, gridSetup.Size.y, gridSetup.EdgeRemovalChance, gridSetup.InnerRemovalChance, randomGenerator);
-
+			List<HexCell> cellList = null;
+			if (gridSetup.Shape == ShapeType.Round)
+			{
+				cellList = ProceduralGridGenerator.GenerateCircularHexGrid
+					(gridSetup.FlatSize, gridSetup.EdgeRemovalChance, gridSetup.InnerRemovalChance, randomGenerator);
+			}
+			else if (gridSetup.Shape == ShapeType.Triangle)
+			{
+				cellList = ProceduralGridGenerator.GenerateTriangularHexGrid
+					(gridSetup.FlatSize, gridSetup.EdgeRemovalChance, gridSetup.InnerRemovalChance, randomGenerator);
+			}
+			else
+			{
+				//Default is rectangle
+				cellList = ProceduralGridGenerator.GenerateVariableRectHexGrid
+					(gridSetup.Size.x, gridSetup.Size.y, gridSetup.EdgeRemovalChance, gridSetup.InnerRemovalChance, randomGenerator);
+			}
 			BuildGrid(cellList);
 		}
 
