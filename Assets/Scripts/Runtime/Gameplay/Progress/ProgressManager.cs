@@ -1,4 +1,5 @@
 using Game.Data;
+using Game.Settings;
 using GamePlugins.Attributes;
 using GamePlugins.Singleton;
 using System;
@@ -61,6 +62,48 @@ namespace Game.Progress
 		public void ResetProgress()
 		{
 			progressData = new ProgressData();
+		}
+
+		internal void EnsureProgress()
+		{
+			if (progressData == null)
+			{
+				progressData = new ProgressData();
+			}
+
+			var gameplaySettings = ResourceManager.Instance.RequestResource<GameplaySettings>();
+
+			if (progressData.currentDungeon == null)
+			{
+				Debug.LogWarning("No Dungeon Selected.");
+				var defaultDungeon = gameplaySettings.DefaultDungeon;
+				SelectDungeon(defaultDungeon);
+				SelectDungeonRoom(defaultDungeon.GetFirstRoom());
+			}
+
+			if(!progressData.HasHeros())
+			{
+				Debug.LogWarning("No heroes selected for the dungeon.");
+				SelectCharacters(gameplaySettings.GetDefaultHeroes(progressData.currentDungeon.HeroCount));
+			}
+
+			CheckDebugOverridesSetup();
+		}
+
+		private void CheckDebugOverridesSetup()
+		{
+			var debugSettings = ResourceManager.Instance.RequestResource<DebugSettings>();
+			if (debugSettings.OverrideDungeon)
+			{
+				Debug.LogWarning("DebugSettings OverrideDungeon is enabled. Overriding current dungeon.");
+				SelectDungeon(debugSettings.DebugDungeon);
+				SelectDungeonRoom(debugSettings.DebugDungeon.GetFirstRoom());
+			}
+			if (debugSettings.OverrideHeros)
+			{
+				Debug.LogWarning("DebugSettings OverrideHeros is enabled. Overriding current heroes.");
+				SelectCharacters(debugSettings.DebugHeros);
+			}
 		}
 	}
 }

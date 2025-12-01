@@ -16,5 +16,10 @@ namespace Game.Progress
 		internal DungeonRoomInfo currentRoom;
 		[SerializeField]
 		internal List<ActorInfo> currentHeroes;
+
+		public bool HasHeros()
+		{
+			return currentHeroes != null && currentHeroes.Count > 0;
+		}
 	}
 }

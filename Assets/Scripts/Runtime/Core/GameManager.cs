@@ -1,4 +1,5 @@
 using Game.Gameplay;
+using Game.Progress;
 using Game.Settings;
 using Game.UI;
 using GamePlugins.Attributes;
@@ -18,26 +19,22 @@ namespace Game
 	public class GameManager : Singleton<GameManager>
 	{
 		#region Static
-		public static bool gameplayLoading = false;
-		public static bool uiSceneLoading = false;
-#if UNITY_EDITOR
-		private static bool loadedFromDifferentScene = false;
-		public static string editorStartLevel;
-#endif
+		public static bool isLoadiongScenes = false;
+
 		private bool intializedLoading = false;
 		private const string alwaysLoadedScene = "AlwaysLoaded";
 		private const string uiScene = "UIHub";
 		private const string gameplayScene = "Gameplay";
-
-		private bool gameplaySceneLoaded = false;
 		#endregion
 
 		#region Fields
-		[SerializeField, ShowInInspector]
+		[SerializeField]
 		private GameplaySettings gameplaySettings;
-		[SerializeField, ShowInInspector]
+		[SerializeField]
+		private DebugSettings debugSettings;
+		[SerializeField]
 		private LoadingScreenUI loadingScreen;
-		[SerializeField, ShowInInspector]
+		[SerializeField]
 		private TextMeshProUGUI buildVersionText;
 
 #if UNITY_EDITOR
@@ -45,39 +42,15 @@ namespace Game
 		#endregion
 
 		#region Properties
-		public static bool StageSceneLoaded
-		{
-			get
-			{
-				if (instance != null)
-					return instance.gameplaySceneLoaded;
-				return false;
-			}
-		}
 		public GameplaySettings GameplaySettings => gameplaySettings;
 
 		public bool IsLoading
 		{
 			get
 			{
-				return gameplayLoading || loadingScreen.IsVisible();
+				return isLoadiongScenes || loadingScreen.IsVisible();
 			}
 		}
-
-		public bool IsGameplayActive { get; internal set; }
-
-#if UNITY_EDITOR
-		public static bool LoadedFromDifferentScene
-		{
-			get => loadedFromDifferentScene;
-			set
-			{
-				loadedFromDifferentScene = value;
-			}
-		}
-
-
-#endif
 		#endregion
 
 		#region Events
@@ -90,13 +63,7 @@ namespace Game
 		protected override void OnAwakeCalled()
 		{
 			base.OnAwakeCalled();
-#if UNITY_EDITOR
-			if (loadedFromDifferentScene)
-				return;
 			Initialize();
-#else
-			Initialize();
-#endif
 		}
 
 		public void Initialize()
@@ -108,7 +75,6 @@ namespace Game
 
 			ToggleLoadingScreen(true, true);
 
-			gameplaySceneLoaded = false;
 			intializedLoading = true;
 			StartCoroutine(InitializeCO());
 		}
@@ -149,10 +115,20 @@ namespace Game
 
 		private IEnumerator InitializeCO()
 		{
-			Scene scene = SceneManager.GetActiveScene();
+			Scene activeScene = SceneManager.GetActiveScene();
 			yield return null;
 
-			if (scene.name == alwaysLoadedScene)
+			ResourceManager.Instance.RegisterResource<GameplaySettings>(gameplaySettings);
+
+			if(debugSettings == null)
+			{
+				Debug.LogError("Missing DebugSettings ref! Will create a temporary one");
+				debugSettings = new DebugSettings();
+			}
+
+			ResourceManager.Instance.RegisterResource<DebugSettings>(debugSettings);
+
+			if (activeScene.name == alwaysLoadedScene)
 			{
 				yield return StartCoroutine(LoadUICO(false));
 			}
@@ -214,19 +190,19 @@ namespace Game
 
 		private IEnumerator LoadGameplayCO(bool toggleLoadingScreen = true)
 		{
-			if (gameplayLoading) yield break;
+			if (isLoadiongScenes) yield break;
 
-			gameplaySceneLoaded = false;
-			gameplayLoading = true;
+			isLoadiongScenes = true;
 			if (toggleLoadingScreen)
 			{
 				ToggleLoadingScreen(true);
 				yield return new WaitForSeconds(.5f);
 			}
-#if UNITY_EDITOR
-			if (!LoadedFromDifferentScene)
-#endif
-				yield return StartCoroutine(UnloadScenes());
+
+			ProgressManager.Instance.EnsureProgress();
+
+			yield return StartCoroutine(UnloadScenes());
+			yield return StartCoroutine(LoadSceneAsync(uiScene, LoadSceneMode.Additive, true));
 			UIManager.Instance.ClearUI();
 			yield return StartCoroutine(LoadSceneAsync(gameplayScene, LoadSceneMode.Additive, true));
 
@@ -234,18 +210,14 @@ namespace Game
 
 			ToggleLoadingScreen(false);
 
-			gameplaySceneLoaded = true;
 			yield return null;
-			gameplayLoading = false;
+			isLoadiongScenes = false;
 		}
 
 		private IEnumerator LoadUICO(bool toggleLoadingScreen = true)
 		{
-			if (uiSceneLoading) yield break;
+			if (isLoadiongScenes) yield break;
 
-			uiSceneLoading = true;
-
-			gameplaySceneLoaded = false;
 			if (toggleLoadingScreen)
 			{
 				ToggleLoadingScreen(true);
@@ -260,13 +232,11 @@ namespace Game
 			UINavigator.Instance.ShowMainMenuUI();
 			yield return null;
 
-
 			ToggleLoadingScreen(false);
 			yield return new WaitForSeconds(.5f);
 
-
 			yield return null;
-			uiSceneLoading = false;
+			isLoadiongScenes = false;
 		}
 
 		private IEnumerator ReLoadGameplayCO()
@@ -295,30 +265,11 @@ namespace Game
 		}
 
 #if UNITY_EDITOR
-		public static IEnumerator LoadGameplayCO_Editor(MonoBehaviour caller)
+		public static void LoadGameplayCO_Editor()
 		{
-			if (!gameplayLoading)
+			if (!isLoadiongScenes)
 			{
 				LoadScene(alwaysLoadedScene, LoadSceneMode.Additive);
-				yield return null;
-#if USE_ADDRESSABLES
-			yield return GameManager.Instance.StartCoroutine(GameManager.Instance.LoadAddressablesCO());
-#endif
-				yield return null;
-				yield return GameManager.Instance.LoadGameplayCO();
-				LoadedFromDifferentScene = false;
-			}
-		}
-#endif
-
-#if UNITY_EDITOR
-		public static IEnumerator LoadEntryPoint_EditorCO(MonoBehaviour caller)
-		{
-			if (!uiSceneLoading)
-			{
-				LoadScene(alwaysLoadedScene, LoadSceneMode.Additive);
-				yield return null;
-				LoadedFromDifferentScene = false;
 			}
 		}
 #endif

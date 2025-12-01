@@ -471,6 +471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.GameManager
   initialized: 0
   gameplaySettings: {fileID: 11400000, guid: d11b26c23b3daa149b03a0a663d18e98, type: 2}
+  debugSettings: {fileID: 11400000, guid: fd2dba6dae6d5814a93596792d090a12, type: 2}
   loadingScreen: {fileID: 638003986}
   buildVersionText: {fileID: 830486723}
 --- !u!4 &1361743934

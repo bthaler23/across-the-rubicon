@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Game.Data
@@ -24,6 +25,7 @@ namespace Game.Data
 		public string GetDungeonName() => DungeonName;
 		public int GetDifficultyLevel() => DifficultyLevel;
 		public Sprite GetDungeonIcon() => DungeonIcon;
+		public DungeonRoomInfo GetFirstRoom() => Rooms.FirstOrDefault();
 		public DungeonRoomInfo[] GetRooms() => Rooms;
 
 		internal string GetDungeonSize()

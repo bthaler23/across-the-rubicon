@@ -38,14 +38,19 @@ namespace Game.Grid
 		private GridSetup debugGridSetup;
 
 		private System.Random randomGenerator;
+		private bool initialized = false;
 
-		private void Awake()
+		private void TryInitialize()
 		{
+			if (initialized) return;
 			ObjectPool.Instance.CachePrefab(gridTilePrefab.gameObject, 20);
+			initialized = true;
 		}
 
 		public void InitializeGrid(GridSetup gridSetup)
 		{
+			TryInitialize();
+
 			if (randomGenerator == null)
 				randomGenerator = new System.Random();
 
@@ -59,6 +64,7 @@ namespace Game.Grid
 		[Button]
 		private void InitializeGridWithCellCount()
 		{
+			TryInitialize();
 			if (randomGenerator == null)
 				randomGenerator = new System.Random();
 

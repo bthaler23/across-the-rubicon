@@ -82,12 +82,14 @@ namespace Game.Gameplay
 		{
 			List<TeamInfo> teams = new List<TeamInfo>();
 
-			TeamInfo playerTeam = new TeamInfo();
+			var gameplaySettings = ResourceManager.Instance.RequestResource<GameplaySettings>();
+
+			TeamInfo playerTeam = new TeamInfo("Heroes", gameplaySettings.HeroTeamColor);
 			foreach(var character in ProgressManager.Instance.CurrentHeroes)
 			{
 				playerTeam.AddCharacter(character);
 			}
-			TeamInfo enemyTeam = new TeamInfo();
+			TeamInfo enemyTeam = new TeamInfo("Foes", gameplaySettings.EnemyTeamColor);
 			foreach(var character in ProgressManager.Instance.CurrentDungeonRoom.EnemyActors)
 			{
 				enemyTeam.AddCharacter(character);

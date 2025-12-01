@@ -551,6 +551,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1582737628}
   - component: {fileID: 1582737627}
+  - component: {fileID: 1582737629}
   m_Layer: 0
   m_Name: GameplayController
   m_TagString: Untagged
@@ -571,15 +572,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Gameplay.GameplayController
   initialized: 0
-  gameplaySettings: {fileID: 11400000, guid: d11b26c23b3daa149b03a0a663d18e98, type: 2}
   cameraController: {fileID: 8444935615456679833}
   cameraBoarderPadding: 2
+  playerInput: {fileID: 786534993}
   gameFlowManager: {fileID: 858946885}
   gridData: {fileID: 1424383544}
   gridManager: {fileID: 1424383542}
   gridExpansionController: {fileID: 1870759708}
-  startingCharacter: {fileID: 11400000, guid: 2d0e5404018fa2946be4e45a4b4319b5, type: 2}
-  playerInput: {fileID: 786534993}
 --- !u!4 &1582737628
 Transform:
   m_ObjectHideFlags: 0
@@ -595,6 +594,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1582737629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582737626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c58b7f7c00da41469e5724d5b2437d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Core.PlayFromEntryPoint
+  disableGameplayLoad: 0
 --- !u!1 &1718083692
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,9 +735,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RM.Grid.GridExpansionController
   gridTilePrefab: {fileID: 4606567027678384990, guid: 0f2fc7aa29765fa46878ea8f64a4c5cd, type: 3}
   initialCellCountRange: {x: 20, y: 30}
-  gridDimensions: {x: 8, y: 8}
-  edgeRemovalChance: 0.3
-  innerRemovalChance: 0.1
+  debugGridSetup:
+    size: {x: 0, y: 0}
+    edgeRemovalChance: 0
+    innerRemovalChance: 0
 --- !u!4 &1870759709
 Transform:
   m_ObjectHideFlags: 0
@@ -1362,10 +1375,10 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1582737628}
   - {fileID: 3482610674057804508}
   - {fileID: 8444935615456679832}
   - {fileID: 1424383543}
   - {fileID: 1870759709}
-  - {fileID: 1582737628}
   - {fileID: 786534994}
   - {fileID: 858946886}

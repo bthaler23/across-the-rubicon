@@ -21,15 +21,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 53345c118851bf34facf53468e412ed5, type: 2}
   - {fileID: 11400000, guid: a43678ca820f93940a535309e3fa7ede, type: 2}
   - {fileID: 11400000, guid: eb83e2f7eac7ab747bbfe52b8e4e3519, type: 2}
-  gridTilePrefab: {fileID: 0}
-  teamInfos:
-  - teamID: A
-    teamColor: {r: 0.33174083, g: 0.5668361, b: 0.6301887, a: 1}
-    characters:
-    - {fileID: 11400000, guid: 2d0e5404018fa2946be4e45a4b4319b5, type: 2}
-    - {fileID: 11400000, guid: 9935b3d328deee74f9db4514f52d2662, type: 2}
-  - teamID: B
-    teamColor: {r: 0.4627451, g: 0.17254905, b: 0.45616004, a: 1}
-    characters:
-    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
-    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  heroTeamColor: {r: 0, g: 0.7372549, b: 0.6917643, a: 1}
+  enemyTeamColor: {r: 0.6754716, g: 0, b: 0.24517101, a: 1}
