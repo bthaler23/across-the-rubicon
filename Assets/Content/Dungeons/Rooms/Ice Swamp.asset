@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f207936dda1ca24997374040eb57664, type: 3}
+  m_Name: Ice Swamp
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Data.DungeonRoomInfo
+  roomName: Ice Swamp
+  roomDescription: -1 ATK to all
+  gridSetup:
+    size: {x: 24, y: 6}
+    edgeRemovalChance: 0
+    innerRemovalChance: 0
+  enemyActors: []

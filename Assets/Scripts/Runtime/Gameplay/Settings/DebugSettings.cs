@@ -15,6 +15,9 @@ namespace Game.Settings
 		[ShowIf("@this.overrideDungeon==true")]
 		[SerializeField]
 		private DungeonInfo debugDungeon;
+		[ShowIf("@this.overrideDungeon==true")]
+		[SerializeField]
+		private DungeonRoomInfo debugDungeonRoom;
 
 		[RequiredBool(false)]
 		[PropertySpace(SpaceBefore = 10)]
@@ -28,6 +31,7 @@ namespace Game.Settings
 		public bool OverrideHeros { get => overrideHeros; }
 		public List<ActorInfo> DebugHeros { get => debugHeros; }
 		public DungeonInfo DebugDungeon { get => debugDungeon; }
+		public DungeonRoomInfo DebugDungeonRoom { get => debugDungeonRoom; }
 
 		public void Initialize()
 		{

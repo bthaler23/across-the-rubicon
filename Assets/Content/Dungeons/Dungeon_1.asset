@@ -17,39 +17,7 @@ MonoBehaviour:
   DungeonIcon: {fileID: 1125967592, guid: 9db97d92d472bef4f8d190fd966f638a, type: 3}
   heroCount: 3
   Rooms:
-  - roomName: Swamp
-    roomDescription: +2 SPD to all
-    gridSetup:
-      size: {x: 8, y: 8}
-      edgeRemovalChance: 0
-      innerRemovalChance: 0
-    enemyActors:
-    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
-    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
-  - roomName: Void Swamp
-    roomDescription: Shifting Floors
-    gridSetup:
-      size: {x: 12, y: 12}
-      edgeRemovalChance: 0
-      innerRemovalChance: 0
-    enemyActors:
-    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
-    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
-  - roomName: Void Forest
-    roomDescription: More Trees
-    gridSetup:
-      size: {x: 12, y: 20}
-      edgeRemovalChance: 0
-      innerRemovalChance: 0
-    enemyActors:
-    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
-    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
-  - roomName: Ice Swamp
-    roomDescription: -1 ATK to all
-    gridSetup:
-      size: {x: 24, y: 6}
-      edgeRemovalChance: 0
-      innerRemovalChance: 0
-    enemyActors:
-    - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
-    - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  - {fileID: 11400000, guid: b89a469bbfaeeaf43bc0d5b3c5dce751, type: 2}
+  - {fileID: 11400000, guid: 94da03055c81e664881b29d0a674d5f8, type: 2}
+  - {fileID: 11400000, guid: 3819e8dc69aaae74f957c6523b1d05c8, type: 2}
+  - {fileID: 11400000, guid: ba5406bed15c6654b86fe5347d64255a, type: 2}

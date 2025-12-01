@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Game.Data
 {
-	[Serializable]
-	public class DungeonRoomInfo
+	[CreateAssetMenu(fileName = "DungeonRoomInfo", menuName = "Rubicon/DungeonRoomInfo", order = 1)]
+	public class DungeonRoomInfo : ScriptableObject
 	{
 		[BoxGroup("Room")]
 		[SerializeField]

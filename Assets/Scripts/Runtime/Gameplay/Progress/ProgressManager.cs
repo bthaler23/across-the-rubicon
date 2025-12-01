@@ -97,7 +97,7 @@ namespace Game.Progress
 			{
 				Debug.LogWarning("DebugSettings OverrideDungeon is enabled. Overriding current dungeon.");
 				SelectDungeon(debugSettings.DebugDungeon);
-				SelectDungeonRoom(debugSettings.DebugDungeon.GetFirstRoom());
+				SelectDungeonRoom(debugSettings.DebugDungeonRoom);
 			}
 			if (debugSettings.OverrideHeros)
 			{
