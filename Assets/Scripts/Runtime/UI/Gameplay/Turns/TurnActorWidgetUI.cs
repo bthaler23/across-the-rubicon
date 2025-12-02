@@ -1,3 +1,4 @@
+using Game;
 using Game.Gameplay;
 using Game.Stats;
 using GamePlugins.Utils;
@@ -15,6 +16,10 @@ public class TurnActorWidgetUI : MonoBehaviour
 	private Image iconFrameImage;
 	[SerializeField]
 	private Image healthProgressBarImage;
+	[SerializeField]
+	private Image manaProgressBarImage;
+	[SerializeField]
+	private Image turnMeterProgressBarImage;
 
 	public void Show(ITurnActor actor, bool isActiveTurn)
 	{
@@ -23,6 +28,16 @@ public class TurnActorWidgetUI : MonoBehaviour
 		activeTurnGO.SetActive(isActiveTurn);
 		iconFrameImage.SetIconColorSafe(actor.GetTeamColor());
 		ShowHealth(actor);
+		ShowTurnMeter(actor);
+	}
+
+	private void ShowTurnMeter(ITurnActor actor)
+	{
+		var turnmanager = ResourceManager.Instance.RequestResource<TurnManager>();
+		var turnMeterValue = actor.GetTurnMeter();
+		int turnMeterThreshold = turnmanager.TurnMeterThreshold; // This should ideally come from a config or the turn manager
+		float healthPercent = (float)turnMeterValue / (float)turnMeterThreshold;
+		turnMeterProgressBarImage.fillAmount = healthPercent;
 	}
 
 	private void ShowHealth(ITurnActor actor)

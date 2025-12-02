@@ -19,6 +19,9 @@ MonoBehaviour:
   characterFullAvatarSprite: {fileID: 1782705385, guid: d33598d781682e049a53a0a13104ef29, type: 3}
   characterPrefab: {fileID: 8640429587234801111, guid: d8de0fa86e44a224baaa679537eabb89, type: 3}
   health: 10
-  damage: 1
+  manaPool: 10
+  minAttack: 0
+  maxAttack: 0
   attackRange: 2
   movementRange: 1
+  speed: 2

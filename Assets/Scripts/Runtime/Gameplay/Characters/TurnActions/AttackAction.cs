@@ -35,7 +35,7 @@ namespace Game
 					// Use team color difference as enemy check (TeamInfo is not exposed)
 					if (target.GetTeamColor() != Owner.GetTeamColor())
 					{
-						target.ApplyDamage(Owner.Info.Damage);
+						target.ApplyDamage(Owner.GetCharacterAttackDamage());
 					}
 				}
 

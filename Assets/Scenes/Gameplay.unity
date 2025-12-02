@@ -283,6 +283,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518a3ea2913979145b199c90de08a80e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Gameplay.TurnManager
+  turnMeterIncrement: 1
+  turnMeterThreshold: 100
 --- !u!114 &858946885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -736,6 +738,8 @@ MonoBehaviour:
   gridTilePrefab: {fileID: 4606567027678384990, guid: 0f2fc7aa29765fa46878ea8f64a4c5cd, type: 3}
   initialCellCountRange: {x: 20, y: 30}
   debugGridSetup:
+    shape: 0
+    flatSize: 0
     size: {x: 0, y: 0}
     edgeRemovalChance: 0
     innerRemovalChance: 0

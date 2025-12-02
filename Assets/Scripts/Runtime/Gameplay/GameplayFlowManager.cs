@@ -22,9 +22,15 @@ namespace Game.Gameplay
 
 		private IEnumerator Initialize_CO()
 		{
+			ResourceManager.Instance.RegisterResource<TurnManager>(turnManager);
 			turnManager.Initialize(GetTurnOrder(teams), CheckEndGameCondition, OnGameEnded);
 			yield return null;
 			turnManager.StartTurns();
+		}
+
+		private void OnDestroy()
+		{
+			ResourceManager.Instance.RemoveResource<TurnManager>();
 		}
 
 		private List<ITurnActor> GetTurnOrder(List<TeamActors> teams)

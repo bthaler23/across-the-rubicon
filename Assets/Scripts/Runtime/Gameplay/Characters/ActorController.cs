@@ -45,6 +45,9 @@ namespace Game
 		private Vector2Int currentPosition;
 		[ShowInInspector, ReadOnly]
 		private bool isTurnActive = false;
+		[ShowInInspector, ReadOnly]
+		private int turnMeter;
+
 
 		public string ID => gameObject.name;
 		public ActorInfo Info { get => info; }
@@ -67,6 +70,7 @@ namespace Game
 			statValues = new SerializedDictionary<StatType, IStatValue>();
 			healthStatsCache = new HealthStats(info.Health);
 			statValues.Add(StatType.Health, healthStatsCache);
+			turnMeter = 0;
 		}
 
 		private void InitializeActions()
@@ -171,7 +175,7 @@ namespace Game
 		{
 			if (!action.IsAvailable()) return;
 
-			if(DisabelCurrentAction())
+			if (DisabelCurrentAction())
 			{
 				activeAction = action;
 				activeAction.ActivateAction();
@@ -198,6 +202,30 @@ namespace Game
 		public void UnRegisterHexCellClickEvent(Action<Vector2Int> onCellClicked)
 		{
 			inputController.CellClicked -= onCellClicked;
+		}
+
+		public int GetCharacterAttackDamage()
+		{
+			//TODO GYURI: fix this temporary implementation
+			int minAttack = 0;
+			int maxAttack = 1;
+
+			return UnityEngine.Random.Range(minAttack, maxAttack);
+		}
+
+		public int GetTurnMeter()
+		{
+			return turnMeter;
+		}
+
+		public void TurnMeterTick()
+		{
+			turnMeter += info.Speed;
+		}
+
+		public void ModifyTurnMeter(int count)
+		{
+			turnMeter += count;
 		}
 		#endregion
 	}

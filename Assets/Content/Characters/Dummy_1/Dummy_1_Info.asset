@@ -15,10 +15,13 @@ MonoBehaviour:
   charaterName: Dummy_1
   charaterDescription: 
   charaterAbilityDescription: 
-  characerAvatar: {fileID: -2088749509, guid: 57a1443e67528144aa07582927559650, type: 3}
-  characterFullAvatarSprite: {fileID: -2088749509, guid: 57a1443e67528144aa07582927559650, type: 3}
+  characerAvatar: {fileID: 21300000, guid: 8ce47518e1c9e054498959c31da06752, type: 3}
+  characterFullAvatarSprite: {fileID: 21300000, guid: 8ce47518e1c9e054498959c31da06752, type: 3}
   characterPrefab: {fileID: 6816818919738355406, guid: e66826c77a4a0134a8f9980800ff14b9, type: 3}
   health: 10
-  damage: 1
+  manaPool: 0
+  minAttack: 0
+  maxAttack: 0
   attackRange: 1
   movementRange: 2
+  speed: 3

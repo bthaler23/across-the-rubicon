@@ -38,7 +38,10 @@ namespace Game.UI
 
 		private void OnTurnChangeEvent(ActiveActorRefreshEvent eventParams)
 		{
-			Show(eventParams.active);
+			if (eventParams.active != null)
+				Show(eventParams.active);
+			else
+				gameObject.SetGameObjectActive(false);
 		}
 
 		public void Show(ITurnActor actor)

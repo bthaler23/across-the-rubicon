@@ -16,6 +16,9 @@ namespace Game.Gameplay
 		public bool HasAnyActions();
 		public void TurnStart();
 		public void TurnEnd();
+		public int GetTurnMeter();
+		public void TurnMeterTick();
+		public void ModifyTurnMeter(int count);
 		Sprite GetActorIcon();
 		Color GetTeamColor();
 		IStatValue GetStatValue(StatType type);
