@@ -34,7 +34,7 @@ public class TurnActorWidgetUI : MonoBehaviour
 	private void ShowTurnMeter(ITurnActor actor)
 	{
 		var turnmanager = ResourceManager.Instance.RequestResource<TurnManager>();
-		var turnMeterValue = actor.GetTurnMeter();
+		var turnMeterValue = turnmanager.GetTurnMeter(actor);
 		int turnMeterThreshold = turnmanager.TurnMeterThreshold; // This should ideally come from a config or the turn manager
 		float healthPercent = (float)turnMeterValue / (float)turnMeterThreshold;
 		turnMeterProgressBarImage.fillAmount = healthPercent;

@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07c4acc7dddaeed459d56fbeff50b4ff, type: 3}
-  m_Name: Dummy_1_Info
+  m_Name: Enemy_3_Info
   m_EditorClassIdentifier: Assembly-CSharp::Game.Character.CharacterInfo
-  charaterName: Dummy_1
+  charaterName: Enemy_3
   charaterDescription: 
   charaterAbilityDescription: 
-  characerAvatar: {fileID: 21300000, guid: 8ce47518e1c9e054498959c31da06752, type: 3}
-  characterFullAvatarSprite: {fileID: 21300000, guid: 8ce47518e1c9e054498959c31da06752, type: 3}
-  characterPrefab: {fileID: 6816818919738355406, guid: e66826c77a4a0134a8f9980800ff14b9, type: 3}
+  characerAvatar: {fileID: 626918169, guid: c4d2ccab0c2ad7e47853b6e31a7ac7c2, type: 3}
+  characterFullAvatarSprite: {fileID: 172626504, guid: c4d2ccab0c2ad7e47853b6e31a7ac7c2, type: 3}
+  characterPrefab: {fileID: 1128669317742882274, guid: 96b4d56fad858ee418da44b0f67c104b, type: 3}
   health: 10
-  manaPool: 0
+  manaPool: 10
   minAttack: 0
   maxAttack: 0
-  attackRange: 1
-  movementRange: 2
-  speed: 4
+  attackRange: 2
+  movementRange: 1
+  speed: 3

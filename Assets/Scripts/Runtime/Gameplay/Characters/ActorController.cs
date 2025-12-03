@@ -213,19 +213,9 @@ namespace Game
 			return UnityEngine.Random.Range(minAttack, maxAttack);
 		}
 
-		public int GetTurnMeter()
+		public float GetTurnSpeed()
 		{
-			return turnMeter;
-		}
-
-		public void TurnMeterTick()
-		{
-			turnMeter += info.Speed;
-		}
-
-		public void ModifyTurnMeter(int count)
-		{
-			turnMeter += count;
+			return info.Speed;
 		}
 		#endregion
 	}

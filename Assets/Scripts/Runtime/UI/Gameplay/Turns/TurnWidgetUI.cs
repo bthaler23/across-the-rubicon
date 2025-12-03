@@ -43,7 +43,7 @@ namespace Game.UI
 			{
 				var ui = turnActionUIs[i];
 				var actor = actors[i];
-				bool isActive = turnChangeParam.selected != null && ReferenceEquals(actor, turnChangeParam.selected);
+				bool isActive = turnChangeParam.isActiveTurn && i == 0;
 				ui.Show(actor, isActive);
 			}
 

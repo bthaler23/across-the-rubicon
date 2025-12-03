@@ -283,8 +283,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518a3ea2913979145b199c90de08a80e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Gameplay.TurnManager
-  turnMeterIncrement: 1
   turnMeterThreshold: 100
+  turnRoundsToDisplay: 2
 --- !u!114 &858946885
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,11 +15,12 @@ MonoBehaviour:
   roomName: Ice Swamp
   roomDescription: -1 ATK to all
   gridSetup:
-    shape: 2
-    flatSize: 5
+    shape: 1
+    flatSize: 7
     size: {x: 24, y: 6}
     edgeRemovalChance: 0
     innerRemovalChance: 0
   enemyActors:
   - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
   - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  - {fileID: 11400000, guid: 4606a1ae6ca0f4247881e21f5f0d0e32, type: 2}

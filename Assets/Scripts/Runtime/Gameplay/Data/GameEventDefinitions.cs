@@ -9,12 +9,12 @@ namespace Game.Events
 	public class TurnChangeEvent : IGenericEvent
 	{
 		public readonly List<ITurnActor> actors;
-		public readonly ITurnActor selected;
+		public readonly bool isActiveTurn;
 
-		public TurnChangeEvent(List<ITurnActor> actors, ITurnActor selected)
+		public TurnChangeEvent(List<ITurnActor> actors, bool isActiveTurn)
 		{
 			this.actors = actors;
-			this.selected = selected;
+			this.isActiveTurn = isActiveTurn;
 		}
 	}
 

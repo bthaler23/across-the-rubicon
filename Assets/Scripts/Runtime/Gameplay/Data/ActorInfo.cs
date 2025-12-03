@@ -37,7 +37,7 @@ namespace Game.Data
 		[SerializeField]
 		private int movementRange;
 		[SerializeField]
-		private int speed;
+		private float speed;
 
 		public ActorController CharacterPrefab => characterPrefab;
 		public Sprite CharacterAvatar { get => characerAvatar; }
@@ -47,7 +47,7 @@ namespace Game.Data
 		public int Health { get => health; }
 		public int MovementRange => movementRange;
 		public int AttackRange => attackRange;
-		public int Speed => speed;
+		public float Speed => speed;
 		public string CharaterName { get => charaterName; }
 		public string CharaterDescription { get => charaterDescription; }
 		public string CharaterAbilityDescription { get => charaterAbilityDescription; }

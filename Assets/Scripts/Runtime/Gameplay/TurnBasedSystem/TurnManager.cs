@@ -1,22 +1,51 @@
 using Game.Events;
 using GamePlugins.Events;
+using GamePlugins.Utils;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game.Gameplay
 {
+	public struct TurnTracker
+	{
+		public ITurnActor Actor;
+		public float TurnMeter;
+		public TurnTracker(ITurnActor actor, float turnMeter)
+		{
+			Actor = actor;
+			TurnMeter = turnMeter;
+		}
+
+		public void IncreaseMeter(float value)
+		{
+			Assert.IsTrue(value > 0, "Increase amount must be greater than zero.");
+			TurnMeter += value;
+		}
+
+		public void DecreaseMeter(float value)
+		{
+			Assert.IsTrue(value > 0, "Decrese amount must be greater than zero.");
+			TurnMeter -= value;
+		}
+	}
+
 	public class TurnManager : MonoBehaviour, IResource
 	{
 		[SerializeField]
 		private int turnMeterThreshold = 100;
+		[SerializeField]
+		private int turnRoundsToDisplay = 2;
 		[ShowInInspector, ReadOnly]
 		private ITurnActor currentActor;
 		[ShowInInspector, ReadOnly]
 		private List<ITurnActor> actors;
+		[ShowInInspector, ReadOnly]
+		private List<TurnTracker> turnTracker;
 		private OnEndGame endGameCallback;
 		private EndGameCondition endGameCondition;
 
@@ -25,11 +54,16 @@ namespace Game.Gameplay
 		public delegate void OnEndGame();
 		public delegate bool EndGameCondition();
 
+		public void Initialize()
+		{
+		}
+
 		public void Initialize(List<ITurnActor> actors, EndGameCondition endGameCondition, OnEndGame endGameCallback)
 		{
-			this.actors = actors;
 			this.endGameCondition = endGameCondition;
 			this.endGameCallback = endGameCallback;
+			this.actors = new List<ITurnActor>();
+			this.actors.AddRange(actors);
 
 			foreach (var actor in this.actors)
 			{
@@ -41,25 +75,19 @@ namespace Game.Gameplay
 
 		private void InitializeCharactersMeterTurn()
 		{
-			bool isThreasholdReached = false;
-			while (!isThreasholdReached)
+			turnTracker = new List<TurnTracker>();
+			foreach (var actor in actors)
 			{
-				foreach (var actor in actors)
-				{
-					actor.TurnMeterTick();
-					if (actor.GetTurnMeter() >= turnMeterThreshold)
-					{
-						isThreasholdReached = true;
-					}
-				}
+				turnTracker.Add(new TurnTracker(actor, 0));
 			}
-			SortActorsBasedOnTurns();
+
+			while (HasActionableActor(turnTracker) == false)
+			{
+				ProcessTicks(turnTracker);
+				SortActorsBasedOnTurns(turnTracker);
+			}
 		}
 
-		private void SortActorsBasedOnTurns()
-		{
-			actors.Sort((a, b) => b.GetTurnMeter().CompareTo(a.GetTurnMeter()));
-		}
 
 		public void Dispose()
 		{
@@ -70,6 +98,7 @@ namespace Game.Gameplay
 				actor.OnTurnCompleted -= SignalActorDone;
 			}
 			actors = null;
+			turnTracker = null;
 		}
 
 		public void StartTurns()
@@ -81,31 +110,25 @@ namespace Game.Gameplay
 		{
 			if (increaseTurnMeter)
 				yield return StartCoroutine(UpdateMetersCO());
-			bool foundActorWithActions = false;
-			ITurnActor actor = null;
-			int index = 0;
-			while (!foundActorWithActions && index < actors.Count)
+
+			ITurnActor nextActor = null;
+			for (int i = 0; i < turnTracker.Count; i++)
 			{
-				actor = actors[index];
-				index++;
-				// Skip if actor has no actions
-				if (!actor.HasAnyActions())
+				var turn = turnTracker[i];
+				if (turn.Actor.HasAnyActions())
 				{
-					Debug.Log(actor.ID + " skipped (no available actions)");
-				}
-				else
-				{
-					foundActorWithActions = true;
+					nextActor = turn.Actor;
+					break;
 				}
 			}
 
-			if (foundActorWithActions)
+			if (nextActor != null)
 			{
 				// Start their turn
-				currentActor = actor;
+				currentActor = nextActor;
 				currentActor.TurnStart();
 
-				EventBus.Publish<TurnChangeEvent>(new TurnChangeEvent(actors, currentActor));
+				EventBus.Publish<TurnChangeEvent>(new TurnChangeEvent(CalulateTurnsforUI(), true));
 				EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(currentActor));
 			}
 			else
@@ -117,27 +140,18 @@ namespace Game.Gameplay
 
 		private IEnumerator UpdateMetersCO()
 		{
-			SortActorsBasedOnTurns();//need to establish order before updating meters
 			EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(null));
-			bool isThreasholdReached = false;
-			while (!isThreasholdReached)
+			while (HasActionableActor(turnTracker) == false)
 			{
-				foreach (var actor in actors)
-				{
-					actor.TurnMeterTick();
-					if (actor.GetTurnMeter() >= turnMeterThreshold)
-					{
-						isThreasholdReached = true;
-					}
-				}
-				SortActorsBasedOnTurns();
-				EventBus.Publish<TurnChangeEvent>(new TurnChangeEvent(actors, null));
+				ProcessTicks(turnTracker);
+				SortActorsBasedOnTurns(turnTracker);
+				EventBus.Publish<TurnChangeEvent>(new TurnChangeEvent(CalulateTurnsforUI(), false));
 				yield return null;
 			}
 
-			foreach (var actor in actors)
+			foreach (var turn in turnTracker)
 			{
-				Debug.Log($"Actor {actor.ID} Turn Meter: {actor.GetTurnMeter()}");
+				Debug.Log($"Actor {turn.Actor.ID} Turn Meter: {turn.TurnMeter}");
 			}
 		}
 
@@ -145,15 +159,7 @@ namespace Game.Gameplay
 		public void SignalActorDone()
 		{
 			// End of turn
-			currentActor.TurnEnd();
-			currentActor.ModifyTurnMeter(-turnMeterThreshold);
-			int index = actors.IndexOf(currentActor);
-			if (index >= 0)
-			{
-				actors.RemoveAt(index);
-				actors.Add(currentActor);
-			}
-			currentActor = null;
+			HandleEndTurn();
 
 			// Check for win conditions
 			if (endGameCondition())
@@ -165,8 +171,86 @@ namespace Game.Gameplay
 			StartCoroutine(ProceedToNextActor(true));
 		}
 
-		public void Initialize()
+		private void HandleEndTurn()
 		{
+			currentActor.TurnEnd();
+			currentActor = null;
+			var current = turnTracker[0];
+			current.DecreaseMeter(turnMeterThreshold);
+			turnTracker.RemoveAt(0);
+			turnTracker.Add(current);
+		}
+
+		private List<ITurnActor> CalulateTurnsforUI()
+		{
+			int turnsToDisplay = Mathf.Max(turnTracker.Count, turnTracker.Count * turnRoundsToDisplay);
+			return CalulateTurns(new List<TurnTracker>(turnTracker), turnsToDisplay);
+		}
+
+		private List<ITurnActor> CalulateTurns(List<TurnTracker> actors, int targetTurns)
+		{
+			List<ITurnActor> results = new List<ITurnActor>();
+
+			while (results.Count < targetTurns)
+			{
+				//Pick turns
+				while (HasActionableActor(actors) == true && results.Count <= targetTurns)
+				{
+					actors = SortActorsBasedOnTurns(actors);
+					var actor = actors[0];
+					results.Add(actor.Actor);
+					actor.DecreaseMeter(turnMeterThreshold);
+					actors.RemoveAt(0);
+					actors.Add(actor);
+				}
+
+				//Do Ticks
+				while (HasActionableActor(actors) == false)
+				{
+					ProcessTicks(actors);
+				}
+			}
+
+			return results;
+		}
+
+		private void ProcessTicks(List<TurnTracker> turnTracker)
+		{
+			for (int i = 0; i < turnTracker.Count; i++)
+			{
+				var turn = turnTracker[i];
+				turn.IncreaseMeter(turn.Actor.GetTurnSpeed());
+				turnTracker[i] = turn;
+			}
+		}
+
+		private bool? HasActionableActor(List<TurnTracker> actors)
+		{
+			if(actors.IsNullOrEmpty()) return null;
+			foreach (var actor in actors)
+			{
+				if (actor.TurnMeter >= turnMeterThreshold)
+					return true;
+			}
+			return false;
+		}
+
+		private List<TurnTracker> SortActorsBasedOnTurns(List<TurnTracker> actors)
+		{
+			actors.Sort((a, b) => b.TurnMeter.CompareTo(a.TurnMeter));
+			return actors;
+		}
+
+		internal float GetTurnMeter(ITurnActor actor)
+		{
+			foreach (var turn in turnTracker)
+			{
+				if (turn.Actor == actor)
+				{
+					return turn.TurnMeter;
+				}
+			}
+			return 0;
 		}
 	}
 }
