@@ -27,4 +27,20 @@ namespace Game.Events
 			this.active = active;
 		}
 	}
+
+	public class OnCharacterDiedEvent : IGenericEvent
+	{
+		public readonly ITurnActor deadActor;
+		public OnCharacterDiedEvent(ITurnActor deadActor)
+		{
+			this.deadActor = deadActor;
+		}
+	}
+
+	public class OnGameEndedEvent : IGenericEvent
+	{
+		public OnGameEndedEvent()
+		{
+		}
+	}
 }

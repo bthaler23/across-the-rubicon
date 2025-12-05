@@ -9,13 +9,10 @@ using UnityEngine.UI;
 
 namespace Game
 {
-	public abstract class BaseActorAction : MonoBehaviour, ITurnAction
+	public abstract class BaseActorAction : TurnActionBase 
 	{
-		[SerializeField]
-		private ActionInfo actionInfo;
 		[ShowInInspector, ReadOnly]
 		private ActorController owner;
-
 		[ShowInInspector, ReadOnly]
 		private List<Vector2Int> rangePositions;
 		[ShowInInspector, ReadOnly]
@@ -24,20 +21,18 @@ namespace Game
 		private bool isActionStarted = false;
 
 		public ActorController Owner { get => owner; }
-		public ActionInfo ActionInfo { get => actionInfo; }
 		public List<Vector2Int> RangePositions { get => rangePositions; }
 
-		public event Action OnActionCompleted;
-
-		public virtual void Initialize(ITurnActor owner)
+		public override void Initialize(ActionInfo action, ITurnActor owner)
 		{
+			base.Initialize(action, owner);
 			this.owner = owner as ActorController;
 			rangePositions = new List<Vector2Int>();
 			isActionActive = false;
 			isActionStarted = false;
 		}
 
-		public bool IsActionStarted()
+		public override bool IsActionStarted()
 		{
 			return isActionStarted;
 		}
@@ -47,7 +42,7 @@ namespace Game
 			isActionStarted = true;
 		}
 
-		public virtual void ActivateAction()
+		public override void ActivateAction()
 		{
 			if (HasRange())
 			{
@@ -59,7 +54,7 @@ namespace Game
 			isActionStarted = false;
 		}
 
-		public virtual void DisableAction()
+		public override void DisableAction()
 		{
 			if (HasRange())
 			{
@@ -70,15 +65,8 @@ namespace Game
 			isActionStarted = false;
 		}
 
-		public abstract bool IsAvailable();
-
 		protected virtual void OnCellClicked(Vector2Int gridIndex)
 		{
-		}
-
-		protected void FireOnCompletedEvent()
-		{
-			OnActionCompleted?.Invoke();
 		}
 
 		protected bool IsInRange(Vector2Int targetPosition)
@@ -94,11 +82,6 @@ namespace Game
 		protected virtual int GetRange()
 		{
 			return 0;
-		}
-
-		public Sprite GetIcon()
-		{
-			return actionInfo.Icon;
 		}
 
 		protected IEnumerator DelayedExecuteAction(float delay, Action action)

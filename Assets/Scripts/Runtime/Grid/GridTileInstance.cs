@@ -6,6 +6,8 @@ namespace Game
 {
 	public class GridTileInstance : MonoBehaviour
 	{
+
+
 		[SerializeField]
 		private SpriteRenderer gridDefaultSpriteRenderer;
 		[SerializeField]
@@ -13,7 +15,11 @@ namespace Game
 		[SerializeField]
 		private Color defaultColor;
 		[SerializeField]
+		private int sortOrderNormal;
+		[SerializeField]
 		private Color highlightColor;
+		[SerializeField]
+		private int sortOrderHighLight;
 
 		public void SetHighlightColor()
 		{
@@ -23,11 +29,13 @@ namespace Game
 		public void SetHighlightColor(Color color)
 		{
 			gridDefaultSpriteRenderer.color = color;
+			gridDefaultSpriteRenderer.sortingOrder = sortOrderHighLight;
 		}
 
 		public void ResetColor()
 		{
 			gridDefaultSpriteRenderer.color = defaultColor;
+			gridDefaultSpriteRenderer.sortingOrder = sortOrderNormal;
 			selectionSpriteRenderer.SetGameObjectActive(false);
 			gridDefaultSpriteRenderer.SetGameObjectActive(true);
 		}

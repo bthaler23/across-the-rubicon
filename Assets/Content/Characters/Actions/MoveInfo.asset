@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: MoveInfo
   m_EditorClassIdentifier: Assembly-CSharp::Game.ActionInfo
   actionName: Move
+  descriptionType: 1
+  description: 
   color: {r: 0.1641509, g: 1, b: 0.5807291, a: 1}
   icon: {fileID: -966295699, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  actionPrefab: {fileID: 3036990752143100988, guid: ee87b62de0f948b4aaa0deee3d2bed13, type: 3}
+  useUIConfirmation: 0

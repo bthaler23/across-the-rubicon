@@ -15,9 +15,9 @@ namespace Game
 
 		private GameObject currentAttackEffect;
 
-		public override void Initialize(ITurnActor owner)
+		public override void Initialize(ActionInfo action, ITurnActor owner)
 		{
-			base.Initialize(owner);
+			base.Initialize(action, owner);
 			ObjectPool.Instance.CachePrefab(attackEffectPrefab, 5);
 		}
 
@@ -73,7 +73,12 @@ namespace Game
 
 		protected override int GetRange()
 		{
-			return Owner.Info.AttackRange;
+			return Owner.GetStatValue(Stats.StatType.AttackRange);
+		}
+
+		public override string GetDescription()
+		{
+			return $"ATK [{Owner.GetStatValue(Stats.StatType.AttackMin)} - {Owner.GetStatValue(Stats.StatType.AttackMax)}]  Range: {GetRange()}";
 		}
 	}
 }

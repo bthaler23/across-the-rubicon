@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b467e21f09868884cb9cc4667f3aa2d1
+guid: 33a2fcd237c89eb41b410b9e6620b80a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1108864115837901670
-    second: regular hex_0
+      213: 1531546156897975
+    second: 326-3263979_soul-fire-skull-pixel-art-spider-man_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 400
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: regular hex_0
+      name: 326-3263979_soul-fire-skull-pixel-art-spider-man_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 246
-        height: 120
+        width: 889
+        height: 1185
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a94ed4f26f58c90f0800000000000000
-      internalID: -1108864115837901670
+      spriteID: 7b693a0eee0750000800000000000000
+      internalID: 1531546156897975
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      regular hex_0: -1108864115837901670
+      326-3263979_soul-fire-skull-pixel-art-spider-man_0: 1531546156897975
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

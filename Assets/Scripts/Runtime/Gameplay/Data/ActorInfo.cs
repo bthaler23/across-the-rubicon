@@ -21,6 +21,10 @@ namespace Game.Data
 		[SerializeField]
 		private ActorController characterPrefab;
 
+		[Title("Actions")]
+		[SerializeField]
+		private ActionInfo[] defaultActions;
+
 		[Title("Stats")]
 		[SerializeField]
 		private int health;
@@ -51,5 +55,6 @@ namespace Game.Data
 		public string CharaterName { get => charaterName; }
 		public string CharaterDescription { get => charaterDescription; }
 		public string CharaterAbilityDescription { get => charaterAbilityDescription; }
+		public ActionInfo[] DefaultActions { get => defaultActions; }
 	}
 }

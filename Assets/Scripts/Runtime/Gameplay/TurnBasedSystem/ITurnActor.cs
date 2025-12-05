@@ -10,15 +10,17 @@ namespace Game.Gameplay
 	{
 		public event Action OnTurnCompleted;
 		string ID { get; }
-		public IReadOnlyList<ITurnAction> GetActions();
-		public ITurnAction GetActiveAction();
-		public void SetActiveAction(ITurnAction action);
+		public IReadOnlyList<TurnActionBase> GetActions();
+		public TurnActionBase GetActiveAction();
+		public void SetActiveAction(TurnActionBase action);
 		public bool HasAnyActions();
+		public bool IsAlive();
 		public void TurnStart();
 		public void TurnEnd();
 		public float GetTurnSpeed();
 		Sprite GetActorIcon();
 		Color GetTeamColor();
-		IStatValue GetStatValue(StatType type);
+		IStatValue GetStat(StatType type);
+		Transform GetUIXform();
 	}
 }

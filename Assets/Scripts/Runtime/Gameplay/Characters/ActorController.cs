@@ -9,6 +9,8 @@ using NUnit.Framework;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -16,19 +18,23 @@ namespace Game
 {
 	public class ActorController : MonoBehaviour, ITurnActor
 	{
+		[BoxGroup("Character")]
+		[SerializeField]
+		private GameObject aliveGO;
+		[BoxGroup("Character")]
+		[SerializeField]
+		private GameObject deathGO;
+		[BoxGroup("UI")]
+		[SerializeField]
+		private Transform uiPositionXform;
 		[BoxGroup("Actions")]
 		[SerializeField]
-		private MoveAction moveAction;
-		[BoxGroup("Actions")]
-		[SerializeField]
-		private AttackAction attackAction;
-
+		private Transform actionParentXform;
+		[ShowInInspector, ReadOnly]
+		private TurnActionBase activeAction;
 		[BoxGroup("Actions")]
 		[ShowInInspector, ReadOnly]
-		private ITurnAction activeAction;
-		[BoxGroup("Actions")]
-		[ShowInInspector, ReadOnly]
-		private List<ITurnAction> actorActions;
+		private SerializedDictionary<ActionInfo, TurnActionBase> actorActions;
 		[ShowInInspector, ReadOnly]
 		[BoxGroup("Stats")]
 		private SerializedDictionary<StatType, IStatValue> statValues;
@@ -47,7 +53,6 @@ namespace Game
 		private bool isTurnActive = false;
 		[ShowInInspector, ReadOnly]
 		private int turnMeter;
-
 
 		public string ID => gameObject.name;
 		public ActorInfo Info { get => info; }
@@ -70,19 +75,25 @@ namespace Game
 			statValues = new SerializedDictionary<StatType, IStatValue>();
 			healthStatsCache = new HealthStats(info.Health);
 			statValues.Add(StatType.Health, healthStatsCache);
+			statValues.Add(StatType.MaxHealth, healthStatsCache);
+			statValues.Add(StatType.MovementRange, new StatValue(info.MovementRange));
+			statValues.Add(StatType.AttackMin, new StatValue(info.MinAttack));
+			statValues.Add(StatType.AttackMax, new StatValue(info.MaxAttack));
+			statValues.Add(StatType.AttackRange, new StatValue(info.AttackRange));
+			statValues.Add(StatType.Speed, new StatValue(info.Speed));
 			turnMeter = 0;
 		}
 
 		private void InitializeActions()
 		{
-			actorActions = new List<ITurnAction>();
-			actorActions.Add(moveAction);
-			actorActions.Add(attackAction);
+			actorActions = new();
 
-			foreach (var action in actorActions)
+			foreach (var action in info.DefaultActions)
 			{
-				action.Initialize(this);
+				if (action == null) continue;
+				ActivateAction(action);
 			}
+
 		}
 
 		public void Move(Vector2Int positionIndex)
@@ -95,15 +106,22 @@ namespace Game
 		public void ApplyDamage(int damage)
 		{
 			healthStatsCache.ApplyDamage(damage);
+
+			if (!healthStatsCache.IsAlive)
+			{
+				deathGO.SetActive(true);
+				aliveGO.SetActive(false);
+				EventBus.Publish<OnCharacterDiedEvent>(new OnCharacterDiedEvent(this));
+			}
 		}
 
 		public bool HasAnyActions()
 		{
-			if (actorActions.IsNullOrEmpty() || !healthStatsCache.IsAlive) return false;
+			if (actorActions == null || actorActions.Count == 0 || !healthStatsCache.IsAlive) return false;
 
 			foreach (var action in actorActions)
 			{
-				if (action.IsAvailable())
+				if (action.Value.IsAvailable())
 				{
 					return true;
 				}
@@ -116,11 +134,17 @@ namespace Game
 		{
 			isTurnActive = true;
 			//TEMP
-			SetActiveAction(moveAction);
+			SetActiveAction(GetFirstAction());
+		}
+
+		private TurnActionBase GetFirstAction()
+		{
+			return actorActions.Values.FirstOrDefault();
 		}
 
 		public void TurnEnd()
 		{
+			EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(null));
 			DisabelCurrentAction(true);
 			isTurnActive = false;
 		}
@@ -161,17 +185,17 @@ namespace Game
 			return teamInfo.TeamColor;
 		}
 
-		public IReadOnlyList<ITurnAction> GetActions()
+		public IReadOnlyList<TurnActionBase> GetActions()
 		{
-			return actorActions;
+			return actorActions.Values.ToList();
 		}
 
-		public ITurnAction GetActiveAction()
+		public TurnActionBase GetActiveAction()
 		{
 			return activeAction;
 		}
 
-		public void SetActiveAction(ITurnAction action)
+		public void SetActiveAction(TurnActionBase action)
 		{
 			if (!action.IsAvailable()) return;
 
@@ -184,13 +208,22 @@ namespace Game
 			}
 		}
 
-		public IStatValue GetStatValue(StatType type)
+		public IStatValue GetStat(StatType type)
 		{
 			if (statValues.TryGetValue(type, out var statValue))
 			{
 				return statValue;
 			}
 			return null;
+		}
+
+		public int GetStatValue(StatType type)
+		{
+			if (statValues.TryGetValue(type, out var statValue))
+			{
+				return Mathf.RoundToInt(statValue.GetValue());
+			}
+			return 0;
 		}
 
 		#region Event Registration/Unregistration
@@ -207,15 +240,44 @@ namespace Game
 		public int GetCharacterAttackDamage()
 		{
 			//TODO GYURI: fix this temporary implementation
-			int minAttack = 0;
-			int maxAttack = 1;
+			int minAttack = GetStatValue(StatType.AttackMin);
+			int maxAttack = GetStatValue(StatType.AttackMin);
 
 			return UnityEngine.Random.Range(minAttack, maxAttack);
 		}
 
 		public float GetTurnSpeed()
 		{
-			return info.Speed;
+			return GetStatValue(StatType.Speed);
+		}
+
+		public Transform GetUIXform()
+		{
+			return uiPositionXform;
+		}
+
+		public void ActivateAction(ActionInfo actionInfo)
+		{
+			if (actorActions.ContainsKey(actionInfo)) return;
+			TurnActionBase actionInstance = Instantiate(actionInfo.ActionPrefab, actionParentXform);
+			actionInstance.Initialize(actionInfo, this);
+			actorActions.Add(actionInfo, actionInstance);
+		}
+
+		public void RemoveAction(ActionInfo actionInfo)
+		{
+			if (actorActions.ContainsKey(actionInfo))
+			{
+				var actionInstance = actorActions[actionInfo];
+				actionInstance.DisableAction();
+				Destroy(actionInstance.gameObject);
+				actorActions.Remove(actionInfo);
+			}
+		}
+
+		public bool IsAlive()
+		{
+			return healthStatsCache.IsAlive;
 		}
 		#endregion
 	}

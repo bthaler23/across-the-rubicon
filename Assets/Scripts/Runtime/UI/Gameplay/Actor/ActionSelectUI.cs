@@ -1,6 +1,7 @@
 using Game.Gameplay;
 using GamePlugins.Utils;
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,8 @@ namespace Game.UI
 		private Image actionImage;
 		[SerializeField]
 		private GameObject selectionGO;
+		[SerializeField]
+		private TextMeshProUGUI actionLabel;
 
 		private Action onSelectAction;
 
@@ -30,12 +33,19 @@ namespace Game.UI
 			onSelectAction?.Invoke();
 		}
 
-		public void Show(ITurnAction action, bool isActiveAction, Action onSelectAction)
+		public void Show(TurnActionBase action, bool isActiveAction, Action onSelectAction)
 		{
+			var actionInfo = action.ActionInfo;
 			gameObject.SetGameObjectActive(true);
 			this.onSelectAction = onSelectAction;
 			selectionGO.SetGameObjectActive(isActiveAction);
-			actionImage.SetIconSafe(action.GetIcon());
+
+			bool hasIcon = actionInfo.Icon != null;
+			actionImage.SetGameObjectActive(hasIcon);
+			actionLabel.SetGameObjectActive(!hasIcon);
+
+			actionImage.SetIconSafe(actionInfo.Icon);
+			actionLabel.SetTextSafe(actionInfo.ActionName);
 		}
 
 		public void Hide()

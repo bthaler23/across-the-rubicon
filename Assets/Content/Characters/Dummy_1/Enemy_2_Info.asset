@@ -18,10 +18,14 @@ MonoBehaviour:
   characerAvatar: {fileID: 1782705385, guid: d33598d781682e049a53a0a13104ef29, type: 3}
   characterFullAvatarSprite: {fileID: 1782705385, guid: d33598d781682e049a53a0a13104ef29, type: 3}
   characterPrefab: {fileID: 8640429587234801111, guid: d8de0fa86e44a224baaa679537eabb89, type: 3}
+  defaultActions:
+  - {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
+  - {fileID: 11400000, guid: 2dab7a407bb74624b99e6908a5573c53, type: 2}
+  - {fileID: 11400000, guid: 191603081499b6a44824b77f4da3dfce, type: 2}
   health: 10
   manaPool: 10
-  minAttack: 0
-  maxAttack: 0
+  minAttack: 5
+  maxAttack: 10
   attackRange: 2
   movementRange: 1
   speed: 2
