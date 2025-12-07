@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: b467e21f09868884cb9cc4667f3aa2d1
+guid: 6c9c0649352d6b4488aecbc3987ec0de
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1108864115837901670
-    second: regular hex_0
+      213: -3770545426703814112
+    second: Character_Bloom_Construct_0
+  - first:
+      213: -5147114031970847886
+    second: Character_Bloom_Construct_1
+  - first:
+      213: -5854575469224759265
+    second: Character_Bloom_Construct_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,8 +55,8 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0.4}
   spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -113,23 +119,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: regular hex_0
+      name: Character_Bloom_Construct_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 246
-        height: 120
+        x: 27
+        y: 15
+        width: 45
+        height: 60
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a94ed4f26f58c90f0800000000000000
-      internalID: -1108864115837901670
+      spriteID: 02278df59e45cabc0800000000000000
+      internalID: -3770545426703814112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Character_Bloom_Construct_1
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 75
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 273f2f9fe07c198b0800000000000000
+      internalID: -5147114031970847886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Character_Bloom_Construct_2
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 71
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f10742e21ae50cea0800000000000000
+      internalID: -5854575469224759265
       vertices: []
       indices: 
       edges: []
@@ -139,7 +189,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -148,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      regular hex_0: -1108864115837901670
+      Character_Bloom_Construct_0: -3770545426703814112
+      Character_Bloom_Construct_1: -5147114031970847886
+      Character_Bloom_Construct_2: -5854575469224759265
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

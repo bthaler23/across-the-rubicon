@@ -50,7 +50,9 @@ MonoBehaviour:
   gridDefaultSpriteRenderer: {fileID: 8214744740027366763}
   selectionSpriteRenderer: {fileID: 9063365649339665443}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  sortOrderNormal: -10
   highlightColor: {r: 0.29666668, g: 0.7433963, b: 0.049092103, a: 1}
+  sortOrderHighLight: -9
 --- !u!1 &863881961597558858
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +80,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 0.26190174, y: 0.2803007, z: 0.256968}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4823817971914656566}
@@ -129,7 +131,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -10
   m_Sprite: {fileID: 21300000, guid: b467e21f09868884cb9cc4667f3aa2d1, type: 3}
   m_Color: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
   m_FlipX: 0
@@ -258,7 +260,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 0.19727173, y: 0.20322937, z: 0.18265902}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4823817971914656566}
@@ -309,7 +311,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -5
   m_Sprite: {fileID: 21300000, guid: 0691f5a90f81bf346a82aba292bee7aa, type: 3}
   m_Color: {r: 0.6603774, g: 0, b: 0, a: 1}
   m_FlipX: 0

@@ -42,7 +42,7 @@ public class TurnActorWidgetUI : MonoBehaviour
 
 	private void ShowHealth(ITurnActor actor)
 	{
-		var health = actor.GetStatValue(StatType.Health) as HealthStats;
+		var health = actor.GetStat(StatType.Health) as HealthStats;
 		if (health != null)
 		{
 			float healthPercent = (float)health.CurrentHealth / (float)health.MaxHealth;

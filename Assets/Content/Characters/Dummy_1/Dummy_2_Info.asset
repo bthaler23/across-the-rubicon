@@ -12,13 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c4acc7dddaeed459d56fbeff50b4ff, type: 3}
   m_Name: Dummy_2_Info
   m_EditorClassIdentifier: Assembly-CSharp::Game.Character.CharacterInfo
-  charaterName: Dummy_2
+  charaterName: Bloom Construct
   charaterDescription: 
   charaterAbilityDescription: 
-  characerAvatar: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
-  characterFullAvatarSprite: {fileID: -1413294825, guid: 99a24620d31e5ce4e823c32d11e17c2c, type: 3}
+  characerAvatar: {fileID: 21300000, guid: 6c9c0649352d6b4488aecbc3987ec0de, type: 3}
+  characterFullAvatarSprite: {fileID: 21300000, guid: 6c9c0649352d6b4488aecbc3987ec0de, type: 3}
   characterPrefab: {fileID: 7117724579156912674, guid: 028eb8540da7ca84b8badc54c51ccea8, type: 3}
+  defaultActions:
+  - {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
+  - {fileID: 11400000, guid: 2dab7a407bb74624b99e6908a5573c53, type: 2}
+  - {fileID: 11400000, guid: 191603081499b6a44824b77f4da3dfce, type: 2}
   health: 20
-  damage: 2
+  manaPool: 0
+  minAttack: 5
+  maxAttack: 10
   attackRange: 1
   movementRange: 2
+  speed: 1

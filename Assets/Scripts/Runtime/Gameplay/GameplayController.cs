@@ -1,8 +1,10 @@
 using Game.Data;
+using Game.Events;
 using Game.Grid;
 using Game.Progress;
 using Game.Settings;
 using Game.UI;
+using GamePlugins.Events;
 using GamePlugins.Singleton;
 using Sirenix.OdinInspector;
 using System;
@@ -13,10 +15,11 @@ namespace Game.Gameplay
 {
 	public class GameplayController : Singleton<GameplayController>
 	{
+		private const string HERO_TEAM = "Heroes";
+		private const string ENEMY_TEAM = "Foes";
+
 		[SerializeField]
 		private CameraController cameraController;
-		[SerializeField]
-		private float cameraBoarderPadding = 2f;
 
 		[PropertySpace(SpaceBefore = 10)]
 		[SerializeField]
@@ -38,13 +41,30 @@ namespace Game.Gameplay
 
 		[ShowInInspector, ReadOnly]
 		private List<ActorController> actors;
+		[ShowInInspector, ReadOnly]
+		private List<TeamActors> teams;
+
+		protected override void OnAwakeCalled()
+		{
+			base.OnAwakeCalled();
+			ResourceManager.Instance.RegisterResource<CameraController>(cameraController);
+			EventBus.Subscribe<OnGameEndedEvent>(OnGameEnded);
+		}
+
+		protected override void OnDestroy()
+		{
+			base.OnDestroy();
+			ResourceManager.Instance.RemoveResource<CameraController>();
+			EventBus.Unsubscribe<OnGameEndedEvent>(OnGameEnded);
+		}
 
 		public void InitializeGameplay()
 		{
 			actors = new List<ActorController>();
 			gridExpansionController.InitializeGrid(ProgressManager.Instance.CurrentDungeonRoom.GridSetup);
-			gameFlowManager.Inintialize(GetTeams());
-			CenterCameraOnDungeon(gridManager, cameraController, cameraBoarderPadding);
+			teams = GetTeams();
+			gameFlowManager.Inintialize(teams);
+			cameraController.CenterCameraOnDungeon(gridManager.GetGridCenter(), gridManager.GetGridSize());
 		}
 
 		public ActorController GetActorAt(Vector2Int index)
@@ -84,12 +104,12 @@ namespace Game.Gameplay
 
 			var gameplaySettings = ResourceManager.Instance.RequestResource<GameplaySettings>();
 
-			TeamInfo playerTeam = new TeamInfo("Heroes", gameplaySettings.HeroTeamColor);
+			TeamInfo playerTeam = new TeamInfo(HERO_TEAM, gameplaySettings.HeroTeamColor);
 			foreach(var character in ProgressManager.Instance.CurrentHeroes)
 			{
 				playerTeam.AddCharacter(character);
 			}
-			TeamInfo enemyTeam = new TeamInfo("Foes", gameplaySettings.EnemyTeamColor);
+			TeamInfo enemyTeam = new TeamInfo(ENEMY_TEAM, gameplaySettings.EnemyTeamColor);
 			foreach(var character in ProgressManager.Instance.CurrentDungeonRoom.EnemyActors)
 			{
 				enemyTeam.AddCharacter(character);
@@ -118,28 +138,29 @@ namespace Game.Gameplay
 			return resultTeams;
 		}
 
-		[BoxGroup("DEBUG")]
-		[Button]
-		private static void CenterCameraOnDungeon(HexGridManager gridManager, CameraController cameraController, float cameraBoarderPadding)
+		private bool IsPlayerTeamAlive()
 		{
-			Vector2 stageCenter = gridManager.GetGridCenter();
-			Vector2 stageSize = gridManager.GetGridSize();
+			foreach(var team in teams)
+			{
+				if(team.TeamID == HERO_TEAM)
+				{
+					return team.HasAliveMembers();
+				}
+			}
+			return false;
+		}
 
-			cameraController.MoveToPosition(new Vector3(stageCenter.x, stageCenter.y));
-			//change camera size to adjust to stage
-			Vector3 bottomLeft = cameraController.Camera.ScreenToWorldPoint(new Vector3(0, 0, 0));
-			Vector3 topRight = cameraController.Camera.ViewportToWorldPoint(new Vector3(1, 1, 0));
-
-			float verticalDistance = topRight.y - bottomLeft.y;
-			float horizontalDistance = topRight.x - bottomLeft.x;
-
-			float neededVerticalDistance = stageSize.y + cameraBoarderPadding;
-			float neededHorizontalDistance = stageSize.x + cameraBoarderPadding;
-
-			float orhographicsSize = cameraController.GetOrthographicSize();
-			float targetOrtographicSizeX = neededVerticalDistance * orhographicsSize / verticalDistance;
-			float targetOrtographicSizeY = neededHorizontalDistance * orhographicsSize / horizontalDistance;
-			cameraController.SetOrthographicSize(Math.Max(targetOrtographicSizeX, targetOrtographicSizeY));
+		private void OnGameEnded(OnGameEndedEvent @event)
+		{
+			bool playerTeamWon = IsPlayerTeamAlive();
+			if(playerTeamWon)
+			{
+				EndDungeonVictouris();
+			}
+			else
+			{
+				EndDungeonFaliure();
+			}
 		}
 
 		[GUIColor("@Color.forestGreen")]

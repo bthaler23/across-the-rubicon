@@ -35,5 +35,10 @@ namespace Game.Gameplay
 			actor = actors[index];
 			return true;
 		}
+
+		public bool HasAliveMembers()
+		{
+			return actors.Any(a => a.IsAlive());
+		}
 	}
 }

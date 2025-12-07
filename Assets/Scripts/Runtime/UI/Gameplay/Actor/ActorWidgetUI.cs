@@ -3,6 +3,7 @@ using Game.Gameplay;
 using Game.Stats;
 using GamePlugins.Events;
 using GamePlugins.Utils;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -13,10 +14,19 @@ namespace Game.UI
 {
 	public class ActorWidgetUI : MonoBehaviour
 	{
+		[Title("Actions")]
 		[SerializeField]
 		private ActionSelectUI actionSelectUIPrefab;
 		[SerializeField]
 		private RectTransform actionsParent;
+		[SerializeField]
+		private TextMeshProUGUI actionNameLabel;
+		[SerializeField]
+		private TextMeshProUGUI actionDescriptionLabel;
+		[SerializeField]
+		private Button actionExecuteButton;
+
+		[Title("Character")]
 		[SerializeField]
 		private TextMeshProUGUI actorNameLabel;
 		[SerializeField]
@@ -28,15 +38,24 @@ namespace Game.UI
 		[SerializeField]
 		private TextMeshProUGUI healthProgressLabel;
 
+		private TurnActionBase activeAction;
 		private List<ActionSelectUI> actionSelectUIs;
 
 		public void Awake()
 		{
-			EventBus.Subscribe<ActiveActorRefreshEvent>(OnTurnChangeEvent);
+			EventBus.Subscribe<ActiveActorRefreshEvent>(OnActiveCharacterChange);
 			actionSelectUIs = new List<ActionSelectUI>();
+			gameObject.SetGameObjectActive(false);
+			actionExecuteButton.onClick.AddListener(OnActionExecuteButtonClick);
 		}
 
-		private void OnTurnChangeEvent(ActiveActorRefreshEvent eventParams)
+		private void OnActionExecuteButtonClick()
+		{
+			if (activeAction)
+				activeAction.UIInvokeExecute();
+		}
+
+		private void OnActiveCharacterChange(ActiveActorRefreshEvent eventParams)
 		{
 			if (eventParams.active != null)
 				Show(eventParams.active);
@@ -54,6 +73,7 @@ namespace Game.UI
 				ShowHealth(actor);
 				actorNameLabel.SetText(actor.ID);
 				PopulateActionItems(actor);
+				ShowActiveActionInfo(actor);
 			}
 			else
 			{
@@ -61,9 +81,17 @@ namespace Game.UI
 			}
 		}
 
+		private void ShowActiveActionInfo(ITurnActor actor)
+		{
+			activeAction = actor.GetActiveAction();
+			actionNameLabel.SetTextSafe(activeAction.GetName());
+			actionDescriptionLabel.SetTextSafe(activeAction.GetDescription());
+			actionExecuteButton.SetGameObjectActive(activeAction.UseExecuteButton());
+		}
+
 		private void ShowHealth(ITurnActor actor)
 		{
-			var health = actor.GetStatValue(StatType.Health) as HealthStats;
+			var health = actor.GetStat(StatType.Health) as HealthStats;
 			if (health != null)
 			{
 				float healthPercent = (float)health.CurrentHealth / (float)health.MaxHealth;
@@ -106,6 +134,8 @@ namespace Game.UI
 			{
 				actionSelectUIs[i].Hide();
 			}
+
+			actionsParent.position = GetScreenPosition(actor.GetUIXform().position);
 		}
 
 		private ActionSelectUI InstantiateTurnActorWidget()
@@ -113,6 +143,18 @@ namespace Game.UI
 			var instance = Instantiate(actionSelectUIPrefab, actionsParent);
 			actionSelectUIs.Add(instance);
 			return instance;
+		}
+
+		protected Vector3 GetScreenPosition(Vector3 worldPosition)
+		{
+			var cameraController = ResourceManager.Instance.RequestResource<CameraController>();
+			if (cameraController)
+			{
+				Vector3 screenPos = cameraController.Camera.WorldToScreenPoint(worldPosition);
+				return screenPos;
+			}
+			Debug.LogError("No CameraController Present!");
+			return Vector3.zero;
 		}
 	}
 }

@@ -56,6 +56,7 @@ namespace Game.Gameplay
 
 		public void Initialize()
 		{
+			EventBus.Subscribe<OnCharacterDiedEvent>(OnCharacterDied);
 		}
 
 		public void Initialize(List<ITurnActor> actors, EndGameCondition endGameCondition, OnEndGame endGameCallback)
@@ -99,11 +100,22 @@ namespace Game.Gameplay
 			}
 			actors = null;
 			turnTracker = null;
+			EventBus.Unsubscribe<OnCharacterDiedEvent>(OnCharacterDied);
 		}
 
 		public void StartTurns()
 		{
 			StartCoroutine(ProceedToNextActor(false));
+		}
+
+		private void OnCharacterDied(OnCharacterDiedEvent eventParam)
+		{
+			var actor = eventParam.deadActor;
+			if (actor != null && actors.Contains(actor))
+			{
+				actors.Remove(actor);
+				turnTracker.RemoveAll(t => t.Actor == actor);
+			}
 		}
 
 		IEnumerator ProceedToNextActor(bool increaseTurnMeter)
@@ -129,7 +141,6 @@ namespace Game.Gameplay
 				currentActor.TurnStart();
 
 				EventBus.Publish<TurnChangeEvent>(new TurnChangeEvent(CalulateTurnsforUI(), true));
-				EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(currentActor));
 			}
 			else
 			{
@@ -140,7 +151,6 @@ namespace Game.Gameplay
 
 		private IEnumerator UpdateMetersCO()
 		{
-			EventBus.Publish<ActiveActorRefreshEvent>(new ActiveActorRefreshEvent(null));
 			while (HasActionableActor(turnTracker) == false)
 			{
 				ProcessTicks(turnTracker);

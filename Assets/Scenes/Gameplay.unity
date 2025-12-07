@@ -575,7 +575,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Gameplay.GameplayController
   initialized: 0
   cameraController: {fileID: 8444935615456679833}
-  cameraBoarderPadding: 2
   playerInput: {fileID: 786534993}
   gameFlowManager: {fileID: 858946885}
   gridData: {fileID: 1424383544}
@@ -636,7 +635,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1718083692}
   m_Enabled: 1
-  m_CellSize: {x: 1, y: 1.93, z: 1}
+  m_CellSize: {x: 1, y: 2, z: 1}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 1
   m_CellSwizzle: 2
@@ -1206,6 +1205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817b9f2ed69ed7d4d9f5d7daa9eb5b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  cameraBoarderPadding: 8
   gameplayCamera: {fileID: 4771982529069208218}
   cameraTarget: {fileID: 3482610674057804508}
   cmGameplayCamera: {fileID: 6613043291505684787}
