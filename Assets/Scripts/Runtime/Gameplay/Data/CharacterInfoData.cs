@@ -1,10 +1,10 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Game.Data
+namespace Game.Character
 {
 	[CreateAssetMenu(fileName = "CharacterInfo", menuName = "Rubicon/CharacterInfo")]
-	public class ActorInfo : ScriptableObject
+	public class CharacterInfoData : ScriptableObject
 	{
 		[SerializeField]
 		private string charaterName;
@@ -19,7 +19,7 @@ namespace Game.Data
 		[PreviewField(64, ObjectFieldAlignment.Left)]
 		private Sprite characterFullAvatarSprite;
 		[SerializeField]
-		private ActorController characterPrefab;
+		private CharacterBehaviour characterPrefab;
 
 		[Title("Actions")]
 		[SerializeField]
@@ -43,7 +43,7 @@ namespace Game.Data
 		[SerializeField]
 		private float speed;
 
-		public ActorController CharacterPrefab => characterPrefab;
+		public CharacterBehaviour CharacterPrefab => characterPrefab;
 		public Sprite CharacterAvatar { get => characerAvatar; }
 		public Sprite CharacterIconSprite { get => characterFullAvatarSprite; }
 		public int MinAttack { get => minAttack; }
@@ -56,5 +56,6 @@ namespace Game.Data
 		public string CharaterDescription { get => charaterDescription; }
 		public string CharaterAbilityDescription { get => charaterAbilityDescription; }
 		public ActionInfo[] DefaultActions { get => defaultActions; }
+		public int ManaPool { get => manaPool; }
 	}
 }

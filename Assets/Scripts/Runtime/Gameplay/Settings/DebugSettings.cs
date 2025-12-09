@@ -1,4 +1,5 @@
 using Game.Data;
+using Game.Character;
 using GamePlugins.Attributes;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
@@ -25,11 +26,11 @@ namespace Game.Settings
 		private bool overrideHeros = false;
 		[ShowIf("@this.overrideHeros==true")]
 		[SerializeField]
-		private List<ActorInfo> debugHeros;
+		private List<CharacterSetupData> debugHeros;
 
 		public bool OverrideDungeon { get => overrideDungeon; }
 		public bool OverrideHeros { get => overrideHeros; }
-		public List<ActorInfo> DebugHeros { get => debugHeros; }
+		public List<CharacterSetupData> DebugHeros { get => debugHeros; }
 		public DungeonInfo DebugDungeon { get => debugDungeon; }
 		public DungeonRoomInfo DebugDungeonRoom { get => debugDungeonRoom; }
 

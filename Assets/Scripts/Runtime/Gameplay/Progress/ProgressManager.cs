@@ -1,3 +1,4 @@
+using Game.Character;
 using Game.Data;
 using Game.Settings;
 using GamePlugins.Attributes;
@@ -6,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using CharacterInfoData = Game.Character.CharacterInfoData;
+
 
 namespace Game.Progress
 {
@@ -17,7 +20,7 @@ namespace Game.Progress
 
 		public DungeonInfo CurrentDungeon => progressData.currentDungeon;
 		public DungeonRoomInfo CurrentDungeonRoom => progressData.currentRoom;
-		public List<ActorInfo> CurrentHeroes => progressData.currentHeroes;
+		public List<CharacterSetupData> CurrentHeroes => progressData.currentHeroes;
 
 		protected override void OnAwakeCalled()
 		{
@@ -30,9 +33,20 @@ namespace Game.Progress
 			progressData.currentDungeon = dungeon;
 		}
 
-		public void SelectCharacters(List<ActorInfo> heroes)
+		public void SelectCharacters(List<CharacterInfoData> heroes)
 		{
-			progressData.currentHeroes = new List<ActorInfo>();
+			var heroSetups = new List<CharacterSetupData>();
+			foreach (var h in heroes)
+			{
+				if (h != null)
+					heroSetups.Add(new CharacterSetupData(h));
+			}
+			SelectCharacters(heroSetups);
+		}
+
+		public void SelectCharacters(List<CharacterSetupData> heroes)
+		{
+			progressData.currentHeroes = new List<CharacterSetupData>();
 			foreach (var h in heroes)
 			{
 				if (h != null)

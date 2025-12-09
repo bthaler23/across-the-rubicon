@@ -1,3 +1,4 @@
+using Game.Character;
 using Game.Data;
 using Game.Progress;
 using Game.UI.CharacterSelect;
@@ -17,14 +18,14 @@ namespace Game.UI
 		[SerializeField]
 		private Button continueButton;
 		[SerializeField]
-		private ItemCollectionUI<ActorInfo, CharacterIconUI> characterCollectionUI;
+		private ItemCollectionUI<CharacterInfoData, CharacterIconUI> characterCollectionUI;
 		[SerializeField]
-		private ItemCollectionUI<ActorInfo, CharacterSlotUI> characterSlotsUI;
+		private ItemCollectionUI<CharacterInfoData, CharacterSlotUI> characterSlotsUI;
 		[SerializeField]
 		private CharacterInfoUI characterInfoUI;
 
-		private ActorInfo[] choosenCharacter;
-		private ActorInfo selectedCharacter;
+		private CharacterInfoData[] choosenCharacter;
+		private CharacterInfoData selectedCharacter;
 
 		protected override void Awake()
 		{
@@ -43,7 +44,7 @@ namespace Game.UI
 		{
 			base.Show();
 
-			choosenCharacter = new ActorInfo[ProgressManager.Instance.GetCurrentDungeonCharacterCount()];
+			choosenCharacter = new CharacterInfoData[ProgressManager.Instance.GetCurrentDungeonCharacterCount()];
 			RefreshCharacterSlots();
 
 			var heroesCollection = GameManager.Instance.GameplaySettings.Heros;
@@ -87,7 +88,7 @@ namespace Game.UI
 			}
 		}
 
-		private void SelectCharacter(ActorInfo character)
+		private void SelectCharacter(CharacterInfoData character)
 		{
 			selectedCharacter = character;
 			characterInfoUI.Show(character);

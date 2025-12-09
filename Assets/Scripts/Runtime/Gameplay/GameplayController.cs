@@ -1,3 +1,4 @@
+using Game.Character;
 using Game.Data;
 using Game.Events;
 using Game.Grid;
@@ -10,6 +11,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CharacterBehaviour = Game.Character.CharacterBehaviour;
 
 namespace Game.Gameplay
 {
@@ -40,7 +42,7 @@ namespace Game.Gameplay
 		private GridExpansionController gridExpansionController;
 
 		[ShowInInspector, ReadOnly]
-		private List<ActorController> actors;
+		private List<CharacterBehaviour> actors;
 		[ShowInInspector, ReadOnly]
 		private List<TeamActors> teams;
 
@@ -60,14 +62,14 @@ namespace Game.Gameplay
 
 		public void InitializeGameplay()
 		{
-			actors = new List<ActorController>();
+			actors = new List<CharacterBehaviour>();
 			gridExpansionController.InitializeGrid(ProgressManager.Instance.CurrentDungeonRoom.GridSetup);
 			teams = GetTeams();
 			gameFlowManager.Inintialize(teams);
 			cameraController.CenterCameraOnDungeon(gridManager.GetGridCenter(), gridManager.GetGridSize());
 		}
 
-		public ActorController GetActorAt(Vector2Int index)
+		public CharacterBehaviour GetActorAt(Vector2Int index)
 		{
 			foreach (var actor in actors)
 			{
@@ -89,10 +91,10 @@ namespace Game.Gameplay
 			return gridData.GetRandomPositions(count);
 		}
 
-		private ActorController SpawnCharacter(Vector2Int gridPosition, ActorInfo characterInfo, TeamInfo team)
+		private CharacterBehaviour SpawnCharacter(Vector2Int gridPosition, CharacterSetupData characterSetup, TeamInfo team)
 		{
-			ActorController character = Instantiate<ActorController>(characterInfo.CharacterPrefab);
-			character.Initialize(characterInfo, playerInput, team);
+			CharacterBehaviour character = Instantiate<CharacterBehaviour>(characterSetup.CharacterInfo.CharacterPrefab);
+			character.Initialize(characterSetup.CharacterInfo, characterSetup.EquipmentData, playerInput, team);
 			character.Move(gridPosition);
 			actors.Add(character);
 			return character;
@@ -105,12 +107,12 @@ namespace Game.Gameplay
 			var gameplaySettings = ResourceManager.Instance.RequestResource<GameplaySettings>();
 
 			TeamInfo playerTeam = new TeamInfo(HERO_TEAM, gameplaySettings.HeroTeamColor);
-			foreach(var character in ProgressManager.Instance.CurrentHeroes)
+			foreach (var character in ProgressManager.Instance.CurrentHeroes)
 			{
 				playerTeam.AddCharacter(character);
 			}
 			TeamInfo enemyTeam = new TeamInfo(ENEMY_TEAM, gameplaySettings.EnemyTeamColor);
-			foreach(var character in ProgressManager.Instance.CurrentDungeonRoom.EnemyActors)
+			foreach (var character in ProgressManager.Instance.CurrentDungeonRoom.EnemyActors)
 			{
 				enemyTeam.AddCharacter(character);
 			}
@@ -140,9 +142,9 @@ namespace Game.Gameplay
 
 		private bool IsPlayerTeamAlive()
 		{
-			foreach(var team in teams)
+			foreach (var team in teams)
 			{
-				if(team.TeamID == HERO_TEAM)
+				if (team.TeamID == HERO_TEAM)
 				{
 					return team.HasAliveMembers();
 				}
@@ -153,7 +155,7 @@ namespace Game.Gameplay
 		private void OnGameEnded(OnGameEndedEvent @event)
 		{
 			bool playerTeamWon = IsPlayerTeamAlive();
-			if(playerTeamWon)
+			if (playerTeamWon)
 			{
 				EndDungeonVictouris();
 			}

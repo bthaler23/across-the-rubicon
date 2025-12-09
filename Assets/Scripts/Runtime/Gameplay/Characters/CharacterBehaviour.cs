@@ -1,4 +1,5 @@
 using Game.Data;
+using Game.Character;
 using Game.Events;
 using Game.Gameplay;
 using Game.Grid;
@@ -14,10 +15,13 @@ using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Game
+namespace Game.Character
 {
-	public class ActorController : MonoBehaviour, ITurnActor
+	public class CharacterBehaviour : MonoBehaviour, ITurnActor
 	{
+		[BoxGroup("Character")]
+		[SerializeField]
+		private CharacterEquipmentController equipmentController;
 		[BoxGroup("Character")]
 		[SerializeField]
 		private GameObject aliveGO;
@@ -37,30 +41,26 @@ namespace Game
 		private SerializedDictionary<ActionInfo, TurnActionBase> actorActions;
 		[ShowInInspector, ReadOnly]
 		[BoxGroup("Stats")]
-		private SerializedDictionary<StatType, IStatValue> statValues;
-		[ShowInInspector, ReadOnly]
-		[BoxGroup("Stats")]
-		private HealthStats healthStatsCache;
+		internal CharacterStats characterStats;
 
 		private PlayerInputController inputController;
 		[ShowInInspector, ReadOnly]
-		private ActorInfo info;
+		private CharacterInfoData info;
+
 		[ShowInInspector, ReadOnly]
 		private TeamInfo teamInfo;
 		[ShowInInspector, ReadOnly]
 		private Vector2Int currentPosition;
 		[ShowInInspector, ReadOnly]
 		private bool isTurnActive = false;
-		[ShowInInspector, ReadOnly]
-		private int turnMeter;
 
 		public string ID => gameObject.name;
-		public ActorInfo Info { get => info; }
+		public CharacterInfoData Info { get => info; }
 		public Vector2Int CurrentPosition { get => currentPosition; }
 
 		public event Action OnTurnCompleted;
 
-		public void Initialize(ActorInfo info, PlayerInputController inputController, TeamInfo teamInfo)
+		public void Initialize(CharacterInfoData info, CharacterEquipmentSetup equipmentData, PlayerInputController inputController, TeamInfo teamInfo)
 		{
 			this.info = info;
 			this.teamInfo = teamInfo;
@@ -68,20 +68,24 @@ namespace Game
 			isTurnActive = false;
 			InitializeActions();
 			InitializeStats();
+			InitializeEquipment(equipmentData);
+
+			UpdateVariableStats();
+		}
+
+		private void InitializeEquipment(CharacterEquipmentSetup equipmentData)
+		{
+			equipmentController.Initialize(this, equipmentData);
 		}
 
 		private void InitializeStats()
 		{
-			statValues = new SerializedDictionary<StatType, IStatValue>();
-			healthStatsCache = new HealthStats(info.Health);
-			statValues.Add(StatType.Health, healthStatsCache);
-			statValues.Add(StatType.MaxHealth, healthStatsCache);
-			statValues.Add(StatType.MovementRange, new StatValue(info.MovementRange));
-			statValues.Add(StatType.AttackMin, new StatValue(info.MinAttack));
-			statValues.Add(StatType.AttackMax, new StatValue(info.MaxAttack));
-			statValues.Add(StatType.AttackRange, new StatValue(info.AttackRange));
-			statValues.Add(StatType.Speed, new StatValue(info.Speed));
-			turnMeter = 0;
+			characterStats = new CharacterStats(info);
+		}
+
+		private void UpdateVariableStats()
+		{
+			characterStats.UpdateVariableStats();
 		}
 
 		private void InitializeActions()
@@ -105,9 +109,9 @@ namespace Game
 
 		public void ApplyDamage(int damage)
 		{
-			healthStatsCache.ApplyDamage(damage);
+			characterStats.ApplyDamage(damage);
 
-			if (!healthStatsCache.IsAlive)
+			if (!characterStats.IsAlive)
 			{
 				deathGO.SetActive(true);
 				aliveGO.SetActive(false);
@@ -117,7 +121,7 @@ namespace Game
 
 		public bool HasAnyActions()
 		{
-			if (actorActions == null || actorActions.Count == 0 || !healthStatsCache.IsAlive) return false;
+			if (actorActions == null || actorActions.Count == 0 || !characterStats.IsAlive) return false;
 
 			foreach (var action in actorActions)
 			{
@@ -208,22 +212,19 @@ namespace Game
 			}
 		}
 
-		public IStatValue GetStat(StatType type)
+		public float GetStatValueFloat(StatType type)
 		{
-			if (statValues.TryGetValue(type, out var statValue))
+			var stat = characterStats.GetStat(type);
+			if (stat != null)
 			{
-				return statValue;
-			}
-			return null;
-		}
-
-		public int GetStatValue(StatType type)
-		{
-			if (statValues.TryGetValue(type, out var statValue))
-			{
-				return Mathf.RoundToInt(statValue.GetValue());
+				return stat.GetValue();
 			}
 			return 0;
+		}
+
+		public int GetStatValueInt(StatType type)
+		{
+			return Mathf.RoundToInt(GetStatValueFloat(type));
 		}
 
 		#region Event Registration/Unregistration
@@ -240,15 +241,15 @@ namespace Game
 		public int GetCharacterAttackDamage()
 		{
 			//TODO GYURI: fix this temporary implementation
-			int minAttack = GetStatValue(StatType.AttackMin);
-			int maxAttack = GetStatValue(StatType.AttackMin);
+			int minAttack = GetStatValueInt(StatType.AttackMin);
+			int maxAttack = GetStatValueInt(StatType.AttackMin);
 
 			return UnityEngine.Random.Range(minAttack, maxAttack);
 		}
 
 		public float GetTurnSpeed()
 		{
-			return GetStatValue(StatType.Speed);
+			return GetStatValueFloat(StatType.Speed);
 		}
 
 		public Transform GetUIXform()
@@ -277,7 +278,7 @@ namespace Game
 
 		public bool IsAlive()
 		{
-			return healthStatsCache.IsAlive;
+			return characterStats.IsAlive;
 		}
 		#endregion
 	}

@@ -1,4 +1,5 @@
 using Game.Gameplay;
+using Game.Character;
 using Game.Grid;
 using GamePlugins.ObjectPool;
 using GamePlugins.Utils;
@@ -27,7 +28,7 @@ namespace Game
 			if (IsInRange(gridIndex) && !IsActionStarted())
 			{
 				// Find an actor at the clicked cell
-				ActorController target = GameplayController.Instance.GetActorAt(gridIndex);
+				CharacterBehaviour target = GameplayController.Instance.GetActorAt(gridIndex);
 
 				// Attack only enemies and not ourselves
 				if (target != null && !ReferenceEquals(target, Owner))
@@ -73,12 +74,12 @@ namespace Game
 
 		protected override int GetRange()
 		{
-			return Owner.GetStatValue(Stats.StatType.AttackRange);
+			return Owner.GetStatValueInt(Stats.StatType.AttackRange);
 		}
 
 		public override string GetDescription()
 		{
-			return $"ATK [{Owner.GetStatValue(Stats.StatType.AttackMin)} - {Owner.GetStatValue(Stats.StatType.AttackMax)}]  Range: {GetRange()}";
+			return $"ATK [{Owner.GetStatValueInt(Stats.StatType.AttackMin)} - {Owner.GetStatValueInt(Stats.StatType.AttackMax)}]  Range: {GetRange()}";
 		}
 	}
 }

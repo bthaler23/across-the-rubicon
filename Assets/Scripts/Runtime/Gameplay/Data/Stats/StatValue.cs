@@ -24,21 +24,15 @@ namespace Game.Stats
 			return CalculateFinalValue();
 		}
 
-		public void ApplyChange(float amount)
-		{
-			baseValue += amount;
-			OnValueChanged?.Invoke(GetValue());
-		}
-
 		public void AddModifier(IStatModifier modifier)
 		{
 			modifiers.Add(modifier);
 			OnValueChanged?.Invoke(GetValue());
 		}
 
-		public void RemoveModifier(IStatModifier modifier)
+		public void RemoveModifier(object owner)
 		{
-			modifiers.Remove(modifier);
+			modifiers.RemoveAll(x => x.Owner == owner);
 			OnValueChanged?.Invoke(GetValue());
 		}
 

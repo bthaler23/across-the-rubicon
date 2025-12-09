@@ -2,6 +2,7 @@ using Game.Grid;
 using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
+using Game.Character;
 
 namespace Game.Data
 {
@@ -22,12 +23,12 @@ namespace Game.Data
 
 		[BoxGroup("Enemies")]
 		[SerializeField]
-		private ActorInfo[] enemyActors;
+		private CharacterSetupData[] enemyActors;
 
 		public string RoomName { get => roomName; }
 		public string RoomDescription { get => roomDescription; }
 		public GridSetup GridSetup { get => gridSetup; set => gridSetup = value; }
-		public ActorInfo[] EnemyActors { get => enemyActors; }
+		public CharacterSetupData[] EnemyActors { get => enemyActors; }
 
 		public string GetSizeDescription()
 		{

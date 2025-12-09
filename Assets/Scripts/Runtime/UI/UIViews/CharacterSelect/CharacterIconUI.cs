@@ -1,3 +1,4 @@
+using Game.Character;
 using Game.Data;
 using GamePlugins.Utils;
 using System;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Game.UI.CharacterSelect
 {
-	public class CharacterIconUI : BaseCollectionElementUI<ActorInfo>
+	public class CharacterIconUI : BaseCollectionElementUI<CharacterInfoData>
 	{
 		[SerializeField]
 		public GameObject selectionGO;
@@ -22,7 +23,7 @@ namespace Game.UI.CharacterSelect
 			OnCharacterIconClicked?.Invoke(this);
 		}
 
-		public override void Show(ActorInfo data, Action<object> onSelected)
+		public override void Show(CharacterInfoData data, Action<object> onSelected)
 		{
 			base.Show(data, onSelected);
 			characterImage.SetIconSafe(data.CharacterAvatar);

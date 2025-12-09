@@ -79,7 +79,7 @@ namespace Game
 
 		protected override int GetRange()
 		{
-			return Owner.GetStatValue(Stats.StatType.MovementRange);
+			return Owner.GetStatValueInt(Stats.StatType.MovementRange);
 		}
 
 		public override string GetDescription()

@@ -1,4 +1,5 @@
 using Game.Data;
+using Game.Character;
 using Game.Progress;
 using Game.UI;
 using GamePlugins.Attributes;
@@ -8,6 +9,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CharacterInfoData = Game.Character.CharacterInfoData;
 
 namespace Game.UI
 {
@@ -58,7 +60,7 @@ namespace Game.UI
 			UIManager.Instance.Open(characterSelectUI);
 		}
 
-		public void SelectCharacter(List<ActorInfo> characters)
+		public void SelectCharacter(List<CharacterInfoData> characters)
 		{
 			if (characters.IsNullOrEmpty()) return;
 

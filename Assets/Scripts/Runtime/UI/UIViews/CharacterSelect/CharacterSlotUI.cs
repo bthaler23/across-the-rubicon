@@ -1,3 +1,4 @@
+using Game.Character;
 using Game.Data;
 using Game.UI;
 using GamePlugins.Utils;
@@ -7,14 +8,14 @@ using UnityEngine.UI;
 
 namespace Game.UI.CharacterSelect
 {
-	public class CharacterSlotUI : BaseCollectionElementUI<ActorInfo>
+	public class CharacterSlotUI : BaseCollectionElementUI<CharacterInfoData>
 	{
 		[SerializeField]
 		private Image characterImage;
 		[SerializeField]
 		private GameObject emptyGO;
 
-		public override void Show(ActorInfo data, Action<object> onSelected)
+		public override void Show(CharacterInfoData data, Action<object> onSelected)
 		{
 			base.Show(data, onSelected);
 			bool isEmpty = data == null;

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using CharacterInfoData = Game.Character.CharacterInfoData;
 
 namespace Game.Settings
 {
@@ -13,7 +14,7 @@ namespace Game.Settings
 	{
 		[TitleGroup("Heroes")]
 		[SerializeField]
-		private List<ActorInfo> heros;
+		private List<CharacterInfoData> heroSetups;
 
 		[TitleGroup("Dungeons")]
 		[SerializeField]
@@ -30,7 +31,7 @@ namespace Game.Settings
 		public Color EnemyTeamColor { get => enemyTeamColor; }
 
 		public IReadOnlyList<DungeonInfo> DungeonInfos { get => dungeonInfos; }
-		public IReadOnlyList<ActorInfo> Heros { get => heros; }
+		public IReadOnlyList<CharacterInfoData> Heros { get => heroSetups; }
 
 		public DungeonInfo DefaultDungeon { get => dungeonInfos.FirstOrDefault(); }
 
@@ -42,24 +43,24 @@ namespace Game.Settings
 		{
 		}
 
-		public List<ActorInfo> GetDefaultHeroes(int heroCount)
+		public List<CharacterInfoData> GetDefaultHeroes(int heroCount)
 		{
 			// Return the requested number of heroes. If the requested count exceeds
 			// available heroes, loop over the list again.
 			if (heroCount <= 0)
 			{
-				return new List<ActorInfo>();
+				return new List<CharacterInfoData>();
 			}
 
-			if (heros == null || heros.Count == 0)
+			if (heroSetups == null || heroSetups.Count == 0)
 			{
-				return new List<ActorInfo>();
+				return new List<CharacterInfoData>();
 			}
 
-			var result = new List<ActorInfo>(heroCount);
+			var result = new List<CharacterInfoData>(heroCount);
 			for (int i = 0; i < heroCount; i++)
 			{
-				result.Add(heros[i % heros.Count]);
+				result.Add(heroSetups[i % heroSetups.Count]);
 			}
 			return result;
 		}

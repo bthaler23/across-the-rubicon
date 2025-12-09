@@ -1,3 +1,4 @@
+using Game.Character;
 using Game.Data;
 using GamePlugins.Utils;
 using TMPro;
@@ -17,7 +18,7 @@ namespace Game.UI.CharacterSelect
 		[SerializeField]
 		private TextMeshProUGUI decriptionAbilityLabel;
 
-		public void Show(ActorInfo characterData)
+		public void Show(CharacterInfoData characterData)
 		{
 			characterImage.SetIconSafe(characterData.CharacterAvatar);
 			nameLabel.SetTextSafe(characterData.CharaterName);

@@ -8,6 +8,6 @@ namespace Game.Stats
 	{
 		float Value { get; }
 		ModifierType Type { get; }
-		object Source { get; }   // who applied this modifier?
+		object Owner { get; }   // who applied this modifier?
 	}
 }

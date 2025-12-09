@@ -20,7 +20,8 @@ namespace Game.Gameplay
 		public float GetTurnSpeed();
 		Sprite GetActorIcon();
 		Color GetTeamColor();
-		IStatValue GetStat(StatType type);
+		int GetStatValueInt(StatType type);
+		float GetStatValueFloat(StatType type);
 		Transform GetUIXform();
 	}
 }

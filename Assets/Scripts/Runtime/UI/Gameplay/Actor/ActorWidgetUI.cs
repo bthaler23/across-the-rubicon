@@ -91,13 +91,11 @@ namespace Game.UI
 
 		private void ShowHealth(ITurnActor actor)
 		{
-			var health = actor.GetStat(StatType.Health) as HealthStats;
-			if (health != null)
-			{
-				float healthPercent = (float)health.CurrentHealth / (float)health.MaxHealth;
-				healthProgressBarImage.fillAmount = healthPercent;
-				healthProgressLabel.SetText($"{health.CurrentHealth} / {health.MaxHealth}");
-			}
+			float health = actor.GetStatValueFloat(StatType.Health);
+			float maxhealth = actor.GetStatValueFloat(StatType.MaxHealth);
+			float healthPercent = (float)health / (float)maxhealth;
+			healthProgressBarImage.fillAmount = healthPercent;
+			healthProgressLabel.SetText($"{health} / {maxhealth}");
 		}
 
 		private void PopulateActionItems(ITurnActor actor)

@@ -21,5 +21,15 @@ MonoBehaviour:
     edgeRemovalChance: 0
     innerRemovalChance: 0
   enemyActors:
-  - {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
-  - {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+  - characterInfo: {fileID: 11400000, guid: 2a4e6eab60652cb48b933e0abfd56757, type: 2}
+    equipmentData:
+      weaponSetup:
+        weapon: {fileID: 0}
+        matters: []
+      abilities: []
+  - characterInfo: {fileID: 11400000, guid: c0684f59c446fec428bdb70c61aa5988, type: 2}
+    equipmentData:
+      weaponSetup:
+        weapon: {fileID: 0}
+        matters: []
+      abilities: []

@@ -1,4 +1,5 @@
 using Game.Data;
+using Game.Character;
 using Game.UI;
 using NUnit.Framework;
 using System;
@@ -15,7 +16,7 @@ namespace Game.Progress
 		[SerializeField]
 		internal DungeonRoomInfo currentRoom;
 		[SerializeField]
-		internal List<ActorInfo> currentHeroes;
+		internal List<CharacterSetupData> currentHeroes;
 
 		public bool HasHeros()
 		{

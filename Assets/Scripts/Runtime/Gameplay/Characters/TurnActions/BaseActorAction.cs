@@ -1,3 +1,4 @@
+using Game.Character;
 using Game.Gameplay;
 using Game.Grid;
 using Sirenix.OdinInspector;
@@ -12,7 +13,7 @@ namespace Game
 	public abstract class BaseActorAction : TurnActionBase 
 	{
 		[ShowInInspector, ReadOnly]
-		private ActorController owner;
+		private CharacterBehaviour owner;
 		[ShowInInspector, ReadOnly]
 		private List<Vector2Int> rangePositions;
 		[ShowInInspector, ReadOnly]
@@ -20,13 +21,13 @@ namespace Game
 		[ShowInInspector, ReadOnly]
 		private bool isActionStarted = false;
 
-		public ActorController Owner { get => owner; }
+		public CharacterBehaviour Owner { get => owner; }
 		public List<Vector2Int> RangePositions { get => rangePositions; }
 
 		public override void Initialize(ActionInfo action, ITurnActor owner)
 		{
 			base.Initialize(action, owner);
-			this.owner = owner as ActorController;
+			this.owner = owner as CharacterBehaviour;
 			rangePositions = new List<Vector2Int>();
 			isActionActive = false;
 			isActionStarted = false;
