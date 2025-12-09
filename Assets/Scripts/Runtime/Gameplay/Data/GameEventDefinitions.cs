@@ -43,4 +43,15 @@ namespace Game.Events
 		{
 		}
 	}
+
+	public class OnShowFloatingUiText : IGenericEvent
+	{
+		public readonly Transform worldTarget;
+		public readonly string text;
+		public OnShowFloatingUiText(Transform worldTarget, string text)
+		{
+			this.worldTarget = worldTarget;
+			this.text = text;	
+		}
+	}
 }

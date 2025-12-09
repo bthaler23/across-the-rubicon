@@ -1,9 +1,10 @@
-using Game.Data;
 using Game.Character;
+using Game.Data;
 using Game.Events;
 using Game.Gameplay;
 using Game.Grid;
 using Game.Stats;
+using Game.UI;
 using GamePlugins.Events;
 using GamePlugins.Utils;
 using NUnit.Framework;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
+using UnityEngine.InputSystem.iOS;
 using UnityEngine.Rendering;
 
 namespace Game.Character
@@ -30,7 +32,10 @@ namespace Game.Character
 		private GameObject deathGO;
 		[BoxGroup("UI")]
 		[SerializeField]
-		private Transform uiPositionXform;
+		private CharacterHealthBarUI healthBarUI;
+		[BoxGroup("UI")]
+		[SerializeField]
+		private Transform uiActionBarXform;
 		[BoxGroup("Actions")]
 		[SerializeField]
 		private Transform actionParentXform;
@@ -60,6 +65,8 @@ namespace Game.Character
 
 		public event Action OnTurnCompleted;
 
+		public event Action OnHealthChanged;
+
 		public void Initialize(CharacterInfoData info, CharacterEquipmentSetup equipmentData, PlayerInputController inputController, TeamInfo teamInfo)
 		{
 			this.info = info;
@@ -71,6 +78,12 @@ namespace Game.Character
 			InitializeEquipment(equipmentData);
 
 			UpdateVariableStats();
+			InitializeHealthbar();
+		}
+
+		private void InitializeHealthbar()
+		{
+			healthBarUI.Initialize(this);
 		}
 
 		private void InitializeEquipment(CharacterEquipmentSetup equipmentData)
@@ -110,6 +123,9 @@ namespace Game.Character
 		public void ApplyDamage(int damage)
 		{
 			characterStats.ApplyDamage(damage);
+			OnHealthChanged?.Invoke();
+
+			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(uiActionBarXform, $"-{damage}"));
 
 			if (!characterStats.IsAlive)
 			{
@@ -117,6 +133,7 @@ namespace Game.Character
 				aliveGO.SetActive(false);
 				EventBus.Publish<OnCharacterDiedEvent>(new OnCharacterDiedEvent(this));
 			}
+
 		}
 
 		public bool HasAnyActions()
@@ -254,7 +271,7 @@ namespace Game.Character
 
 		public Transform GetUIXform()
 		{
-			return uiPositionXform;
+			return uiActionBarXform;
 		}
 
 		public void ActivateAction(ActionInfo actionInfo)

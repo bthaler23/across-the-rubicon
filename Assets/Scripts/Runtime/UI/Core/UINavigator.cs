@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using CharacterInfoData = Game.Character.CharacterInfoData;
+using GamePlugins.ObjectPool;
 
 namespace Game.UI
 {
@@ -17,6 +18,9 @@ namespace Game.UI
 	[AutoCreateSingleton(false, false)]
 	public class UINavigator : Singleton<UINavigator>
 	{
+		[SerializeField]
+		private RectTransform uiObjectPoolParent;
+
 		[TitleGroup("UI Pages")]
 		[SerializeField]
 		private MainMenuUI mainMenuUI;
@@ -29,6 +33,8 @@ namespace Game.UI
 		[TitleGroup("UI Pages")]
 		[SerializeField]
 		private DungeonRoomSelectUI dungeonRoomSelectUI;
+
+		public RectTransform UiObjectPoolParent { get => uiObjectPoolParent; }
 
 		public void Initialize()
 		{
@@ -49,7 +55,7 @@ namespace Game.UI
 		public void ShowDungeonSelectUI()
 		{
 			dungeonSelectUI.PopulateDungeons(GameManager.Instance.GameplaySettings.DungeonInfos);
-			UIManager.Instance.Open(dungeonSelectUI); 
+			UIManager.Instance.Open(dungeonSelectUI);
 		}
 
 		public void SelectDungeon(DungeonInfo dungeon)

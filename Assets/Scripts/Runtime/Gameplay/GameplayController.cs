@@ -6,6 +6,7 @@ using Game.Progress;
 using Game.Settings;
 using Game.UI;
 using GamePlugins.Events;
+using GamePlugins.ObjectPool;
 using GamePlugins.Singleton;
 using Sirenix.OdinInspector;
 using System;
@@ -20,6 +21,8 @@ namespace Game.Gameplay
 		private const string HERO_TEAM = "Heroes";
 		private const string ENEMY_TEAM = "Foes";
 
+		[SerializeField]
+		private RandomDirectionFadeWidget floatingTextUIPrefab;
 		[SerializeField]
 		private CameraController cameraController;
 
@@ -51,6 +54,7 @@ namespace Game.Gameplay
 			base.OnAwakeCalled();
 			ResourceManager.Instance.RegisterResource<CameraController>(cameraController);
 			EventBus.Subscribe<OnGameEndedEvent>(OnGameEnded);
+			EventBus.Subscribe<OnShowFloatingUiText>(ShowFloatingUIText);
 		}
 
 		protected override void OnDestroy()
@@ -58,10 +62,12 @@ namespace Game.Gameplay
 			base.OnDestroy();
 			ResourceManager.Instance.RemoveResource<CameraController>();
 			EventBus.Unsubscribe<OnGameEndedEvent>(OnGameEnded);
+			EventBus.Unsubscribe<OnShowFloatingUiText>(ShowFloatingUIText);
 		}
 
 		public void InitializeGameplay()
 		{
+			ObjectPool.Instance.CachePrefab(floatingTextUIPrefab.gameObject, UINavigator.Instance.UiObjectPoolParent, 10);
 			actors = new List<CharacterBehaviour>();
 			gridExpansionController.InitializeGrid(ProgressManager.Instance.CurrentDungeonRoom.GridSetup);
 			teams = GetTeams();
@@ -150,6 +156,12 @@ namespace Game.Gameplay
 				}
 			}
 			return false;
+		}
+
+		private void ShowFloatingUIText(OnShowFloatingUiText eventParams)
+		{
+			var floatingUI = ObjectPool.GetObject<RandomDirectionFadeWidget>(floatingTextUIPrefab);
+			floatingUI.ShowText(eventParams.worldTarget, cameraController.Camera, 1f, eventParams.text);
 		}
 
 		private void OnGameEnded(OnGameEndedEvent @event)

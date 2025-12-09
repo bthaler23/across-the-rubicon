@@ -1,3 +1,5 @@
+using Game.Events;
+using GamePlugins.Events;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
 using System;
@@ -69,7 +71,7 @@ namespace Game.Gameplay
 
 		private void OnGameEnded()
 		{
-			Debug.Log("Game Ended");
+			EventBus.Publish(new OnGameEndedEvent());
 		}
 
 		private bool CheckEndGameCondition()
