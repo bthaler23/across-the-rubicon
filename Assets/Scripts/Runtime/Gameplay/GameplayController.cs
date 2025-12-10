@@ -97,7 +97,7 @@ namespace Game.Gameplay
 			return gridData.GetRandomPositions(count);
 		}
 
-		private CharacterBehaviour SpawnCharacter(Vector2Int gridPosition, CharacterSetupData characterSetup, TeamInfo team)
+		private CharacterBehaviour SpawnCharacter(Vector2Int gridPosition, CharacterSetup characterSetup, TeamInfo team)
 		{
 			CharacterBehaviour character = Instantiate<CharacterBehaviour>(characterSetup.CharacterInfo.CharacterPrefab);
 			character.Initialize(characterSetup.CharacterInfo, characterSetup.EquipmentData, playerInput, team);

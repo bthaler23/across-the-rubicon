@@ -35,17 +35,17 @@ namespace Game.UI
 
 		public void Show(TurnActionBase action, bool isActiveAction, Action onSelectAction)
 		{
-			var actionInfo = action.ActionInfo;
+			var actionIcon = action.GetIcon();
 			gameObject.SetGameObjectActive(true);
 			this.onSelectAction = onSelectAction;
 			selectionGO.SetGameObjectActive(isActiveAction);
 
-			bool hasIcon = actionInfo.Icon != null;
+			bool hasIcon = actionIcon != null;
 			actionImage.SetGameObjectActive(hasIcon);
 			actionLabel.SetGameObjectActive(!hasIcon);
 
-			actionImage.SetIconSafe(actionInfo.Icon);
-			actionLabel.SetTextSafe(actionInfo.ActionName);
+			actionImage.SetIconSafe(actionIcon);
+			actionLabel.SetTextSafe(action.GetName());
 		}
 
 		public void Hide()

@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Grid.GridTileInstance
   gridDefaultSpriteRenderer: {fileID: 8214744740027366763}
   selectionSpriteRenderer: {fileID: 9063365649339665443}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultColor: {r: 0.6301887, g: 0.6301887, b: 0.6301887, a: 0.5019608}
   sortOrderNormal: -10
   highlightColor: {r: 0.29666668, g: 0.7433963, b: 0.049092103, a: 1}
   sortOrderHighLight: -9

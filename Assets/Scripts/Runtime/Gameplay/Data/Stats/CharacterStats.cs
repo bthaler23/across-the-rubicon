@@ -78,5 +78,13 @@ namespace Game.Gameplay
 				stat.RemoveModifier(owner);
 			}
 		}
+
+		public void RemoveModifier(object owner)
+		{
+			foreach (var stat in statValues.Values)
+			{
+				stat.RemoveModifier(owner);
+			}
+		}
 	}
 }

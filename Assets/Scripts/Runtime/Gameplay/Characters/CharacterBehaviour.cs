@@ -62,10 +62,12 @@ namespace Game.Character
 		public string ID => gameObject.name;
 		public CharacterInfoData Info { get => info; }
 		public Vector2Int CurrentPosition { get => currentPosition; }
+		public CharacterEquipmentController EquipmentController { get => equipmentController; }
 
 		public event Action OnTurnCompleted;
-
 		public event Action OnHealthChanged;
+		public event Action<HitData> OnPrepareHit;
+		public event Action<HitData> OnReceiveHit;
 
 		public void Initialize(CharacterInfoData info, CharacterEquipmentSetup equipmentData, PlayerInputController inputController, TeamInfo teamInfo)
 		{
@@ -120,12 +122,14 @@ namespace Game.Character
 			transform.position = worldPosition;
 		}
 
-		public void ApplyDamage(int damage)
+		public void ApplyDamage(HitData hitData)
 		{
-			characterStats.ApplyDamage(damage);
+			OnReceiveHit?.Invoke(hitData);
+
+			characterStats.ApplyDamage(hitData.damage);
 			OnHealthChanged?.Invoke();
 
-			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(uiActionBarXform, $"-{damage}"));
+			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(uiActionBarXform, $"-{hitData.damage}"));
 
 			if (!characterStats.IsAlive)
 			{
@@ -257,11 +261,18 @@ namespace Game.Character
 
 		public int GetCharacterAttackDamage()
 		{
-			//TODO GYURI: fix this temporary implementation
 			int minAttack = GetStatValueInt(StatType.AttackMin);
-			int maxAttack = GetStatValueInt(StatType.AttackMin);
+			int maxAttack = GetStatValueInt(StatType.AttackMax);
 
 			return UnityEngine.Random.Range(minAttack, maxAttack);
+		}
+
+		public HitData GetHitData(CharacterBehaviour target)
+		{
+			int damage = GetCharacterAttackDamage();
+			HitData hitData = new HitData(damage, this, target);
+			OnPrepareHit?.Invoke(hitData);
+			return hitData;
 		}
 
 		public float GetTurnSpeed()

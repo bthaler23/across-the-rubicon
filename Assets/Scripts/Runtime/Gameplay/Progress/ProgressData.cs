@@ -16,7 +16,7 @@ namespace Game.Progress
 		[SerializeField]
 		internal DungeonRoomInfo currentRoom;
 		[SerializeField]
-		internal List<CharacterSetupData> currentHeroes;
+		internal List<CharacterSetup> currentHeroes;
 
 		public bool HasHeros()
 		{

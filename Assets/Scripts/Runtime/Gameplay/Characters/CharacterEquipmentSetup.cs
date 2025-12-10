@@ -1,5 +1,6 @@
 using Game.Data;
 using Game.Gameplay;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace Game.Character
 		internal WeaponSetup weaponSetup;
 		[SerializeField]
 		internal List<AbilityInfo> abilities;
+		[SerializeField]
+		internal List<KeywordInfo> keywords;
 
 		public WeaponSetup WeaponInfo { get => weaponSetup; }
 		public List<AbilityInfo> Abilities { get => abilities; }

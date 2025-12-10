@@ -20,7 +20,7 @@ namespace Game.Progress
 
 		public DungeonInfo CurrentDungeon => progressData.currentDungeon;
 		public DungeonRoomInfo CurrentDungeonRoom => progressData.currentRoom;
-		public List<CharacterSetupData> CurrentHeroes => progressData.currentHeroes;
+		public List<CharacterSetup> CurrentHeroes => progressData.currentHeroes;
 
 		protected override void OnAwakeCalled()
 		{
@@ -35,18 +35,18 @@ namespace Game.Progress
 
 		public void SelectCharacters(List<CharacterInfoData> heroes)
 		{
-			var heroSetups = new List<CharacterSetupData>();
+			var heroSetups = new List<CharacterSetup>();
 			foreach (var h in heroes)
 			{
 				if (h != null)
-					heroSetups.Add(new CharacterSetupData(h));
+					heroSetups.Add(new CharacterSetup(h));
 			}
 			SelectCharacters(heroSetups);
 		}
 
-		public void SelectCharacters(List<CharacterSetupData> heroes)
+		public void SelectCharacters(List<CharacterSetup> heroes)
 		{
-			progressData.currentHeroes = new List<CharacterSetupData>();
+			progressData.currentHeroes = new List<CharacterSetup>();
 			foreach (var h in heroes)
 			{
 				if (h != null)

@@ -36,10 +36,10 @@ namespace Game
 					// Use team color difference as enemy check (TeamInfo is not exposed)
 					if (target.GetTeamColor() != Owner.GetTeamColor())
 					{
-						target.ApplyDamage(Owner.GetCharacterAttackDamage());
+						HitData hitData = Owner.GetHitData(target);
+						target.ApplyDamage(hitData);
 					}
 				}
-
 				SpawnAttackFX(gridIndex);
 			}
 		}
@@ -80,6 +80,12 @@ namespace Game
 		public override string GetDescription()
 		{
 			return $"ATK [{Owner.GetStatValueInt(Stats.StatType.AttackMin)} - {Owner.GetStatValueInt(Stats.StatType.AttackMax)}]  Range: {GetRange()}";
+		}
+
+		public override Sprite GetIcon()
+		{
+			var weapon = Owner.EquipmentController.GetEquippedWeapon();
+			return weapon?.Icon ?? base.GetIcon();
 		}
 	}
 }

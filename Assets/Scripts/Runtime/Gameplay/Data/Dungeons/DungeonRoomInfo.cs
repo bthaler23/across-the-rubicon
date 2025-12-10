@@ -23,12 +23,12 @@ namespace Game.Data
 
 		[BoxGroup("Enemies")]
 		[SerializeField]
-		private CharacterSetupData[] enemyActors;
+		private CharacterSetup[] enemyActors;
 
 		public string RoomName { get => roomName; }
 		public string RoomDescription { get => roomDescription; }
 		public GridSetup GridSetup { get => gridSetup; set => gridSetup = value; }
-		public CharacterSetupData[] EnemyActors { get => enemyActors; }
+		public CharacterSetup[] EnemyActors { get => enemyActors; }
 
 		public string GetSizeDescription()
 		{

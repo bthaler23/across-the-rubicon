@@ -16,6 +16,6 @@ MonoBehaviour:
   descriptionType: 0
   description: Skip this turn
   color: {r: 1, g: 0.45577544, b: 0, a: 1}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 10aad675ac13443408a6212e576a8e07, type: 3}
   actionPrefab: {fileID: 8786703198675989492, guid: f0c934df398dae04784ce1029b8ea505, type: 3}
   useUIConfirmation: 1

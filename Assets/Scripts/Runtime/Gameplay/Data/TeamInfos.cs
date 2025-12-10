@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
-using CharacterSetupData = Game.Character.CharacterSetupData;
+using CharacterSetup = Game.Character.CharacterSetup;
 
 namespace Game.Data
 {
@@ -14,22 +14,22 @@ namespace Game.Data
 		[SerializeField]
 		private Color teamColor;
 		[SerializeField]
-		private List<CharacterSetupData> characters;
+		private List<CharacterSetup> characters;
 
 		public string TeamID { get => teamID; }
 		public Color TeamColor { get => teamColor; }
-		public IReadOnlyList<CharacterSetupData> Characters { get => characters; }
+		public IReadOnlyList<CharacterSetup> Characters { get => characters; }
 
 		public TeamInfo(string teamID, Color teamColor)
 		{
 			this.teamID = teamID;
 			this.teamColor = teamColor;
-			this.characters = new List<CharacterSetupData>();
+			this.characters = new List<CharacterSetup>();
 		}
 
-		public void AddCharacter(CharacterSetupData character)
+		public void AddCharacter(CharacterSetup character)
 		{
-			characters ??= new List<CharacterSetupData>();
+			characters ??= new List<CharacterSetup>();
 			characters.Add(character);
 		}
 	}

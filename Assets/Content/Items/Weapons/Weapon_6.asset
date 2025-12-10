@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Data.WeaponInfo
   ID: 0
   itemName: Weapon_6
-  icon: {fileID: 21300000, guid: f63ae385b7aaa5a4fb5f4241c5909e4a, type: 3}
+  icon: {fileID: 21300000, guid: 660e6bdbea23eb84d952b1e591ac7df3, type: 3}
   matterSlots: 1
   statModifiers:
   - stat: 7

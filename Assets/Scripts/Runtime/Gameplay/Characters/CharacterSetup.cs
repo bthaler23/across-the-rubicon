@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Game.Character
 {
 	[Serializable]
-	public class CharacterSetupData
+	public class CharacterSetup
 	{
 		[SerializeField]
 		private CharacterInfoData characterInfo;
@@ -16,7 +16,7 @@ namespace Game.Character
 		public CharacterInfoData CharacterInfo => characterInfo;
 		public CharacterEquipmentSetup EquipmentData => equipmentData;
 
-		public CharacterSetupData(CharacterInfoData actorInfo)
+		public CharacterSetup(CharacterInfoData actorInfo)
 		{
 			characterInfo = actorInfo;
 			equipmentData = new CharacterEquipmentSetup();

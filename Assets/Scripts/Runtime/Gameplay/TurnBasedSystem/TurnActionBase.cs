@@ -58,5 +58,10 @@ namespace Game.Gameplay
 		{
 			return actionInfo.ActionName;
 		}
+
+		public virtual Sprite GetIcon()
+		{
+			return actionInfo.Icon;
+		}
 	}
 }

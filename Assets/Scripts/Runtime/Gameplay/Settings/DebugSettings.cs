@@ -26,11 +26,11 @@ namespace Game.Settings
 		private bool overrideHeros = false;
 		[ShowIf("@this.overrideHeros==true")]
 		[SerializeField]
-		private List<CharacterSetupData> debugHeros;
+		private List<CharacterSetup> debugHeros;
 
 		public bool OverrideDungeon { get => overrideDungeon; }
 		public bool OverrideHeros { get => overrideHeros; }
-		public List<CharacterSetupData> DebugHeros { get => debugHeros; }
+		public List<CharacterSetup> DebugHeros { get => debugHeros; }
 		public DungeonInfo DebugDungeon { get => debugDungeon; }
 		public DungeonRoomInfo DebugDungeonRoom { get => debugDungeonRoom; }
 

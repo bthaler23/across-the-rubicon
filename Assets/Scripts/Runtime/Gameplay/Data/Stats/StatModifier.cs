@@ -19,6 +19,13 @@ namespace Game.Stats
 		[SerializeField]
 		private float value;
 
+		public StatModifierInfo(StatType stat, ModifierType type, float value)
+		{
+			this.stat = stat;
+			this.type = type;
+			this.value = value;
+		}
+
 		public float Value { get => value; }
 		public ModifierType Type { get => type; }
 		public StatType Stat { get => stat; }

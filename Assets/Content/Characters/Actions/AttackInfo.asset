@@ -16,6 +16,6 @@ MonoBehaviour:
   descriptionType: 1
   description: 
   color: {r: 1, g: 0.45577544, b: 0, a: 1}
-  icon: {fileID: 563336626, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  icon: {fileID: 21300000, guid: 6c959ef7b94bbee42b83852a0cc7dbc2, type: 3}
   actionPrefab: {fileID: 355615423818502215, guid: 52349f4b2105a5446b42e7981b3114dd, type: 3}
   useUIConfirmation: 0
