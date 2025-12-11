@@ -1,3 +1,4 @@
+using Game.Data;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,13 +8,12 @@ namespace Game.Gameplay
 	public abstract class TurnActionBase : MonoBehaviour
 	{
 		[SerializeField]
-		protected ActionInfo actionInfo;
-
-		public ActionInfo ActionInfo { get => actionInfo; }
+		protected AbilityInfo actionInfo;
+		public AbilityInfo ActionInfo { get => actionInfo; }
 
 		public event Action OnActionCompleted;
 
-		public virtual void Initialize(ActionInfo action, ITurnActor owner)
+		public virtual void Initialize(AbilityInfo action, ITurnActor owner)
 		{
 			actionInfo = action;
 		}
@@ -47,7 +47,7 @@ namespace Game.Gameplay
 
 		public virtual string GetDescription()
 		{
-			if (actionInfo.DescriptionOption != ActionInfo.DescriptionType.StaticText)
+			if (actionInfo.DescriptionOption != AbilityInfo.DescriptionType.StaticText)
 			{
 				Debug.LogError($"Action {actionInfo.name} has dynamic description but script does not override it!");
 			}
@@ -56,7 +56,7 @@ namespace Game.Gameplay
 
 		public string GetName()
 		{
-			return actionInfo.ActionName;
+			return actionInfo.ItemName;
 		}
 
 		public virtual Sprite GetIcon()

@@ -1,10 +1,13 @@
 using Game.Data;
+using Game.Events;
 using Game.Gameplay;
 using Game.Stats;
+using GamePlugins.Events;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Rendering;
 
@@ -22,27 +25,40 @@ namespace Game.Character
 		public void Initialize(CharacterBehaviour owner, CharacterEquipmentSetup sourceEquipment)
 		{
 			this.owner = owner;
-			equipment = new CharacterEquipmentSetup();
+			equipment = sourceEquipment;
 			EquipWeapon(sourceEquipment.weaponSetup);
 			EquipKeywords(sourceEquipment.keywords);
+			EquipAbilities(sourceEquipment.abilities);
+		}
+
+		private void EquipAbilities(List<AbilityInfo> abilities)
+		{
+			foreach(var ab in abilities)
+			{
+				owner.EquipAction(ab);
+			}
 		}
 
 		private void EquipKeywords(List<KeywordInfo> keywords)
 		{
-			keywordState = new SerializedDictionary<KeywordInfo, KeywordLogic>();
+			keywordState ??= new SerializedDictionary<KeywordInfo, KeywordLogic>();
 			foreach (var keyword in keywords)
 			{
-				if (keywordState.ContainsKey(keyword))
-				{
-					keywordState[keyword].IncerementStack();
-				}
-				else
-					keywordState.Add(keyword, keyword.GetLogic());
+				AddKeyword(keyword, 1);
 			}
+		}
 
-			foreach (var keyword in keywordState)
+		private void AddKeyword(KeywordInfo keyword, int count)
+		{
+			if (keywordState.ContainsKey(keyword))
 			{
-				keyword.Value.InitializeLogic(owner);
+				keywordState[keyword].IncerementStack(count);
+			}
+			else
+			{
+				var logic = keyword.GetLogic();
+				logic.InitializeLogic(owner, count);
+				keywordState.Add(keyword, logic);
 			}
 		}
 
@@ -72,6 +88,25 @@ namespace Game.Character
 		public WeaponInfo GetEquippedWeapon()
 		{
 			return equipment.weaponSetup.weapon;
+		}
+
+		internal void EquipKeyword(KeywordInfo keyword, int count)
+		{
+			AddKeyword(keyword, count);
+			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(owner.uiActionBarXform, $"+{count}", owner.statsGainUiTextColor, keyword.Icon));
+		}
+
+		internal void RemoveKeyword(KeywordInfo keyword, int count)
+		{
+			if (!keywordState.ContainsKey(keyword)) return;
+			keywordState[keyword].DecrementStack(count);
+
+			if (keywordState[keyword].CurrentStack <= 0)
+			{
+				keywordState[keyword].DestroyLogic();
+				keywordState.Remove(keyword);
+			}
+			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(owner.uiActionBarXform, $"-{count}", owner.statsLostUiTextColor, keyword.Icon));
 		}
 	}
 }

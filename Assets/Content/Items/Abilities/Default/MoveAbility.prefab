@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7094217614009521667
+--- !u!1 &1454860551742143850
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5262195889573553629}
-  - component: {fileID: 355615423818502215}
+  - component: {fileID: 7088459187891152233}
+  - component: {fileID: 3036990752143100988}
   m_Layer: 0
-  m_Name: AttackAction
+  m_Name: MoveAbility
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5262195889573553629
+--- !u!4 &7088459187891152233
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7094217614009521667}
+  m_GameObject: {fileID: 1454860551742143850}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,18 +32,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &355615423818502215
+--- !u!114 &3036990752143100988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7094217614009521667}
+  m_GameObject: {fileID: 1454860551742143850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3019a3eb139e244c88fef3883d835ba, type: 3}
+  m_Script: {fileID: 11500000, guid: ed0a2e3920b3ebb458f63caf87f70f81, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.AttackAction
-  actionInfo: {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
-  attackEffectPrefab: {fileID: 7139991803096122737, guid: a21a668410221f3488ef29584f6487a3, type: 3}
-  attackEffectDuration: 0.5
+  m_EditorClassIdentifier: Assembly-CSharp::Game.MoveAction
+  actionInfo: {fileID: 11400000, guid: 2dab7a407bb74624b99e6908a5573c53, type: 2}
+  movementSpeed: 5

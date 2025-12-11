@@ -10,12 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17e58299f12e751459a0981d7db0b67d, type: 3}
-  m_Name: AttackInfo
+  m_Name: WaitInfo
   m_EditorClassIdentifier: Assembly-CSharp::Game.ActionInfo
-  actionName: Attack
-  descriptionType: 1
-  description: 
+  ID: 0
+  itemName: 
+  icon: {fileID: 21300000, guid: 10aad675ac13443408a6212e576a8e07, type: 3}
   color: {r: 1, g: 0.45577544, b: 0, a: 1}
-  icon: {fileID: 21300000, guid: 6c959ef7b94bbee42b83852a0cc7dbc2, type: 3}
-  actionPrefab: {fileID: 355615423818502215, guid: 52349f4b2105a5446b42e7981b3114dd, type: 3}
-  useUIConfirmation: 0
+  descriptionType: 0
+  description: Skip this turn
+  overrideWithWeaponIcon: 0
+  actionPrefab: {fileID: 8786703198675989492, guid: f0c934df398dae04784ce1029b8ea505, type: 3}
+  executionType: 1
+  manaCost: 0
+  range: 0
+  rangeBehaviour: 0
+  keywordAllocations: []

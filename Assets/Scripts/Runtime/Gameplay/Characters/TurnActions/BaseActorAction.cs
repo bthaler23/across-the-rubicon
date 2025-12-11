@@ -1,4 +1,5 @@
 using Game.Character;
+using Game.Data;
 using Game.Gameplay;
 using Game.Grid;
 using Sirenix.OdinInspector;
@@ -10,7 +11,7 @@ using UnityEngine.UI;
 
 namespace Game
 {
-	public abstract class BaseActorAction : TurnActionBase 
+	public abstract class BaseActorAction : TurnActionBase
 	{
 		[ShowInInspector, ReadOnly]
 		private CharacterBehaviour owner;
@@ -24,7 +25,7 @@ namespace Game
 		public CharacterBehaviour Owner { get => owner; }
 		public List<Vector2Int> RangePositions { get => rangePositions; }
 
-		public override void Initialize(ActionInfo action, ITurnActor owner)
+		public override void Initialize(AbilityInfo action, ITurnActor owner)
 		{
 			base.Initialize(action, owner);
 			this.owner = owner as CharacterBehaviour;
@@ -47,7 +48,7 @@ namespace Game
 		{
 			if (HasRange())
 			{
-				rangePositions = HexGridManager.Instance.GetMovementRangePositions(Owner.CurrentPosition, GetRange());
+				rangePositions = HexGridManager.Instance.GetMovementRangePositions(Owner.CurrentPosition, GetActionRange());
 				HexGridManager.Instance.HighlightPositions(Owner.CurrentPosition, Owner.GetTeamColor(), RangePositions, ActionInfo.Color);
 			}
 			Owner.RegisterHexCellClickEvent(OnCellClicked);
@@ -80,15 +81,33 @@ namespace Game
 			return false;
 		}
 
-		protected virtual int GetRange()
+		protected virtual int GetActionRange()
 		{
-			return 0;
+			if (actionInfo.RangeBehaviourType == Data.AbilityInfo.RangeBehaviour.AdditionToCharacterRange)
+				return GetCharacterRangeValue() + actionInfo.Range;
+			return actionInfo.Range;
+		}
+
+		protected virtual int GetCharacterRangeValue()
+		{
+			return Owner.GetStatValueInt(Stats.StatType.AttackRange);
 		}
 
 		protected IEnumerator DelayedExecuteAction(float delay, Action action)
 		{
 			yield return new WaitForSeconds(delay);
 			action?.Invoke();
+		}
+
+		protected virtual void AllocateSelfKeywords()
+		{
+			foreach (var allocation in actionInfo.KeywordAllocations)
+			{
+				if (allocation.Target == ItemAllocationTarget.Self)
+				{
+					Owner.EquipmentController.EquipKeyword(allocation.Keyword, allocation.Count);
+				}
+			}
 		}
 	}
 }

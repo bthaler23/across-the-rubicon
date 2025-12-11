@@ -11,13 +11,15 @@ namespace Game.UI
 	public class FloatingUIWidget : BaseWidget
 	{
 		[SerializeField]
-		private bool returnToObjectPool;
+		protected bool returnToObjectPool;
 		[SerializeField]
-		private CanvasGroup canvasGroup;
+		protected CanvasGroup canvasGroup;
+		[SerializeField]
+		protected float deactivateDelay = 0f;
 		[SerializeField, ShowIf("@this.canvasGroup!=null")]
-		private float disappearSpeed = 3f;
+		protected float disappearSpeed = 3f;
 
-		private float dissappearTimer;
+		protected float dissappearTimer;
 
 		protected Camera gameplayCamera;
 		protected Transform targetXform;

@@ -576,7 +576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Gameplay.GameplayController
   initialized: 0
-  floatingTextUIPrefab: {fileID: 6280657506106711674, guid: 94b6b25465000444eb4c1c28df83152f, type: 3}
+  floatingTextUIPrefab: {fileID: 6280657506106711674, guid: 9cdea579af5b31b49879e6e07644d5dc, type: 3}
   cameraController: {fileID: 8444935615456679833}
   playerInput: {fileID: 786534993}
   gameFlowManager: {fileID: 858946885}

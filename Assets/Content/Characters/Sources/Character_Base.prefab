@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 6816818919738355406}
   - component: {fileID: 3863568392094992078}
   m_Layer: 0
-  m_Name: Dummy_1
+  m_Name: Character_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -549,6 +549,8 @@ MonoBehaviour:
   deathGO: {fileID: 6105895817536578769}
   healthBarUI: {fileID: 7496543919171757651}
   uiActionBarXform: {fileID: 1760700388564350148}
+  statsLostUiTextColor: {r: 1, g: 0, b: 0, a: 1}
+  statsGainUiTextColor: {r: 0, g: 1, b: 0.7650986, a: 1}
   actionParentXform: {fileID: 7405180314104079161}
 --- !u!114 &3863568392094992078
 MonoBehaviour:

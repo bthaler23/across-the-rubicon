@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07c4acc7dddaeed459d56fbeff50b4ff, type: 3}
-  m_Name: Dummy_1_Info
+  m_Name: Enemy_1_Info
   m_EditorClassIdentifier: Assembly-CSharp::Game.Character.CharacterInfo
-  charaterName: Princess
+  charaterName: Enemy_1
   charaterDescription: 
   charaterAbilityDescription: 
-  characerAvatar: {fileID: 21300000, guid: 8ce47518e1c9e054498959c31da06752, type: 3}
-  characterFullAvatarSprite: {fileID: 21300000, guid: 8ce47518e1c9e054498959c31da06752, type: 3}
-  characterPrefab: {fileID: 6816818919738355406, guid: e66826c77a4a0134a8f9980800ff14b9, type: 3}
-  defaultActions:
-  - {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
+  characerAvatar: {fileID: -2092964637, guid: 4104ee12b4d54f54b91b3ba875787837, type: 3}
+  characterFullAvatarSprite: {fileID: -2092964637, guid: 4104ee12b4d54f54b91b3ba875787837, type: 3}
+  characterPrefab: {fileID: 1252590310104006151, guid: 29d4e2d9e3757c6418728f878a32d1e1, type: 3}
+  defaultAbilities:
   - {fileID: 11400000, guid: 2dab7a407bb74624b99e6908a5573c53, type: 2}
+  - {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
   - {fileID: 11400000, guid: 191603081499b6a44824b77f4da3dfce, type: 2}
   health: 10
   manaPool: 0
-  minAttack: 10
-  maxAttack: 20
-  attackRange: 1
-  movementRange: 2
-  speed: 4
+  minAttack: 5
+  maxAttack: 10
+  attackRange: 2
+  movementRange: 1
+  speed: 1

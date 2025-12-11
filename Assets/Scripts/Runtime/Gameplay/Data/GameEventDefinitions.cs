@@ -3,6 +3,7 @@ using GamePlugins.Events;
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.Events
 {
@@ -48,10 +49,14 @@ namespace Game.Events
 	{
 		public readonly Transform worldTarget;
 		public readonly string text;
-		public OnShowFloatingUiText(Transform worldTarget, string text)
+		public readonly Color? textColor;
+		public readonly Sprite icon;
+		public OnShowFloatingUiText(Transform worldTarget, string text, Color? textColor, Sprite icon)
 		{
 			this.worldTarget = worldTarget;
 			this.text = text;	
+			this.textColor = textColor;
+			this.icon = icon;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1454860551742143850
+--- !u!1 &4490156593006039043
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7088459187891152233}
-  - component: {fileID: 3036990752143100988}
+  - component: {fileID: 6343820755703313499}
+  - component: {fileID: 8786703198675989492}
   m_Layer: 0
-  m_Name: MoveAction
+  m_Name: WaitAbility
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7088459187891152233
+--- !u!4 &6343820755703313499
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454860551742143850}
+  m_GameObject: {fileID: 4490156593006039043}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,17 +32,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3036990752143100988
+--- !u!114 &8786703198675989492
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454860551742143850}
+  m_GameObject: {fileID: 4490156593006039043}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed0a2e3920b3ebb458f63caf87f70f81, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e45842aef82d7143ae772fbee8e93b0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.MoveAction
-  actionInfo: {fileID: 11400000, guid: 2dab7a407bb74624b99e6908a5573c53, type: 2}
-  movementSpeed: 5
+  m_EditorClassIdentifier: Assembly-CSharp::Game.WaitAction
+  actionInfo: {fileID: 11400000, guid: 191603081499b6a44824b77f4da3dfce, type: 2}

@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e58299f12e751459a0981d7db0b67d, type: 3}
   m_Name: MoveInfo
   m_EditorClassIdentifier: Assembly-CSharp::Game.ActionInfo
-  actionName: Move
+  ID: 0
+  itemName: 
+  icon: {fileID: 21300000, guid: d21739f02c046c84ba9f49b6312e7d98, type: 3}
+  color: {r: 0.1641509, g: 1, b: 0.5807291, a: 1}
   descriptionType: 1
   description: 
-  color: {r: 0.1641509, g: 1, b: 0.5807291, a: 1}
-  icon: {fileID: 21300000, guid: d21739f02c046c84ba9f49b6312e7d98, type: 3}
   actionPrefab: {fileID: 3036990752143100988, guid: ee87b62de0f948b4aaa0deee3d2bed13, type: 3}
-  useUIConfirmation: 0
+  executionType: 0
+  manaCost: 0
+  range: 0
+  rangeBehaviour: 0
+  keywordAllocations: []

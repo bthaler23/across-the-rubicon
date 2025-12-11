@@ -77,14 +77,14 @@ namespace Game
 			return true;
 		}
 
-		protected override int GetRange()
+		protected override int GetCharacterRangeValue()
 		{
 			return Owner.GetStatValueInt(Stats.StatType.MovementRange);
 		}
 
 		public override string GetDescription()
 		{
-			return $"Movement Range: {GetRange()}";
+			return $"Movement Range: {GetActionRange()}";
 		}
 	}
 }

@@ -15,18 +15,24 @@ namespace Game.Character
 		internal int stackCount;
 		internal CharacterBehaviour ownerCharacter;
 
+		protected bool initialized = false;
+
+		public int CurrentStack { get => stackCount; }
+
 		public KeywordLogic(KeywordInfo keyword)
 		{
 			this.keyword = keyword;
 			this.stackCount = 1;
 		}
 
-		internal virtual void InitializeLogic(CharacterBehaviour ownerCharacter)
+		internal virtual void InitializeLogic(CharacterBehaviour ownerCharacter, int count)
 		{
+			stackCount = count;
 			this.ownerCharacter = ownerCharacter;
 			ApplyStatsModifiers();
 			ownerCharacter.OnPrepareHit += OwnerCharacter_OnPrepareHit;
 			ownerCharacter.OnReceiveHit += OwnerCharacter_OnReceiveHit;
+			initialized = true;
 		}
 
 		internal virtual void DestroyLogic()
@@ -38,9 +44,12 @@ namespace Game.Character
 
 		protected virtual void ApplyStatsModifiers()
 		{
-			List<StatModifier> statModifiers = GetStatModifiers();
-			foreach (var modifier in statModifiers)
-				ownerCharacter.characterStats.AddModifier(modifier);
+			if (stackCount > 0)
+			{
+				List<StatModifier> statModifiers = GetStatModifiers();
+				foreach (var modifier in statModifiers)
+					ownerCharacter.characterStats.AddModifier(modifier);
+			}
 		}
 
 		protected virtual List<StatModifier> GetStatModifiers()
@@ -48,22 +57,32 @@ namespace Game.Character
 			return new List<StatModifier>();
 		}
 
+		protected virtual void RefreshStatsModifiers()
+		{
+			if (!initialized) return;
+			RemoveStatsModifiers();
+			ApplyStatsModifiers();
+		}
+
 		protected virtual void RemoveStatsModifiers()
 		{
 			ownerCharacter.characterStats.RemoveModifier(this);
 		}
 
-		internal virtual void IncerementStack()
+		internal virtual void IncerementStack(int count = 1)
 		{
 			if (keyword.IsStackable())
-				stackCount++;
+				stackCount += count;
+			RefreshStatsModifiers();
 		}
 
-		internal virtual void DecrementStack()
+		internal virtual void DecrementStack(int count)
 		{
 			if (keyword.IsStackable() && stackCount > 0)
 			{
-				stackCount--;
+				stackCount -= count;
+				stackCount = Math.Max(0, stackCount);
+				RefreshStatsModifiers();
 			}
 		}
 

@@ -1,3 +1,4 @@
+using Game.Data;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -21,9 +22,9 @@ namespace Game.Character
 		[SerializeField]
 		private CharacterBehaviour characterPrefab;
 
-		[Title("Actions")]
+		[Title("Ability")]
 		[SerializeField]
-		private ActionInfo[] defaultActions;
+		private AbilityInfo[] defaultAbilities;
 
 		[Title("Stats")]
 		[SerializeField]
@@ -55,7 +56,7 @@ namespace Game.Character
 		public string CharaterName { get => charaterName; }
 		public string CharaterDescription { get => charaterDescription; }
 		public string CharaterAbilityDescription { get => charaterAbilityDescription; }
-		public ActionInfo[] DefaultActions { get => defaultActions; }
+		public AbilityInfo[] DefaultActions { get => defaultAbilities; }
 		public int ManaPool { get => manaPool; }
 	}
 }

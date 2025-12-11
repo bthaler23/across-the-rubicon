@@ -5,9 +5,11 @@ using GamePlugins.ObjectPool;
 using GamePlugins.Utils;
 using System;
 using UnityEngine;
+using Game.Data;
+
 namespace Game
 {
-	public class AttackAction : BaseActorAction
+	public class AbilityAction : BaseActorAction
 	{
 		[SerializeField]
 		private GameObject attackEffectPrefab;
@@ -16,7 +18,7 @@ namespace Game
 
 		private GameObject currentAttackEffect;
 
-		public override void Initialize(ActionInfo action, ITurnActor owner)
+		public override void Initialize(AbilityInfo action, ITurnActor owner)
 		{
 			base.Initialize(action, owner);
 			ObjectPool.Instance.CachePrefab(attackEffectPrefab, 5);
@@ -41,7 +43,15 @@ namespace Game
 					}
 				}
 				SpawnAttackFX(gridIndex);
+				AllocateSelfKeywords();
 			}
+		}
+
+		protected override void OnExecuteInvoked()
+		{
+			base.OnExecuteInvoked();
+			AllocateSelfKeywords();
+			FireOnCompletedEvent();
 		}
 
 		private void SpawnAttackFX(Vector2Int gridIndex)
@@ -53,13 +63,13 @@ namespace Game
 
 			StartAction();
 
-			Action delatedActions = () =>
+			Action delayedActions = () =>
 			{
 				ObjectPool.ReturnObject(attackFX);
 				FireOnCompletedEvent();
 			};
 
-			StartCoroutine(DelayedExecuteAction(attackEffectDuration, delatedActions));
+			StartCoroutine(DelayedExecuteAction(attackEffectDuration, delayedActions));
 		}
 
 		public override bool IsAvailable()
@@ -72,20 +82,21 @@ namespace Game
 			return true;
 		}
 
-		protected override int GetRange()
-		{
-			return Owner.GetStatValueInt(Stats.StatType.AttackRange);
-		}
-
 		public override string GetDescription()
 		{
-			return $"ATK [{Owner.GetStatValueInt(Stats.StatType.AttackMin)} - {Owner.GetStatValueInt(Stats.StatType.AttackMax)}]  Range: {GetRange()}";
+			if (actionInfo.DescriptionOption == AbilityInfo.DescriptionType.DynamicByScript)
+				return $"ATK [{Owner.GetStatValueInt(Stats.StatType.AttackMin)} - {Owner.GetStatValueInt(Stats.StatType.AttackMax)}]  Range: {GetActionRange()}";
+			return base.GetDescription();
 		}
 
 		public override Sprite GetIcon()
 		{
-			var weapon = Owner.EquipmentController.GetEquippedWeapon();
-			return weapon?.Icon ?? base.GetIcon();
+			if (actionInfo.OverrideWithWeaponIcon)
+			{
+				var weapon = Owner.EquipmentController.GetEquippedWeapon();
+				return weapon?.Icon ?? base.GetIcon();
+			}
+			return base.GetIcon();
 		}
 	}
 }

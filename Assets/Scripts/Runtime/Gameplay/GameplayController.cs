@@ -161,7 +161,12 @@ namespace Game.Gameplay
 		private void ShowFloatingUIText(OnShowFloatingUiText eventParams)
 		{
 			var floatingUI = ObjectPool.GetObject<RandomDirectionFadeWidget>(floatingTextUIPrefab);
-			floatingUI.ShowText(eventParams.worldTarget, cameraController.Camera, 1f, eventParams.text);
+			floatingUI.ShowTextAndIcon(
+				eventParams.worldTarget,
+				cameraController.Camera,
+				eventParams.text,
+				eventParams.textColor,
+				eventParams.icon);
 		}
 
 		private void OnGameEnded(OnGameEndedEvent @event)

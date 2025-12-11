@@ -23,27 +23,33 @@ namespace Game.Character
 	{
 		[BoxGroup("Character")]
 		[SerializeField]
-		private CharacterEquipmentController equipmentController;
+		internal CharacterEquipmentController equipmentController;
 		[BoxGroup("Character")]
 		[SerializeField]
-		private GameObject aliveGO;
+		internal GameObject aliveGO;
 		[BoxGroup("Character")]
 		[SerializeField]
-		private GameObject deathGO;
+		internal GameObject deathGO;
 		[BoxGroup("UI")]
 		[SerializeField]
-		private CharacterHealthBarUI healthBarUI;
+		internal CharacterHealthBarUI healthBarUI;
 		[BoxGroup("UI")]
 		[SerializeField]
-		private Transform uiActionBarXform;
+		internal Transform uiActionBarXform;
+		[BoxGroup("UI")]
+		[SerializeField]
+		internal Color statsLostUiTextColor = Color.red;
+		[BoxGroup("UI")]
+		[SerializeField]
+		internal Color statsGainUiTextColor = Color.red;
 		[BoxGroup("Actions")]
 		[SerializeField]
-		private Transform actionParentXform;
+		internal Transform actionParentXform;
 		[ShowInInspector, ReadOnly]
-		private TurnActionBase activeAction;
+		internal TurnActionBase activeAction;
 		[BoxGroup("Actions")]
 		[ShowInInspector, ReadOnly]
-		private SerializedDictionary<ActionInfo, TurnActionBase> actorActions;
+		internal SerializedDictionary<AbilityInfo, TurnActionBase> actorActions;
 		[ShowInInspector, ReadOnly]
 		[BoxGroup("Stats")]
 		internal CharacterStats characterStats;
@@ -110,9 +116,8 @@ namespace Game.Character
 			foreach (var action in info.DefaultActions)
 			{
 				if (action == null) continue;
-				ActivateAction(action);
+				EquipAction(action);
 			}
-
 		}
 
 		public void Move(Vector2Int positionIndex)
@@ -129,7 +134,7 @@ namespace Game.Character
 			characterStats.ApplyDamage(hitData.damage);
 			OnHealthChanged?.Invoke();
 
-			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(uiActionBarXform, $"-{hitData.damage}"));
+			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(uiActionBarXform, $"-{hitData.damage}", statsLostUiTextColor, null));
 
 			if (!characterStats.IsAlive)
 			{
@@ -285,7 +290,7 @@ namespace Game.Character
 			return uiActionBarXform;
 		}
 
-		public void ActivateAction(ActionInfo actionInfo)
+		public void EquipAction(AbilityInfo actionInfo)
 		{
 			if (actorActions.ContainsKey(actionInfo)) return;
 			TurnActionBase actionInstance = Instantiate(actionInfo.ActionPrefab, actionParentXform);
@@ -293,7 +298,7 @@ namespace Game.Character
 			actorActions.Add(actionInfo, actionInstance);
 		}
 
-		public void RemoveAction(ActionInfo actionInfo)
+		public void RemoveAction(AbilityInfo actionInfo)
 		{
 			if (actorActions.ContainsKey(actionInfo))
 			{

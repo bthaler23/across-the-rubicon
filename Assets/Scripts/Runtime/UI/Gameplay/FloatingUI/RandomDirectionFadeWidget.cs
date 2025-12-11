@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.UI
 {
@@ -17,19 +18,22 @@ namespace Game.UI
 		[SerializeField]
 		[MinMaxSlider(0, 360)]
 		private Vector2Int randomDirectionRange;
+
+		[SerializeField]
+		private Image iconImage;
 		[SerializeField]
 		private TextMeshProUGUI textField;
-		[SerializeField]
-		private bool controlColor = true;
-		[ShowIf("@this.controlColor==true")]
-		[SerializeField]
-		private Color defaultTextColor;
-		[ShowIf("@this.controlColor==true")]
-		[SerializeField]
-		private Color customTextColor;
 
+		private Color defaultTextColor;
 		private Vector3 movementDirection;
 		private float activeTimer;
+
+		protected override void Awake()
+		{
+			base.Awake();
+			if (textField)
+				defaultTextColor = textField.color;
+		}
 
 		protected override void Update()
 		{
@@ -43,25 +47,30 @@ namespace Game.UI
 			rTransform.localPosition += movementDirection * Time.deltaTime * movementSpeed.Evaluate(activeTimer) * movementSpeedMultiplier;
 		}
 
-		public void ShowText(Vector3 position, Camera gameplayCamera, float deactivateTime, string text, bool useCustomColor = false)
+		public void ShowText(Vector3 position, Camera gameplayCamera, string text)
 		{
-			SetFollowTarget(position, gameplayCamera, deactivateTime);
-			ShowText(deactivateTime, text, useCustomColor);
+			SetFollowTarget(position, gameplayCamera, deactivateDelay);
+			ShowText(deactivateDelay, text, defaultTextColor, null);
 		}
 
-		public void ShowText(Transform targetXform, Camera gameplayCamera, float deactivateTime, string text, bool useCustomColor = false)
+		public void ShowTextAndIcon(Transform targetXform, Camera gameplayCamera, string text, Color? textColor, Sprite sprite)
 		{
-			SetFollowTarget(targetXform, gameplayCamera, deactivateTime);
-			ShowText(deactivateTime, text, useCustomColor);
+			SetFollowTarget(targetXform, gameplayCamera, deactivateDelay);
+			ShowText(deactivateDelay, text, textColor.HasValue ? textColor.Value : defaultTextColor, sprite);
 		}
 
-		private void ShowText(float deactivateTime, string text, bool useCustomColor = false)
+		private void ShowText(float deactivateTime, string text, Color color, Sprite sprite)
 		{
 			rTransform.localPosition = Vector3.zero;
 			activeTimer = 0;
+
+			iconImage.SetGameObjectActive(sprite != null);
+			iconImage.SetIconSafe(sprite);
+
+			textField.SetGameObjectActive(!string.IsNullOrEmpty(text));
 			textField.SetTextSafe(text);
-			if (controlColor)
-				textField.SetTextColorSafe(useCustomColor ? customTextColor : defaultTextColor);
+			textField.SetTextColorSafe(color);
+
 			float randomAngle = UnityEngine.Random.Range(randomDirectionRange.x, randomDirectionRange.y);
 			movementDirection = Quaternion.Euler(0, 0, randomAngle) * Vector3.up;
 			FollowTarget();

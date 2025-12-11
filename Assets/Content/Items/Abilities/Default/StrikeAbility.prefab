@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4490156593006039043
+--- !u!1 &7094217614009521667
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6343820755703313499}
-  - component: {fileID: 8786703198675989492}
+  - component: {fileID: 5262195889573553629}
+  - component: {fileID: 355615423818502215}
   m_Layer: 0
-  m_Name: WaitAction
+  m_Name: StrikeAbility
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6343820755703313499
+--- !u!4 &5262195889573553629
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4490156593006039043}
+  m_GameObject: {fileID: 7094217614009521667}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,16 +32,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8786703198675989492
+--- !u!114 &355615423818502215
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4490156593006039043}
+  m_GameObject: {fileID: 7094217614009521667}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e45842aef82d7143ae772fbee8e93b0, type: 3}
+  m_Script: {fileID: 11500000, guid: a3019a3eb139e244c88fef3883d835ba, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.WaitAction
-  actionInfo: {fileID: 11400000, guid: 191603081499b6a44824b77f4da3dfce, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::Game.AttackAction
+  actionInfo: {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
+  attackEffectPrefab: {fileID: 7139991803096122737, guid: a21a668410221f3488ef29584f6487a3, type: 3}
+  attackEffectDuration: 0.5
