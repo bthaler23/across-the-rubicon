@@ -46,6 +46,7 @@ namespace Game.UI
 		{
 			if (collection.IsNullOrEmpty())
 			{
+				HideElements();
 				return;
 			}
 
@@ -68,6 +69,15 @@ namespace Game.UI
 
 			// Deactivate any extra widgets
 			for (int i = neededCount; i < uiElements.Count; i++)
+			{
+				uiElements[i].Hide();
+			}
+		}
+
+		private void HideElements()
+		{
+			if (uiElements == null) return;
+			for (int i = 0; i < uiElements.Count; i++)
 			{
 				uiElements[i].Hide();
 			}

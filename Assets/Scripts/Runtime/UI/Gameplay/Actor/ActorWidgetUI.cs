@@ -1,6 +1,8 @@
+using Game.Character;
 using Game.Events;
 using Game.Gameplay;
 using Game.Stats;
+using Game.UI.CharacterSelect;
 using GamePlugins.Events;
 using GamePlugins.Utils;
 using Sirenix.OdinInspector;
@@ -25,6 +27,10 @@ namespace Game.UI
 		private TextMeshProUGUI actionDescriptionLabel;
 		[SerializeField]
 		private Button actionExecuteButton;
+
+		[Title("KeyWords")]
+		[SerializeField]
+		private ItemCollectionUI<KeywordLogic, KeyWordInfoUI> keywordsCollection;
 
 		[Title("Character")]
 		[SerializeField]
@@ -74,6 +80,9 @@ namespace Game.UI
 				actorNameLabel.SetText(actor.ID);
 				PopulateActionItems(actor);
 				ShowActiveActionInfo(actor);
+
+				if (actor is CharacterBehaviour character)
+					keywordsCollection.Update(character.EquipmentController.GetKeywords(), null, null);
 			}
 			else
 			{

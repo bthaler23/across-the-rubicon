@@ -16,7 +16,8 @@ namespace Game.UI
 
 		protected virtual void Awake()
 		{
-			button.onClick.AddListener(OnButtonClicked);
+			if (button)
+				button.onClick.AddListener(OnButtonClicked);
 		}
 
 		private void OnButtonClicked()

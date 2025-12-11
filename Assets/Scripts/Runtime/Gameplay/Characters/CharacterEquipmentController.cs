@@ -108,5 +108,15 @@ namespace Game.Character
 			}
 			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(owner.uiActionBarXform, $"-{count}", owner.statsLostUiTextColor, keyword.Icon));
 		}
+
+		internal IReadOnlyList<KeywordLogic> GetKeywords()
+		{
+			List<KeywordLogic> keywords = new List<KeywordLogic>();
+			foreach (var i in keywordState)
+			{
+				keywords.Add(i.Value);
+			}
+			return keywords;
+		}
 	}
 }
