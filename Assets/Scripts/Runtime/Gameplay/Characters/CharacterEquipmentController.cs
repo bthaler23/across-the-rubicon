@@ -27,6 +27,9 @@ namespace Game.Character
 		{
 			this.owner = owner;
 			equipment = sourceEquipment;
+
+			keywordState ??= new SerializedDictionary<KeywordInfo, KeywordLogic>();
+
 			EquipWeapon(sourceEquipment.weaponSetup);
 			EquipKeywords(sourceEquipment.keywords);
 			EquipAbilities(sourceEquipment.abilities);
@@ -44,9 +47,9 @@ namespace Game.Character
 
 		private void EquipKeywords(List<KeywordInfo> keywords)
 		{
+
 			if (keywords.IsNullOrEmpty()) return;
 
-			keywordState ??= new SerializedDictionary<KeywordInfo, KeywordLogic>();
 			foreach (var keyword in keywords)
 			{
 				AddKeyword(keyword, 1);
