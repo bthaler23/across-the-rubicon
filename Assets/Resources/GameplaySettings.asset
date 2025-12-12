@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7659d33fb9d9a104ea7068cb3cfad908, type: 3}
   m_Name: GameplaySettings
   m_EditorClassIdentifier: Assembly-CSharp::Game.Settings.GamepalySettings
-  heros:
-  - {fileID: 11400000, guid: 2d0e5404018fa2946be4e45a4b4319b5, type: 2}
+  heroSetups:
   - {fileID: 11400000, guid: 9935b3d328deee74f9db4514f52d2662, type: 2}
-  - {fileID: 11400000, guid: 7c8fcba56ce7378428880479ff777711, type: 2}
-  - {fileID: 11400000, guid: 588d5c4c22933ed4da24e93e0d03f6bd, type: 2}
+  - {fileID: 11400000, guid: 2d0e5404018fa2946be4e45a4b4319b5, type: 2}
   dungeonInfos:
   - {fileID: 11400000, guid: 53345c118851bf34facf53468e412ed5, type: 2}
   - {fileID: 11400000, guid: a43678ca820f93940a535309e3fa7ede, type: 2}

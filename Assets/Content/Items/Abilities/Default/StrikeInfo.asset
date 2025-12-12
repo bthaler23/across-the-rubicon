@@ -27,11 +27,16 @@ MonoBehaviour:
   rangeBehaviour: 0
   consumeAllMana: 0
   manaCost: 0
+  keywordCost: []
   selfKeywordAllocations: []
   keywordAllocations: []
+  dealSelfAttack: 0
   selfAttack:
     damageModifierType: 0
     attackDamage: 0
+  dealAttack: 1
   attacks:
     damageModifierType: 0
     attackDamage: 0
+  healSelf: 0
+  statModifiers: []
