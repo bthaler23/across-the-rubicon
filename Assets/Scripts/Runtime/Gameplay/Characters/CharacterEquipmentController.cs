@@ -3,6 +3,7 @@ using Game.Events;
 using Game.Gameplay;
 using Game.Stats;
 using GamePlugins.Events;
+using GamePlugins.Utils;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,8 @@ namespace Game.Character
 
 		private void EquipAbilities(List<AbilityInfo> abilities)
 		{
+			if (abilities.IsNullOrEmpty()) return;
+
 			foreach (var ab in abilities)
 			{
 				owner.EquipAction(ab);
@@ -41,6 +44,8 @@ namespace Game.Character
 
 		private void EquipKeywords(List<KeywordInfo> keywords)
 		{
+			if (keywords.IsNullOrEmpty()) return;
+
 			keywordState ??= new SerializedDictionary<KeywordInfo, KeywordLogic>();
 			foreach (var keyword in keywords)
 			{
@@ -50,6 +55,8 @@ namespace Game.Character
 
 		private void AddKeyword(KeywordInfo keyword, int count)
 		{
+			if (keyword == null || count == 0) return;
+
 			if (keywordState.ContainsKey(keyword))
 			{
 				keywordState[keyword].IncerementStack(count);
