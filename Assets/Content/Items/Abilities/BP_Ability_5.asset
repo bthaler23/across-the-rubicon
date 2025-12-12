@@ -10,28 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17e58299f12e751459a0981d7db0b67d, type: 3}
-  m_Name: StrikeInfo
+  m_Name: BP_Ability_5
   m_EditorClassIdentifier: Assembly-CSharp::Game.ActionInfo
   ID: 0
   itemName: 
-  icon: {fileID: 21300000, guid: 6c959ef7b94bbee42b83852a0cc7dbc2, type: 3}
+  icon: {fileID: 21300000, guid: dd74d5633bb31c145828d6bf393bec75, type: 3}
   color: {r: 1, g: 0.45577544, b: 0, a: 1}
-  descriptionType: 1
-  description: 
+  descriptionType: 0
+  description: Give self 1 Memory Loss; give enemy 2 Memory Loss.
   overrideWithWeaponIcon: 0
   actionPrefab: {fileID: 355615423818502215, guid: 52349f4b2105a5446b42e7981b3114dd, type: 3}
   executionType: 0
   target: 3
-  targetCategoryMode: 0
-  range: 0
-  rangeBehaviour: 0
+  targetCategoryMode: 1
+  range: 3
+  rangeBehaviour: 1
   consumeAllMana: 0
-  manaCost: 0
-  selfKeywordAllocations: []
-  keywordAllocations: []
+  manaCost: 1
+  keywordCost: []
+  selfKeywordAllocations:
+  - keyword: {fileID: 0}
+    count: 0
+  keywordAllocations:
+  - keyword: {fileID: 0}
+    count: 2
+  dealSelfAttack: 0
   selfAttack:
     damageModifierType: 0
     attackDamage: 0
+  dealAttack: 0
   attacks:
     damageModifierType: 0
     attackDamage: 0
+  healSelf: 0
+  healSealfAmount: 0

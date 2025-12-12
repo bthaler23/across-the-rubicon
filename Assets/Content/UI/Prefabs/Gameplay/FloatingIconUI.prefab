@@ -208,7 +208,7 @@ MonoBehaviour:
   layoutUpdater: {fileID: 0}
   returnToObjectPool: 1
   canvasGroup: {fileID: 7763951053249049575}
-  deactivateDelay: 0
+  deactivateDelay: 1.5
   disappearSpeed: 2
   movementSpeedMultiplier: 50
   movementSpeed:

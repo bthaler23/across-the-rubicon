@@ -43,6 +43,10 @@ namespace Game.UI
 		private Image healthProgressBarImage;
 		[SerializeField]
 		private TextMeshProUGUI healthProgressLabel;
+		[SerializeField]
+		private Image manaProgressBarImage;
+		[SerializeField]
+		private TextMeshProUGUI manaProgressLabel;
 
 		private TurnActionBase activeAction;
 		private List<ActionSelectUI> actionSelectUIs;
@@ -58,7 +62,7 @@ namespace Game.UI
 		private void OnActionExecuteButtonClick()
 		{
 			if (activeAction)
-				activeAction.UIInvokeExecute();
+				activeAction.OnUIInvokeAction();
 		}
 
 		private void OnActiveCharacterChange(ActiveActorRefreshEvent eventParams)
@@ -77,6 +81,7 @@ namespace Game.UI
 				iconFrameImage.SetIconColorSafe(actor.GetTeamColor());
 				iconImage.SetIconSafe(actor.GetActorIcon());
 				ShowHealth(actor);
+				ShowMana(actor);
 				actorNameLabel.SetText(actor.ID);
 				PopulateActionItems(actor);
 				ShowActiveActionInfo(actor);
@@ -105,6 +110,15 @@ namespace Game.UI
 			float healthPercent = (float)health / (float)maxhealth;
 			healthProgressBarImage.fillAmount = healthPercent;
 			healthProgressLabel.SetText($"{health} / {maxhealth}");
+		}
+
+		private void ShowMana(ITurnActor actor)
+		{
+			float health = actor.GetStatValueFloat(StatType.Mana);
+			float maxhealth = actor.GetStatValueFloat(StatType.MaxMana);
+			float healthPercent = (float)health / (float)maxhealth;
+			manaProgressBarImage.fillAmount = healthPercent;
+			manaProgressLabel.SetText($"{health} / {maxhealth}");
 		}
 
 		private void PopulateActionItems(ITurnActor actor)

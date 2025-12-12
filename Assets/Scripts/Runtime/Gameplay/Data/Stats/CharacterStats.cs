@@ -47,6 +47,20 @@ namespace Game.Gameplay
 			}
 		}
 
+		public void ApplyHeal(int heal)
+		{
+			currentHealth += heal;
+			if (currentHealth > GetStat(StatType.MaxHealth).GetValue())
+			{
+				currentHealth = Mathf.RoundToInt(GetStat(StatType.MaxHealth).GetValue());
+			}
+		}
+
+		public void ConsumeMana(int mana)
+		{
+			currentMana -= mana;
+		}
+
 		public IStatValue GetStat(StatType type)
 		{
 			if (type == StatType.Health)

@@ -16,6 +16,7 @@ using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem.iOS;
 using UnityEngine.Rendering;
+using static UnityEngine.Analytics.IAnalytic;
 
 namespace Game.Character
 {
@@ -42,6 +43,9 @@ namespace Game.Character
 		[BoxGroup("UI")]
 		[SerializeField]
 		internal Color statsGainUiTextColor = Color.red;
+		[BoxGroup("UI")]
+		[SerializeField]
+		internal Color manaTextUIColor = Color.blue;
 		[BoxGroup("Actions")]
 		[SerializeField]
 		internal Transform actionParentXform;
@@ -69,6 +73,7 @@ namespace Game.Character
 		public CharacterInfoData Info { get => info; }
 		public Vector2Int CurrentPosition { get => currentPosition; }
 		public CharacterEquipmentController EquipmentController { get => equipmentController; }
+		public CharacterStats CharacterStats { get => characterStats; }
 
 		public event Action OnTurnCompleted;
 		public event Action OnHealthChanged;
@@ -142,7 +147,12 @@ namespace Game.Character
 				aliveGO.SetActive(false);
 				EventBus.Publish<OnCharacterDiedEvent>(new OnCharacterDiedEvent(this));
 			}
+		}
 
+		public void ApplyHeal(int healSealfAmount)
+		{
+			characterStats.ApplyHeal(healSealfAmount);
+			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(uiActionBarXform, $"+{healSealfAmount}", statsGainUiTextColor, null));
 		}
 
 		public bool HasAnyActions()
@@ -312,6 +322,20 @@ namespace Game.Character
 		public bool IsAlive()
 		{
 			return characterStats.IsAlive;
+		}
+
+		internal void ConsumeMana(int manaCost)
+		{
+			if (manaCost > 0)
+			{
+				characterStats.ConsumeMana(manaCost);
+				EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(uiActionBarXform, $"-{manaCost}", manaTextUIColor, null));
+			}
+		}
+
+		public void ShowNotEnoughMana()
+		{
+			EventBus.Publish<OnShowFloatingUiText>(new OnShowFloatingUiText(uiActionBarXform, $"Not Enough Mana!", statsLostUiTextColor, null));
 		}
 		#endregion
 	}

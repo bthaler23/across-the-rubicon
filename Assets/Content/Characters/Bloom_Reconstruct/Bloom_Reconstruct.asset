@@ -17,13 +17,13 @@ MonoBehaviour:
   charaterAbilityDescription: 
   characerAvatar: {fileID: 21300000, guid: 6c9c0649352d6b4488aecbc3987ec0de, type: 3}
   characterFullAvatarSprite: {fileID: 21300000, guid: 6c9c0649352d6b4488aecbc3987ec0de, type: 3}
-  characterPrefab: {fileID: 7117724579156912674, guid: 028eb8540da7ca84b8badc54c51ccea8, type: 3}
+  characterPrefab: {fileID: 3024563384203178028, guid: c1725e71bbf47774f85328514ee9043d, type: 3}
   defaultAbilities:
   - {fileID: 11400000, guid: 2dab7a407bb74624b99e6908a5573c53, type: 2}
   - {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
   - {fileID: 11400000, guid: 191603081499b6a44824b77f4da3dfce, type: 2}
   health: 20
-  manaPool: 0
+  manaPool: 5
   minAttack: 5
   maxAttack: 10
   attackRange: 1

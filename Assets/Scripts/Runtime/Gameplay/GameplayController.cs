@@ -211,5 +211,10 @@ namespace Game.Gameplay
 					UINavigator.Instance.ShowMainMenuUI();
 				});
 		}
+
+		internal IReadOnlyCollection<CharacterBehaviour> GetAllActors()
+		{
+			return actors;
+		}
 	}
 }

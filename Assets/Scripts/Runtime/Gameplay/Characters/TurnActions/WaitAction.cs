@@ -1,11 +1,12 @@
+using Game.Gameplay;
 using UnityEngine;
 namespace Game
 {
-	public class WaitAction : BaseActorAction
+	public class WaitAction : TurnActionBase
 	{
-		protected override void OnExecuteInvoked()
+		protected override void ExecuteOnUIClickAction()
 		{
-			base.UIInvokeExecute();
+			base.ExecuteOnUIClickAction();
 			StartCoroutine(DelayedExecuteAction(0.001f, () => { FireOnCompletedEvent(); }));
 		}
 

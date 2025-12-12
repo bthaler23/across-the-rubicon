@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Game
 {
-	public class MoveAction : BaseActorAction
+	public class MoveAction : TurnActionBase
 	{
 		[SerializeField, Tooltip("Units per second movement speed for interpolated movement.")]
 		private float movementSpeed = 5f;
@@ -17,9 +17,9 @@ namespace Game
 		private Vector3 movementTargetWorldPos;
 		private Vector2Int? movementTargetGridIndex;
 
-		protected override void OnCellClicked(Vector2Int gridIndex)
+		protected override void ExecuteOnCellClickAction(Vector2Int gridIndex)
 		{
-			base.OnCellClicked(gridIndex);
+			base.ExecuteOnCellClickAction(gridIndex);
 
 			if (isMoving) return; // prevent selecting a new target while moving
 

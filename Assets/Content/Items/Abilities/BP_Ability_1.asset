@@ -21,10 +21,24 @@ MonoBehaviour:
   overrideWithWeaponIcon: 0
   actionPrefab: {fileID: 355615423818502215, guid: 52349f4b2105a5446b42e7981b3114dd, type: 3}
   executionType: 1
-  manaCost: 0
+  target: 0
+  targetCategoryMode: 0
   range: 0
   rangeBehaviour: 0
-  keywordAllocations:
+  consumeAllMana: 0
+  manaCost: 1
+  keywordCost: []
+  selfKeywordAllocations:
   - keyword: {fileID: 11400000, guid: 54035f91e1a70834ebf2ef413a33d434, type: 2}
     count: 1
-    target: 0
+  keywordAllocations: []
+  dealSelfAttack: 0
+  selfAttack:
+    damageModifierType: 1
+    attackDamage: 1
+  dealAttack: 0
+  attacks:
+    damageModifierType: 0
+    attackDamage: 0
+  healSelf: 0
+  healSealfAmount: 0

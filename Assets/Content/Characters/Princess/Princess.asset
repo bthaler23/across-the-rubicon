@@ -23,7 +23,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 104e33dab3c5b5348afcca68554657c5, type: 2}
   - {fileID: 11400000, guid: 191603081499b6a44824b77f4da3dfce, type: 2}
   health: 10
-  manaPool: 0
+  manaPool: 5
   minAttack: 10
   maxAttack: 20
   attackRange: 1

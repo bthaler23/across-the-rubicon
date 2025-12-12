@@ -33,7 +33,7 @@ namespace Game.Character
 
 		private void EquipAbilities(List<AbilityInfo> abilities)
 		{
-			foreach(var ab in abilities)
+			foreach (var ab in abilities)
 			{
 				owner.EquipAction(ab);
 			}
@@ -117,6 +117,15 @@ namespace Game.Character
 				keywords.Add(i.Value);
 			}
 			return keywords;
+		}
+
+		public int GetKeywordCount(KeywordInfo keyword)
+		{
+			if (keywordState.ContainsKey(keyword))
+			{
+				return keywordState[keyword].CurrentStack;
+			}
+			return 0;
 		}
 	}
 }
